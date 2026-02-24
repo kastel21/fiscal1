@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{% block title %}FDMS Operator Dashboard{% endblock %}</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .form-input, .fdms-form input, .fdms-form select { border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.5rem 0.75rem; }
+        .errorlist { color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem; list-style: none; padding-left: 0; }
+        .nav-locked { color: #9ca3af; cursor: not-allowed; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex">
+
+<aside class="w-56 bg-slate-800 text-slate-200 flex flex-col min-h-screen">
+    <div class="p-4 border-b border-slate-700">
+        <span class="font-bold text-lg">FDMS</span>
+        <span class="block text-xs text-slate-400">{{ fdms_env|default:"TEST" }}</span>
+    </div>
+    {% include "dashboard/sidebar.html" %}
+</aside>
+
+<main class="flex-1 flex flex-col">
+    <header class="bg-white shadow-sm border-b px-6 py-4 flex justify-between items-center">
+        <h1 class="text-xl font-semibold text-slate-800">{% block header_title %}Operator Dashboard{% endblock %}</h1>
+    </header>
+
+    {% if show_eula_banner %}
+    <div class="mx-6 mt-4 p-4 rounded-lg bg-blue-50 border border-blue-200 text-slate-800 text-sm">
+        <p class="mb-1"><strong>Terms and conditions</strong></p>
+        <p>Take a moment to read and accept our <a href="{% url 'eula' %}" class="text-indigo-600 font-medium hover:underline">terms and conditions</a>. Using the system for more than 30 days without accepting manually will automatically mean you have accepted by using the system.</p>
+    </div>
+    {% endif %}
+
+    {% if offline_status.is_offline or offline_status.queue_size > 0 %}
+    <div class="mx-6 mt-4 p-4 rounded-lg flex items-center justify-between {% if offline_status.is_offline %}bg-amber-100 border border-amber-300{% else %}bg-blue-50 border border-blue-200{% endif %}">
+        <div>
+            {% if offline_status.is_offline %}
+            <span class="font-medium text-amber-800">FDMS offline</span>
+            <span class="text-amber-700 ml-2">Receipts will be queued for submission when connection is restored.</span>
+            {% endif %}
+            {% if offline_status.queue_size > 0 %}
+            <span class="font-medium text-slate-800">Queue: {{ offline_status.queue_size }} receipt(s) pending</span>
+            {% if offline_status.last_submission_at %}
+            <span class="text-slate-600 ml-2">Last submitted: {{ offline_status.last_submission_at|date:"Y-m-d H:i" }}</span>
+            {% endif %}
+            {% endif %}
+        </div>
+        {% if offline_status.queue_size > 0 %}
+        <form method="post" action="{% url 'offline_retry_submit' %}" class="inline">
+            {% csrf_token %}
+            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm">Retry submit</button>
+        </form>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <div id="main-content" class="flex-1 p-6" hx-swap-oob="true">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="bg-white border-t px-6 py-3 flex flex-col gap-2 text-sm text-slate-500">
+        <div class="flex justify-between items-center">
+            <span>Certificate: {{ nav.certificate_status|default:"-" }}</span>
+            <span>Device: {% if nav.device_id %}#{{ nav.device_id }}{% else %}-{% endif %}</span>
+        </div>
+        <div class="flex flex-wrap gap-x-3 gap-y-1 justify-center text-xs">
+            <a href="{% url 'terms' %}" class="text-indigo-600 hover:underline">Terms of Service</a>
+            <a href="{% url 'privacy' %}" class="text-indigo-600 hover:underline">Privacy Policy</a>
+            <a href="{% url 'dpa' %}" class="text-indigo-600 hover:underline">Data Processing Addendum</a>
+            <a href="{% url 'cookies' %}" class="text-indigo-600 hover:underline">Cookie Policy</a>
+        </div>
+    </footer>
+</main>
+
+</body>
+</html>

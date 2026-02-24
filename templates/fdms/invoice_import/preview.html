@@ -1,0 +1,82 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Import Invoice (Excel)</h1>
+
+<p class="text-gray-600 mb-2">Sheet: <strong>{{ meta.sheet_name }}</strong> | Header row: {{ meta.header_row|default:"—" }}</p>
+
+{% if validation_errors %}
+<div class="bg-red-50 border border-red-200 rounded p-4 mb-6">
+    <p class="font-semibold text-red-800 mb-2">Validation errors (must be corrected):</p>
+    <ul class="list-disc list-inside text-red-700">
+        {% for e in validation_errors %}
+        <li>{{ e }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<h2 class="text-lg font-semibold mb-3">Preview Table</h2>
+<table class="min-w-full bg-white shadow rounded-lg overflow-hidden mb-6">
+    <thead class="bg-gray-50">
+        <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Qty</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Unit Price</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Line Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for line in lines %}
+        <tr class="border-t {% if line.unit_price_derived %}italic text-gray-600{% endif %}">
+            <td class="px-6 py-4">{{ line.quantity }}</td>
+            <td class="px-6 py-4">{{ line.description }}</td>
+            <td class="px-6 py-4">{{ line.unit_price|floatformat:2 }}{% if line.unit_price_derived %} (derived){% endif %}</td>
+            <td class="px-6 py-4">{{ line.line_total|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p class="mb-6 font-bold">Computed subtotal: {{ subtotal|floatformat:2 }}</p>
+
+<h2 class="text-lg font-semibold mb-3">Enrichment (Required)</h2>
+<form method="post" class="bg-white p-6 shadow rounded-lg max-w-lg">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label class="block font-semibold mb-1">Receipt Type</label>
+        <select name="receipt_type" class="border rounded px-3 py-2 w-full">
+            <option value="FiscalInvoice">Fiscal Invoice</option>
+            <option value="CreditNote">Credit Note</option>
+        </select>
+    </div>
+    <div class="mb-4">
+        <label class="block font-semibold mb-1">Currency *</label>
+        <input type="text" name="currency" value="USD" class="border rounded px-3 py-2 w-full" required>
+    </div>
+    <div class="mb-4">
+        <label class="block font-semibold mb-1">Tax Type *</label>
+        <select name="tax_id" class="border rounded px-3 py-2 w-full" required>
+            <option value="">— Select —</option>
+            {% for t in tax_options %}
+            <option value="{{ t.id }}">{{ t.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="mb-4">
+        <label class="block font-semibold mb-1">Invoice No (optional)</label>
+        <input type="text" name="invoice_no" class="border rounded px-3 py-2 w-full" placeholder="INV-001">
+    </div>
+    <div class="mb-4">
+        <label class="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" name="confirm_totals" required>
+            <span>I confirm the computed totals are correct</span>
+        </label>
+    </div>
+    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 disabled:opacity-50" {% if not can_submit %}disabled{% endif %}>
+        Submit to FDMS
+    </button>
+</form>
+
+<p class="mt-4 text-sm text-gray-500"><a href="{% url 'fdms_invoice_import_step1' %}" class="text-indigo-600 hover:underline">Back to upload</a></p>
+{% endblock %}

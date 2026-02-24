@@ -1,0 +1,77 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold text-slate-800 mb-6">Tax Mapping</h1>
+<p class="text-slate-600 mb-4">Map local tax codes (used in products) to FDMS tax IDs from GetConfig.</p>
+
+<div id="error-msg" class="hidden bg-red-50 border border-red-200 rounded p-4 mb-6 text-red-800"></div>
+<p id="loading" class="text-slate-600 mb-4">Loading tax mappings...</p>
+
+<div id="mappings-section" class="hidden">
+  <div class="flex justify-between items-center mb-4">
+    <span></span>
+    <a href="{% url 'fdms_tax_mapping_add' %}" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Add Mapping</a>
+  </div>
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="bg-slate-100 border-b">
+          <th class="text-left py-3 px-4">Local Code</th>
+          <th class="text-left py-3 px-4">Display Name</th>
+          <th class="text-left py-3 px-4">Tax ID</th>
+          <th class="text-left py-3 px-4">Tax Code</th>
+          <th class="text-left py-3 px-4">Tax %</th>
+          <th class="text-left py-3 px-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="mappings-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function() {
+  function getCsrf() {
+    var el = document.querySelector('meta[name="csrf-token"]');
+    if (el) return el.getAttribute('content') || '';
+    var m = document.cookie.match(/csrftoken=([^;]+)/);
+    return m ? m[1] : '';
+  }
+
+  function loadMappings() {
+    document.getElementById('loading').classList.remove('hidden');
+    document.getElementById('loading').textContent = 'Loading tax mappings...';
+    fetch('/api/tax-mappings/', { credentials: 'same-origin' })
+      .then(function(r) {
+        if (!r.ok) throw new Error(r.status === 403 ? 'Admin access required' : 'Request failed');
+        return r.json();
+      })
+      .then(function(data) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('mappings-section').classList.remove('hidden');
+        var mappings = (data && data.tax_mappings) ? data.tax_mappings : [];
+        var tbody = document.getElementById('mappings-tbody');
+        if (mappings.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-500">No tax mappings. <a href="/fdms/tax-mappings/add/" class="text-indigo-600 hover:underline">Add a mapping</a> to map local tax codes (e.g. VAT) to FDMS tax IDs.</td></tr>';
+        } else {
+          tbody.innerHTML = mappings.map(function(m) {
+            return '<tr class="border-b hover:bg-slate-50">' +
+              '<td class="py-3 px-4 font-medium">' + (m.local_code || '') + '</td>' +
+              '<td class="py-3 px-4">' + (m.display_name || '') + '</td>' +
+              '<td class="py-3 px-4">' + (m.fdms_tax_id ?? '') + '</td>' +
+              '<td class="py-3 px-4">' + (m.fdms_tax_code || '') + '</td>' +
+              '<td class="py-3 px-4">' + (m.tax_percent != null ? m.tax_percent + '%' : '') + '</td>' +
+              '<td class="py-3 px-4"><a href="/fdms/tax-mappings/' + m.id + '/edit/" class="text-indigo-600 hover:underline">Edit</a></td></tr>';
+          }).join('');
+        }
+      })
+      .catch(function(err) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('error-msg').textContent = err.message || 'Failed to load tax mappings.';
+        document.getElementById('error-msg').classList.remove('hidden');
+      });
+  }
+  loadMappings();
+})();
+</script>
+{% endblock %}

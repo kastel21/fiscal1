@@ -1,0 +1,95 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">QuickBooks Invoices</h1>
+
+<div class="flex gap-4 mb-6">
+  <a href="{% url 'api_qb_oauth_connect' %}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Connect QuickBooks</a>
+  <button type="button" id="sync-btn" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Sync from QB</button>
+</div>
+
+<p class="text-slate-600 mb-6">
+  QB invoices via webhook, fiscalise API, or sync. Fiscalised receipts linked to FDMS.
+</p>
+
+<table class="w-full border-collapse border border-slate-300">
+  <thead>
+    <tr class="bg-slate-100">
+      <th class="border border-slate-300 px-4 py-2 text-left">QB Invoice ID</th>
+      <th class="border border-slate-300 px-4 py-2 text-left">Status</th>
+      <th class="border border-slate-300 px-4 py-2 text-left">Receipt Global No</th>
+      <th class="border border-slate-300 px-4 py-2 text-left">Total</th>
+      <th class="border border-slate-300 px-4 py-2 text-left">Created</th>
+      <th class="border border-slate-300 px-4 py-2 text-left">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for inv in invoices %}
+    <tr>
+      <td class="border border-slate-300 px-4 py-2">{{ inv.qb_invoice_id }}</td>
+      <td class="border border-slate-300 px-4 py-2">
+        {% if inv.fiscalised %}
+        <span class="text-green-600 font-medium">Fiscalised</span>
+        {% else %}
+        <span class="text-amber-600">Pending</span>
+        {% if inv.fiscal_error %}<br><span class="text-xs text-red-600">{{ inv.fiscal_error|truncatechars:50 }}</span>{% endif %}
+        {% endif %}
+      </td>
+      <td class="border border-slate-300 px-4 py-2">
+        {% if inv.fiscal_receipt %}
+        <a href="{% url 'fdms_receipt_detail' inv.fiscal_receipt.pk %}" class="text-indigo-600 hover:underline">{{ inv.fiscal_receipt.receipt_global_no }}</a>
+        {% else %}—{% endif %}
+      </td>
+      <td class="border border-slate-300 px-4 py-2">{{ inv.total_amount|default:"—" }}</td>
+      <td class="border border-slate-300 px-4 py-2">{{ inv.created_at|date:"Y-m-d H:i" }}</td>
+      <td class="border border-slate-300 px-4 py-2">
+        {% if not inv.fiscalised %}
+        <button type="button" class="retry-btn px-3 py-1 bg-amber-600 text-white rounded text-sm hover:bg-amber-700" data-qb-id="{{ inv.qb_invoice_id }}">Retry</button>
+        {% endif %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6" class="border border-slate-300 px-4 py-4 text-slate-500">No QB invoices yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+document.getElementById('sync-btn')?.addEventListener('click', async () => {
+  try {
+    const r = await fetch('/api/integrations/quickbooks/sync/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': document.querySelector('meta[name="csrf-token"]')?.content || '' },
+      credentials: 'same-origin'
+    });
+    const data = await r.json();
+    if (data.error) alert(data.error);
+    else {
+      alert('Sync: ' + (data.fiscalised || 0) + ' fiscalised, ' + (data.skipped || 0) + ' skipped' + (data.errors?.length ? ', ' + data.errors.length + ' errors' : ''));
+      if (data.fiscalised > 0) location.reload();
+    }
+  } catch (e) { alert('Sync failed: ' + e.message); }
+});
+document.querySelectorAll('.retry-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const qbId = btn.dataset.qbId;
+    try {
+      const r = await fetch('/api/integrations/quickbooks/retry/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': document.querySelector('meta[name="csrf-token"]')?.content || '' },
+        body: JSON.stringify({ qb_invoice_id: qbId }),
+        credentials: 'same-origin'
+      });
+      const data = await r.json();
+      if (data.success && data.fiscalised) {
+        location.reload();
+      } else {
+        alert(data.error || 'Retry failed');
+      }
+    } catch (e) {
+      alert('Request failed: ' + e.message);
+    }
+  });
+});
+</script>
+{% endblock %}

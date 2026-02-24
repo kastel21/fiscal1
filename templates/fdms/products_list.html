@@ -1,0 +1,93 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold text-slate-800 mb-6">Products</h1>
+
+<div id="error-msg" class="hidden bg-red-50 border border-red-200 rounded p-4 mb-6 text-red-800"></div>
+<p id="loading" class="text-slate-600 mb-4">Loading products...</p>
+
+<div id="products-section" class="hidden">
+  <div class="flex justify-between items-center mb-4">
+    <span></span>
+    <a href="{% url 'fdms_product_add' %}" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Add Product</a>
+  </div>
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="bg-slate-100 border-b">
+          <th class="text-left py-3 px-4">Name</th>
+          <th class="text-right py-3 px-4">Price</th>
+          <th class="text-right py-3 px-4">Tax %</th>
+          <th class="text-left py-3 px-4">HS Code</th>
+          <th class="text-left py-3 px-4">Status</th>
+          <th class="text-left py-3 px-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="products-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+(function() {
+  function getCsrf() {
+    var el = document.querySelector('meta[name="csrf-token"]');
+    if (el) return el.getAttribute('content') || '';
+    var m = document.cookie.match(/csrftoken=([^;]+)/);
+    return m ? m[1] : '';
+  }
+
+  function loadProducts() {
+    document.getElementById('loading').classList.remove('hidden');
+    document.getElementById('loading').textContent = 'Loading products...';
+    fetch('/api/products/', { credentials: 'same-origin' })
+      .then(function(r) {
+        if (!r.ok) throw new Error(r.status === 403 ? 'Admin access required' : 'Request failed');
+        return r.json();
+      })
+      .then(function(data) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('products-section').classList.remove('hidden');
+        var products = (data && data.products) ? data.products : [];
+        var tbody = document.getElementById('products-tbody');
+        if (products.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="py-6 text-center text-slate-500">No products. <a href="/fdms/products/add/" class="text-indigo-600 hover:underline">Add a product</a> to get started.</td></tr>';
+        } else {
+          tbody.innerHTML = products.map(function(p) {
+            return '<tr class="border-b hover:bg-slate-50">' +
+              '<td class="py-3 px-4 font-medium">' + (p.name || '') + '</td>' +
+              '<td class="py-3 px-4 text-right">' + (p.price || '0') + '</td>' +
+              '<td class="py-3 px-4 text-right">' + (p.tax_percent || '15') + '</td>' +
+              '<td class="py-3 px-4">' + (p.hs_code || '-') + '</td>' +
+              '<td class="py-3 px-4">' + (p.is_active ? 'Active' : 'Inactive') + '</td>' +
+              '<td class="py-3 px-4">' +
+                '<a href="/fdms/products/' + p.id + '/edit/" class="text-indigo-600 hover:underline mr-2">Edit</a>' +
+                (p.is_active ? '<button type="button" class="deactivate-btn text-red-600 hover:underline" data-id="' + p.id + '">Deactivate</button>' : '') +
+              '</td></tr>';
+          }).join('');
+          tbody.querySelectorAll('.deactivate-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+              if (window.confirm('Deactivate this product?')) {
+                fetch('/api/products/' + btn.dataset.id + '/', {
+                  method: 'DELETE',
+                  headers: { 'X-CSRFToken': getCsrf() },
+                  credentials: 'same-origin'
+                }).then(function(r) {
+                  if (r.ok) loadProducts();
+                  else r.json().then(function(d) { alert(d.error || 'Failed'); });
+                });
+              }
+            });
+          });
+        }
+      })
+      .catch(function(err) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('error-msg').textContent = err.message || 'Failed to load products.';
+        document.getElementById('error-msg').classList.remove('hidden');
+      });
+  }
+  loadProducts();
+})();
+</script>
+{% endblock %}

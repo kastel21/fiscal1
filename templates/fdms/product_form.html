@@ -1,0 +1,156 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<div class="flex items-center gap-4 mb-6">
+  <a href="{% url 'fdms_products' %}" class="text-indigo-600 hover:underline">← Back</a>
+  <h1 class="text-2xl font-bold text-slate-800">{% if product_id %}Edit Product{% else %}Add Product{% endif %}</h1>
+</div>
+
+<div id="error-msg" class="hidden bg-red-50 border border-red-200 rounded p-4 mb-6 text-red-800"></div>
+<p id="loading" class="hidden text-slate-600 mb-4">Loading...</p>
+
+<form id="product-form" class="bg-white rounded-lg shadow p-6 space-y-4 max-w-xl">
+  {% csrf_token %}
+  <div>
+    <label class="block text-sm font-medium text-slate-600 mb-1">Name *</label>
+    <input type="text" id="name" required class="w-full border border-slate-300 rounded px-3 py-2" />
+  </div>
+  <div>
+    <label class="block text-sm font-medium text-slate-600 mb-1">Description</label>
+    <textarea id="description" rows="2" class="w-full border border-slate-300 rounded px-3 py-2"></textarea>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-slate-600 mb-1">Price *</label>
+      <input type="number" id="price" min="0" step="0.01" required value="0" class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-600 mb-1">Tax Code</label>
+      <select id="tax_code" class="w-full border border-slate-300 rounded px-3 py-2"></select>
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-slate-600 mb-1">Tax %</label>
+      <input type="number" id="tax_percent" min="0" step="0.01" value="15" class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-600 mb-1">HS Code *</label>
+      <input type="text" id="hs_code" required placeholder="e.g. 12345678" class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+  </div>
+  <div class="flex gap-3">
+    <button type="submit" id="submit-btn" class="px-6 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50">Save</button>
+    <a href="{% url 'fdms_products' %}" class="px-6 py-2 border border-slate-300 rounded hover:bg-slate-50">Cancel</a>
+  </div>
+</form>
+
+<script>
+(function() {
+  var productId = {% if product_id %}{{ product_id }}{% else %}null{% endif %};
+  var csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  var taxOptions = [];
+
+  function loadTaxes() {
+    return fetch('/api/config/taxes/?include_mappings=true', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        taxOptions = data.taxes || [];
+        var sel = document.getElementById('tax_code');
+        sel.innerHTML = '';
+        taxOptions.forEach(function(t) {
+          var opt = document.createElement('option');
+          opt.value = t.taxCode;
+          opt.textContent = t.taxCode + (t.taxName !== t.taxCode ? ' (' + t.taxName + ')' : '') + ' - ' + t.taxPercent + '%';
+          opt.dataset.percent = String(t.taxPercent);
+          sel.appendChild(opt);
+        });
+        if (taxOptions.length > 0 && !productId) {
+          sel.selectedIndex = 0;
+          document.getElementById('tax_percent').value = taxOptions[0].taxPercent;
+        }
+      }).catch(function() {
+        taxOptions = [{ taxCode: 'VAT', taxPercent: 15, taxName: 'VAT' }];
+        var sel = document.getElementById('tax_code');
+        sel.innerHTML = '<option value="VAT">VAT - 15%</option>';
+        sel.options[0].dataset.percent = '15';
+      });
+  }
+
+  function onTaxChange() {
+    var sel = document.getElementById('tax_code');
+    var opt = sel.options[sel.selectedIndex];
+    if (opt && opt.dataset.percent) document.getElementById('tax_percent').value = opt.dataset.percent;
+  }
+
+  document.getElementById('tax_code').addEventListener('change', onTaxChange);
+
+  loadTaxes().then(function() {
+    if (productId) {
+    document.getElementById('loading').classList.remove('hidden');
+    fetch('/api/products/' + productId + '/', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        var p = data.product;
+        document.getElementById('name').value = p.name || '';
+        document.getElementById('description').value = p.description || '';
+        document.getElementById('price').value = p.price || '0';
+        var code = p.tax_code || 'VAT';
+        var found = false;
+        for (var i = 0; i < document.getElementById('tax_code').options.length; i++) {
+          if (document.getElementById('tax_code').options[i].value === code) {
+            document.getElementById('tax_code').selectedIndex = i;
+            document.getElementById('tax_percent').value = document.getElementById('tax_code').options[i].dataset.percent || p.tax_percent || '15';
+            found = true;
+            break;
+          }
+        }
+        if (!found) document.getElementById('tax_percent').value = p.tax_percent || '15';
+        document.getElementById('hs_code').value = p.hs_code || '';
+      })
+      .catch(function() { document.getElementById('error-msg').textContent = 'Failed to load product'; document.getElementById('error-msg').classList.remove('hidden'); })
+      .finally(function() { document.getElementById('loading').classList.add('hidden'); });
+    } else if (taxOptions.length > 0) {
+      document.getElementById('tax_code').selectedIndex = 0;
+      document.getElementById('tax_percent').value = taxOptions[0].taxPercent;
+    }
+  });
+
+  document.getElementById('product-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var payload = {
+      name: document.getElementById('name').value.trim(),
+      description: document.getElementById('description').value.trim(),
+      price: parseFloat(document.getElementById('price').value) || 0,
+      tax_code: document.getElementById('tax_code').value.trim() || 'VAT',
+      tax_percent: parseFloat(document.getElementById('tax_percent').value) || 15,
+      hs_code: document.getElementById('hs_code').value.trim() || '000000'
+    };
+    document.getElementById('error-msg').classList.add('hidden');
+    document.getElementById('submit-btn').disabled = true;
+
+    var url = productId ? '/api/products/' + productId + '/' : '/api/products/';
+    var method = productId ? 'PUT' : 'POST';
+
+    fetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf },
+      credentials: 'same-origin',
+      body: JSON.stringify(payload)
+    }).then(function(r) {
+      return r.json().then(function(data) {
+        if (r.ok && (data.success !== false)) {
+          window.location.href = '{% url "fdms_products" %}';
+        } else {
+          throw new Error(data.error || 'Failed to save');
+        }
+      });
+    }).catch(function(err) {
+      document.getElementById('error-msg').textContent = err.message;
+      document.getElementById('error-msg').classList.remove('hidden');
+      document.getElementById('submit-btn').disabled = false;
+    });
+  });
+})();
+</script>
+{% endblock %}

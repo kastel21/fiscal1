@@ -1,0 +1,27 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Operator Dashboard{% endblock %}
+{% block header_title %}Operator Dashboard{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl">
+    <h2 class="text-lg font-medium text-slate-700 mb-4">Welcome</h2>
+    <p class="text-slate-600 mb-6">
+        Use the sidebar to register your device, manage the fiscal day, and process receipts.
+    </p>
+
+    <div class="space-y-4">
+        {% if nav.has_device %}
+        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+            <p class="font-medium text-green-800">Device registered</p>
+            <p class="text-sm text-green-700">Device #{{ nav.device_id }} is ready. Proceed to Device Status or Fiscal Day.</p>
+        </div>
+        {% else %}
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <p class="font-medium text-amber-800">Register your device</p>
+            <p class="text-sm text-amber-700">Start by <a href="{% url 'device_identity_register' %}" class="underline font-medium">registering your fiscal device</a> with ZIMRA FDMS.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

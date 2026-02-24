@@ -1,0 +1,145 @@
+{% extends "fdms/base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/print_receipt.css' %}">
+{% endblock %}
+
+{% block content %}
+{% if validation_errors %}
+<div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+    <p class="font-semibold text-red-800">Submission validation errors (FDMS)</p>
+    <ul class="list-disc list-inside text-red-700 text-sm mt-2 space-y-1">
+        {% for err in validation_errors %}
+        <li>{{ err }}</li>
+        {% endfor %}
+    </ul>
+    <p class="text-red-600 text-xs mt-2">These errors were returned after the last submission attempt for this invoice/note.</p>
+</div>
+{% endif %}
+
+{% if receipt.is_fiscalised %}
+<div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-6">
+    <p class="font-semibold text-amber-800">This invoice has been fiscalised.</p>
+    <p class="text-amber-700 text-sm">To correct it, issue a credit note.</p>
+</div>
+{% endif %}
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">
+        {% if receipt.receipt_type == "CreditNote" %}Fiscal Credit Note{% elif receipt.receipt_type == "DebitNote" %}Fiscal Debit Note{% else %}Fiscal Tax Invoice{% endif %} #{{ receipt.receipt_global_no }}
+    </h1>
+    <div class="flex gap-4">
+        <a href="{% url 'fdms_receipt_invoice' receipt.pk %}" target="_blank" class="text-indigo-600 hover:underline">Print Invoice</a>
+        <a href="{% url 'fdms_receipt_invoice_pdf' receipt.pk %}" class="text-indigo-600 hover:underline">Download PDF</a>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+<div class="bg-white p-6 shadow rounded-lg space-y-4">
+    <h2 class="font-semibold text-lg">Details</h2>
+    <p><span class="text-gray-600">Device:</span> {{ receipt.device.device_id }}</p>
+    <p><span class="text-gray-600">Fiscal Day:</span> {{ receipt.fiscal_day_no }}</p>
+    <p><span class="text-gray-600">Receipt Global No:</span> {{ receipt.receipt_global_no }}</p>
+    <p><span class="text-gray-600">Invoice No:</span> {{ receipt.invoice_no|default:"—" }}</p>
+    <p><span class="text-gray-600">Type:</span> {{ receipt.receipt_type }}</p>
+    <p><span class="text-gray-600">Total:</span> {{ receipt.receipt_total }}</p>
+    {% if receipt.document_type == "INVOICE" and receipt.receipt_type != "CreditNote" and receipt.receipt_type != "DebitNote" %}
+    <p><span class="text-gray-600">Total Credited:</span> {{ receipt.credited_total }}</p>
+    <p><span class="text-gray-600">Total Debited:</span> {{ receipt.total_debited|default:"0" }}</p>
+    <p><span class="text-gray-600">Remaining Balance:</span> {{ receipt.remaining_balance }}</p>
+    <p><span class="text-gray-600">Status:</span> {{ receipt.get_credit_status_display|default:receipt.credit_status }}</p>
+    {% endif %}
+    <p><span class="text-gray-600">Server Verified:</span> {% if receipt.receipt_server_signature %}<span class="text-green-600 font-bold">YES</span>{% else %}<span class="text-red-600">NO</span>{% endif %}</p>
+    <p><span class="text-gray-600">Created:</span> {{ receipt.created_at|date:"Y-m-d H:i:s" }}</p>
+    {% if receipt.qr_code_value %}
+    <div class="qr-section mt-4 pt-4 border-t border-gray-200">
+        <div class="qr-image">
+            {% if qr_image_base64 %}
+            <img src="data:image/png;base64,{{ qr_image_base64 }}" alt="ZIMRA QR" class="rounded border" />
+            {% endif %}
+        </div>
+        <div class="qr-text">
+            <small class="text-xs font-mono break-all text-gray-700">{{ receipt.qr_code_value }}</small>
+        </div>
+        <div class="qr-verify">
+            <a href="{{ receipt.qr_code_value }}" target="_blank" class="verify-btn">Verify on ZIMRA</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="bg-white p-6 shadow rounded-lg space-y-4">
+    <h2 class="font-semibold text-lg">Signature Transparency (Internal)</h2>
+    <p class="text-sm text-gray-500">The printable invoice excludes signatures and hashes per FDMS layout spec.</p>
+    {% if receipt.canonical_string %}
+    <div>
+        <p class="text-sm font-medium text-gray-600 mb-1">Canonical String</p>
+        <pre class="bg-gray-100 p-3 rounded text-xs overflow-auto max-h-32">{{ receipt.canonical_string }}</pre>
+    </div>
+    {% endif %}
+    {% if receipt.receipt_hash %}
+    <div>
+        <p class="text-sm font-medium text-gray-600 mb-1">Receipt Hash</p>
+        <p class="font-mono text-xs break-all">{{ receipt.receipt_hash }}</p>
+    </div>
+    {% endif %}
+</div>
+
+</div>
+
+{% if receipt.document_type == "INVOICE" and receipt.receipt_type != "CreditNote" and receipt.receipt_type != "DebitNote" %}
+{% with credit_notes=receipt.get_credit_notes debit_notes=receipt.get_debit_notes %}
+{% if credit_notes %}
+<div class="bg-white p-6 shadow rounded-lg space-y-4">
+    <h2 class="font-semibold text-lg">Credit Notes</h2>
+    <ul class="space-y-2">
+        {% for cn in credit_notes %}
+        <li>
+            <a href="{% url 'fdms_receipt_detail' cn.pk %}" class="text-indigo-600 hover:underline">
+                {{ cn.invoice_no|default:cn.receipt_global_no }} — {{ cn.receipt_total }} ({{ cn.created_at|date:"Y-m-d" }})
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% if debit_notes %}
+<div class="bg-white p-6 shadow rounded-lg space-y-4">
+    <h2 class="font-semibold text-lg">Debit Notes</h2>
+    <ul class="space-y-2">
+        {% for dn in debit_notes %}
+        <li>
+            <a href="{% url 'fdms_receipt_detail' dn.pk %}" class="text-indigo-600 hover:underline">
+                {{ dn.invoice_no|default:dn.receipt_global_no }} — {{ dn.receipt_total }} ({{ dn.created_at|date:"Y-m-d" }})
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+{% endif %}
+
+{% if submit_debug %}
+<div class="mt-6 bg-white p-6 shadow rounded-lg">
+    <details class="group">
+        <summary class="cursor-pointer font-semibold text-lg text-slate-700 hover:text-indigo-600">
+            Submit Request / Response (debug)
+        </summary>
+        <div class="mt-4 space-y-4">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Request (FDMS SubmitReceipt)</p>
+                <pre class="bg-gray-100 p-3 rounded text-xs overflow-auto max-h-64">{{ submit_debug.request }}</pre>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Response (status {{ submit_debug.response_status }})</p>
+                <pre class="bg-gray-100 p-3 rounded text-xs overflow-auto max-h-64">{{ submit_debug.response }}</pre>
+            </div>
+        </div>
+    </details>
+</div>
+{% endif %}
+
+<a href="{% url 'fdms_receipts' %}" class="inline-block mt-6 text-indigo-600 hover:underline">← Back to Receipts</a>
+{% endblock %}

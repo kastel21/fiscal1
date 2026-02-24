@@ -1,0 +1,35 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Import Invoice (Excel)</h1>
+
+<p class="text-gray-600 mb-6">Import from Invoice 01 sheet (Laundry Bin / Flyquest format). Only one invoice per operation.</p>
+
+{% if error %}
+<div class="bg-red-50 border border-red-200 rounded p-4 mb-6 text-red-800">{{ error }}</div>
+{% endif %}
+
+<h2 class="text-lg font-semibold mb-3">Step 1: Upload File & Select Sheet</h2>
+
+<form method="post" enctype="multipart/form-data" class="bg-white p-6 shadow rounded-lg max-w-xl">
+    {% csrf_token %}
+    <div class="mb-4">
+        <label class="block font-semibold mb-2">Excel file</label>
+        <input type="file" name="excel_file" accept=".xlsx,.xls" class="border rounded px-3 py-2 w-full">
+    </div>
+    {% if sheets %}
+    <div class="mb-4">
+        <label class="block font-semibold mb-2">Sheet to import</label>
+        {% for s in sheets %}
+        <label class="flex items-center gap-2 {% if not s.importable %}opacity-50{% endif %}">
+            <input type="radio" name="sheet_name" value="{{ s.name }}" {% if s.importable and forloop.first %}checked{% endif %} {% if not s.importable %}disabled{% endif %}>
+            <span>{{ s.name }}{% if not s.importable %} (ignored){% elif s.score == 10 %} (Invoice 01){% endif %}</span>
+        </label>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+        {% if sheets %}Continue to Preview{% else %}Upload & Parse{% endif %}
+    </button>
+</form>
+{% endblock %}

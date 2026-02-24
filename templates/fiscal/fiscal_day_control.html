@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>FDMS Fiscal Day Control</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 720px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            color: #1a1a2e;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .nav { margin-bottom: 1.5rem; }
+        .nav a { color: #2563eb; text-decoration: none; margin-right: 1rem; }
+        .nav a:hover { text-decoration: underline; }
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .card h2 { font-size: 1rem; margin: 0 0 0.75rem; color: #374151; }
+        .status-row { display: flex; justify-content: space-between; padding: 0.35rem 0; }
+        .status-label { color: #6b7280; }
+        .status-value { font-weight: 600; }
+        .status-value.bad { color: #dc2626; }
+        .status-value.good { color: #059669; }
+        .status-value.warning { color: #d97706; }
+        .status-value.info { color: #2563eb; }
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .btn:hover { background: #1d4ed8; }
+        .btn:disabled { background: #9ca3af; cursor: not-allowed; }
+        .btn-warning { background: #d97706; }
+        .btn-warning:hover { background: #b45309; }
+        .refresh-info { font-size: 0.8rem; color: #9ca3af; margin-top: 1rem; }
+        .no-device {
+            background: #fef3c7;
+            padding: 1rem;
+            border-radius: 6px;
+        }
+        .no-device a { color: #d97706; font-weight: 600; }
+        .error { color: #dc2626; font-size: 0.9rem; }
+        .log-meta { display: flex; flex-wrap: wrap; gap: 0.75rem; font-size: 0.85rem; }
+        .log-meta span { background: #e5e7eb; padding: 0.2rem 0.45rem; border-radius: 4px; }
+        details { margin-top: 0.75rem; }
+        .close-day-progress {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .progress-header { font-weight: 600; color: #92400e; margin-bottom: 0.5rem; }
+        .progress-bar {
+            height: 8px;
+            background: #fde68a;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #f59e0b;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        .polling-status { font-size: 0.85rem; color: #78350f; }
+        pre {
+            margin: 0.5rem 0 0;
+            padding: 0.75rem;
+            background: #1f2937;
+            color: #e5e7eb;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>FDMS Fiscal Day Control</h1>
+    <p class="subtitle">Mutual TLS device status and fiscal day operations</p>
+
+    <nav class="nav">
+        <a href="{% url 'device_register' %}">Register Device</a>
+        <a href="{% url 'dashboard' %}">Fiscal Day Control</a>
+        <a href="{% url 'fiscal_day_dashboard' %}">Fiscal Day Dashboard</a>
+        <a href="{% url 'receipt_history' %}">Receipt History</a>
+        <a href="{% url 'fdms_logs' %}">Logs</a>
+    </nav>
+
+    {% if not device %}
+    <div class="no-device">
+        <strong>No registered device</strong>
+        <p>Register a device first to view fiscal controls.</p>
+        <a href="{% url 'device_register' %}">Go to Registration →</a>
+    </div>
+    {% else %}
+    <div id="dashboard-content">
+        <div class="card">
+            <h2>Device Status</h2>
+            <div class="status-row">
+                <span class="status-label">Status</span>
+                <span class="status-value {% if device_registered %}good{% else %}bad{% endif %}" id="device-status">{% if device_registered %}Registered{% else %}Not Registered{% endif %}</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">Device ID</span>
+                <span class="status-value" id="device-id">{{ device.device_id }}</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">Certificate</span>
+                <span class="status-value good">Stored</span>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Fiscal Day Status</h2>
+            <div class="status-row">
+                <span class="status-label">Status</span>
+                <span class="status-value" id="fiscal-day-status" data-status="{{ fiscal_status|default:'' }}">{{ fiscal_status|default:"—" }}</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">Last Fiscal Day No</span>
+                <span class="status-value" id="last-fiscal-day-no">{{ last_day_no|default:"—" }}</span>
+            </div>
+            <div class="status-row">
+                <span class="status-label">Last Receipt Global No</span>
+                <span class="status-value" id="last-receipt-global-no">{{ last_receipt_no|default:"—" }}</span>
+            </div>
+            <div class="status-row" id="closing-error-row" style="{% if not closing_error %}display:none;{% endif %}">
+                <span class="status-label">Closing Error Code</span>
+                <span class="status-value bad" id="closing-error">{{ closing_error|default:"" }}</span>
+            </div>
+            <div id="fetch-error" class="error" style="display:none; margin-top: 0.5rem;">{% if status_error %}{{ status_error }}{% endif %}</div>
+            <div id="closeDayProgress" class="close-day-progress" style="display:none; margin-top: 1rem;">
+                <div class="progress-header">CloseDay in progress</div>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                <div id="pollingStatus" class="polling-status"></div>
+            </div>
+            <div style="margin-top: 1rem; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                <button type="button" id="open-day-btn" class="btn">Open Fiscal Day</button>
+                <button type="button" id="close-day-btn" class="btn btn-warning">Close Fiscal Day</button>
+                <span id="open-day-msg" class="error" style="display:none;"></span>
+                <span id="close-day-msg" class="error" style="display:none;"></span>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Last FDMS API Call</h2>
+            {% if last_log %}
+            <div class="log-meta">
+                <span>{{ last_log.method }}</span>
+                <span>{{ last_log.endpoint }}</span>
+                <span>Status: {{ last_log.status_code|default:"—" }}</span>
+                <span>{{ last_log.created_at|date:"Y-m-d H:i:s" }}</span>
+            </div>
+            <details>
+                <summary>Request Payload</summary>
+                {% if last_log_request %}
+                <pre>{{ last_log_request }}</pre>
+                {% else %}
+                <div class="error" style="margin-top:0.5rem;">(empty)</div>
+                {% endif %}
+            </details>
+            <details>
+                <summary>Response Payload</summary>
+                {% if last_log_response %}
+                <pre>{{ last_log_response }}</pre>
+                {% else %}
+                <div class="error" style="margin-top:0.5rem;">(empty)</div>
+                {% endif %}
+            </details>
+            {% if last_log.error_message %}
+            <details open>
+                <summary>Error Message</summary>
+                <pre style="background:#fef2f2;color:#991b1b;">{{ last_log.error_message }}</pre>
+            </details>
+            {% endif %}
+            {% else %}
+            <div class="error">No FDMS logs yet.</div>
+            {% endif %}
+        </div>
+        <div class="card">
+            <h2>Last CloseDay API Call</h2>
+            {% if last_close_log %}
+            <div class="log-meta">
+                <span>{{ last_close_log.method }}</span>
+                <span>{{ last_close_log.endpoint }}</span>
+                <span>Status: {{ last_close_log.status_code|default:"—" }}</span>
+                <span>{{ last_close_log.created_at|date:"Y-m-d H:i:s" }}</span>
+            </div>
+            <details>
+                <summary>Request Payload</summary>
+                {% if last_close_request %}
+                <pre>{{ last_close_request }}</pre>
+                {% else %}
+                <div class="error" style="margin-top:0.5rem;">(empty)</div>
+                {% endif %}
+            </details>
+            <details>
+                <summary>Response Payload</summary>
+                {% if last_close_response %}
+                <pre>{{ last_close_response }}</pre>
+                {% else %}
+                <div class="error" style="margin-top:0.5rem;">(empty)</div>
+                {% endif %}
+            </details>
+            {% if last_close_log.error_message %}
+            <details open>
+                <summary>Error Message</summary>
+                <pre style="background:#fef2f2;color:#991b1b;">{{ last_close_log.error_message }}</pre>
+            </details>
+            {% endif %}
+            {% else %}
+            <div class="error">No CloseDay logs yet.</div>
+            {% endif %}
+        </div>
+        <p class="refresh-info">Auto-refreshes every <span id="interval-display">20</span> seconds. Next fetch: <span id="countdown">20</span>s</p>
+    </div>
+    {% endif %}
+    <script>
+        (function() {
+            const deviceId = {% if device %}{{ device.device_id }}{% else %}null{% endif %};
+            if (!deviceId) return;
+            const apiUrl = "{% url 'api_fdms_status' %}?device_id=" + deviceId;
+            let pollInterval = 20;
+            let pollingInterval = null;
+            let attempts = 0;
+
+            function startPolling() {
+                if (pollingInterval) return;
+                attempts = 0;
+                setButtonsDisabled(true);
+                var progressEl = document.getElementById('closeDayProgress');
+                if (progressEl) progressEl.style.display = 'block';
+                updateProgressUI();
+                pollingInterval = setInterval(fetchStatus, 10000);
+            }
+
+            function stopPolling() {
+                if (pollingInterval) clearInterval(pollingInterval);
+                pollingInterval = null;
+                setButtonsDisabled(false);
+                var progressEl = document.getElementById('closeDayProgress');
+                if (progressEl) progressEl.style.display = 'none';
+            }
+            function updateProgressUI() {
+                var fill = document.getElementById('progressFill');
+                var status = document.getElementById('pollingStatus');
+                if (!fill || !status) return;
+                var pct = Math.min(100, (attempts / 30) * 100);
+                fill.style.width = pct + '%';
+                status.textContent = 'Polling status... attempt ' + attempts + ' of 30 (every 10s)';
+            }
+
+            function setButtonsDisabled(disabled) {
+                const openBtn = document.getElementById('open-day-btn');
+                const closeBtn = document.getElementById('close-day-btn');
+                if (openBtn) openBtn.disabled = disabled;
+                if (closeBtn) closeBtn.disabled = disabled;
+            }
+            function fetchStatus() {
+                fetch(apiUrl)
+                    .then(r => r.json())
+                    .then(data => {
+                        if (pollingInterval) {
+                            attempts++;
+                            updateProgressUI();
+                            if (attempts > 30) {
+                                stopPolling();
+                                var progressEl = document.getElementById('closeDayProgress');
+                                if (progressEl) {
+                                    progressEl.style.display = 'block';
+                                    progressEl.innerHTML = "<div class='progress-header'>CloseDay timeout</div><div class='polling-status status-value bad'>CloseDay taking longer than expected. Check FDMS logs.</div>";
+                                }
+                                return;
+                            }
+                        }
+                        if (data.error && data.fetch_error) {
+                            document.getElementById('fetch-error').textContent = data.error;
+                            document.getElementById('fetch-error').style.display = 'block';
+                            const progressEl = document.getElementById('closeDayProgress');
+                            if (progressEl && pollingInterval) {
+                                var status = document.getElementById('pollingStatus');
+                                if (status) status.textContent = "FDMS Unreachable — retrying...";
+                            }
+                        } else {
+                            document.getElementById('fetch-error').style.display = 'none';
+                        }
+                        if (data.fiscalDayStatus !== undefined) {
+                            updateStatusDisplay(data.fiscalDayStatus);
+                            updateOpenDayButton(data.fiscalDayStatus);
+                            updateCloseDayButton(data.fiscalDayStatus);
+                            pollInterval = data.fiscalDayStatus === 'FiscalDayCloseInitiated' ? 10 : 20;
+                            var intervalEl = document.getElementById('interval-display');
+                            if (intervalEl) intervalEl.textContent = pollInterval;
+                            const pollingEl = document.getElementById('pollingStatus');
+                            if (pollingEl) {
+                                pollingEl.textContent = "Current Status: " + (data.fiscalDayStatus || "—");
+                            }
+                            if (data.fiscalDayStatus === "FiscalDayClosed") {
+                                stopPolling();
+                                location.reload();
+                            }
+                            if (data.fiscalDayStatus === "FiscalDayCloseFailed") {
+                                stopPolling();
+                            }
+                        }
+                        if (data.lastFiscalDayNo !== undefined && data.lastFiscalDayNo !== null) {
+                            document.getElementById('last-fiscal-day-no').textContent = data.lastFiscalDayNo;
+                        }
+                        if (data.lastReceiptGlobalNo !== undefined && data.lastReceiptGlobalNo !== null) {
+                            document.getElementById('last-receipt-global-no').textContent = data.lastReceiptGlobalNo;
+                        }
+                        var closingEl = document.getElementById('closing-error');
+                        var closingRow = document.getElementById('closing-error-row');
+                        if (closingEl && closingRow) {
+                            closingEl.textContent = data.closingErrorCode || '';
+                            closingRow.style.display = data.closingErrorCode ? 'flex' : 'none';
+                        }
+                    })
+                    .catch(err => {
+                        document.getElementById('fetch-error').textContent = 'Fetch failed: ' + err.message;
+                        document.getElementById('fetch-error').style.display = 'block';
+                    });
+            }
+            let countdown = 20;
+            function tick() {
+                countdown--;
+                if (countdown <= 0) {
+                    countdown = pollInterval;
+                    fetchStatus();
+                }
+                var el = document.getElementById('countdown');
+                if (el) el.textContent = countdown;
+            }
+            function getCsrfToken() {
+                return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+            }
+            function updateStatusDisplay(status) {
+                const el = document.getElementById('fiscal-day-status');
+                if (!el) return;
+                const displayText = status === 'FiscalDayCloseInitiated' ? 'Closing…' :
+                    status === 'FiscalDayClosed' ? 'Closed' :
+                    status === 'FiscalDayCloseFailed' ? 'Failed' : (status || '—');
+                el.textContent = displayText;
+                el.className = 'status-value';
+                if (status === 'FiscalDayClosed') el.classList.add('good');
+                else if (status === 'FiscalDayOpened') el.classList.add('info');
+                else if (status === 'FiscalDayCloseInitiated') el.classList.add('warning');
+                else if (status === 'FiscalDayCloseFailed') el.classList.add('bad');
+                else if (status) el.classList.add('bad');
+            }
+            function updateOpenDayButton(status) {
+                const btn = document.getElementById('open-day-btn');
+                if (!btn) return;
+                btn.disabled = false;
+            }
+            function updateCloseDayButton(status) {
+                const btn = document.getElementById('close-day-btn');
+                if (!btn) return;
+                btn.disabled = false;
+            }
+            document.getElementById('open-day-btn').onclick = function() {
+                const btn = this;
+                const msgEl = document.getElementById('open-day-msg');
+                btn.disabled = true;
+                msgEl.style.display = 'none';
+                fetch("{% url 'open_day_api' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({ device_id: deviceId })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        updateStatusDisplay('FiscalDayOpened');
+                        updateOpenDayButton('FiscalDayOpened');
+                        fetchStatus();
+                    } else {
+                        msgEl.textContent = data.error || 'Failed';
+                        msgEl.style.display = 'block';
+                    }
+                })
+                .catch(err => {
+                    msgEl.textContent = 'Error: ' + err.message;
+                    msgEl.style.display = 'block';
+                })
+                .finally(() => { btn.disabled = false; });
+            };
+            document.getElementById('close-day-btn').onclick = function() {
+                const btn = this;
+                const msgEl = document.getElementById('close-day-msg');
+                btn.disabled = true;
+                msgEl.style.display = 'none';
+                fetch("{% url 'close_day_api' %}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCsrfToken()
+                    },
+                    body: JSON.stringify({ device_id: deviceId })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        updateStatusDisplay('FiscalDayCloseInitiated');
+                        updateOpenDayButton('FiscalDayCloseInitiated');
+                        updateCloseDayButton('FiscalDayCloseInitiated');
+                        startPolling();
+                        pollInterval = 10;
+                        var intervalEl = document.getElementById('interval-display');
+                        if (intervalEl) intervalEl.textContent = pollInterval;
+                        countdown = pollInterval;
+                        fetchStatus();
+                    } else {
+                        msgEl.textContent = data.error || 'Failed';
+                        msgEl.style.display = 'block';
+                    }
+                })
+                .catch(err => {
+                    msgEl.textContent = 'Error: ' + err.message;
+                    msgEl.style.display = 'block';
+                })
+                .finally(() => { btn.disabled = false; });
+            };
+            var initialStatus = document.getElementById('fiscal-day-status')?.getAttribute('data-status') || '';
+            if (initialStatus) {
+                updateStatusDisplay(initialStatus);
+                updateOpenDayButton(initialStatus);
+                updateCloseDayButton(initialStatus);
+                pollInterval = initialStatus === 'FiscalDayCloseInitiated' ? 10 : 20;
+            }
+            if (initialStatus === 'FiscalDayCloseInitiated') {
+                startPolling();
+            }
+            fetchStatus();
+            setInterval(tick, 1000);
+        })();
+    </script>
+</body>
+</html>

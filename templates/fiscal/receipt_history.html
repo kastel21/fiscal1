@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt Submission History</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            color: #1a1a2e;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .nav { margin-bottom: 1.5rem; }
+        .nav a { color: #2563eb; text-decoration: none; margin-right: 1rem; }
+        .nav a:hover { text-decoration: underline; }
+        .filters {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        .filter-group label { display: block; font-size: 0.8rem; color: #6b7280; margin-bottom: 0.25rem; }
+        .filter-group select { padding: 0.4rem 0.6rem; border: 1px solid #ccc; border-radius: 4px; }
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .btn:hover { background: #1d4ed8; }
+        .btn-secondary { background: #6b7280; }
+        .btn-secondary:hover { background: #4b5563; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        tr:hover { background: #f9fafb; }
+        .status-ok { color: #059669; }
+        .no-receipts { color: #6b7280; padding: 2rem; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Receipt Submission History</h1>
+    <p class="subtitle">Submitted receipts (last 200)</p>
+
+    <nav class="nav">
+        <a href="{% url 'dashboard' %}">Fiscal Day Control</a>
+        <a href="{% url 'fiscal_day_dashboard' %}">Fiscal Day Dashboard</a>
+        <a href="{% url 'receipt_history' %}">Receipt History</a>
+        <a href="{% url 'fdms_logs' %}">Logs</a>
+        <a href="{% url 'device_register' %}">Register Device</a>
+    </nav>
+
+    <form method="get" class="filters">
+        <div class="filter-group">
+            <label>Device</label>
+            <select name="device_id">
+                <option value="">All devices</option>
+                {% for d in devices %}
+                <option value="{{ d.device_id }}" {% if filters.selected_device_id == d.device_id %}selected{% endif %}>{{ d.device_id }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn">Filter</button>
+        <a href="{% url 'receipt_history' %}" class="btn btn-secondary">Clear</a>
+    </form>
+
+    {% if receipts %}
+    <table>
+        <thead>
+            <tr>
+                <th>Device</th>
+                <th>Fiscal Day</th>
+                <th>Receipt Global No</th>
+                <th>Invoice No</th>
+                <th>Type</th>
+                <th>Total</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in receipts %}
+            <tr>
+                <td>{{ r.device.device_id }}</td>
+                <td>{{ r.fiscal_day_no }}</td>
+                <td>{{ r.receipt_global_no }}</td>
+                <td>{{ r.invoice_no|default:"—" }}</td>
+                <td>{{ r.receipt_type|default:"FiscalInvoice" }}</td>
+                <td>{{ r.receipt_total|default:"—" }}</td>
+                <td>{{ r.created_at|date:"Y-m-d H:i:s" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="no-receipts">No receipts match the filters.</div>
+    {% endif %}
+</body>
+</html>

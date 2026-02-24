@@ -1,0 +1,142 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Add Device</h1>
+
+<div class="bg-white p-6 shadow rounded-lg mb-6">
+    <h2 class="font-semibold text-lg mb-4">Register Device</h2>
+    {% if success_message %}
+    <div class="bg-green-50 border border-green-200 rounded p-3 mb-4 text-green-800">{{ success_message }}</div>
+    {% endif %}
+    {% if error_message %}
+    <div class="bg-red-50 border border-red-200 rounded p-3 mb-4 text-red-800">{{ error_message }}</div>
+    {% endif %}
+
+    <form method="post" id="device-form" class="space-y-4 max-w-xl fdms-form">
+        {% csrf_token %}
+        <div class="space-y-3">
+            <p class="text-sm font-medium text-slate-600">Step 1: Device details</p>
+            <div>
+                <label for="id_device_id" class="block text-sm font-medium text-slate-700 mb-1">{{ form.device_id.label }}</label>
+                {{ form.device_id }}
+                {% if form.device_id.help_text %}<p class="text-xs text-slate-500 mt-1">{{ form.device_id.help_text }}</p>{% endif %}
+                {% if form.device_id.errors %}<ul class="errorlist">{% for e in form.device_id.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <div>
+                <label for="id_activation_key" class="block text-sm font-medium text-slate-700 mb-1">{{ form.activation_key.label }}</label>
+                {{ form.activation_key }}
+                {% if form.activation_key.help_text %}<p class="text-xs text-slate-500 mt-1">{{ form.activation_key.help_text }}</p>{% endif %}
+                {% if form.activation_key.errors %}<ul class="errorlist">{% for e in form.activation_key.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <div>
+                <label for="id_device_serial_no" class="block text-sm font-medium text-slate-700 mb-1">{{ form.device_serial_no.label }}</label>
+                {{ form.device_serial_no }}
+                {% if form.device_serial_no.help_text %}<p class="text-xs text-slate-500 mt-1">{{ form.device_serial_no.help_text }}</p>{% endif %}
+                {% if form.device_serial_no.errors %}<ul class="errorlist">{% for e in form.device_serial_no.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <button type="button" id="verify-taxpayer-btn" class="bg-slate-600 text-white px-4 py-2 rounded hover:bg-slate-700">
+                Verify Taxpayer
+            </button>
+        </div>
+
+        <div id="taxpayer-info" class="hidden border border-emerald-200 bg-emerald-50 rounded-lg p-4 space-y-2">
+            <p class="text-sm font-semibold text-emerald-800">Taxpayer information (from FDMS)</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                <div><span class="font-medium text-slate-600">Taxpayer name:</span> <span id="tpl-name"></span></div>
+                <div><span class="font-medium text-slate-600">TIN:</span> <span id="tpl-tin"></span></div>
+                <div><span class="font-medium text-slate-600">Branch name:</span> <span id="tpl-branch"></span></div>
+                <div><span class="font-medium text-slate-600">Branch address:</span> <span id="tpl-address"></span></div>
+                <div><span class="font-medium text-slate-600">VAT number:</span> <span id="tpl-vat"></span></div>
+            </div>
+        </div>
+        <div id="verify-error" class="hidden bg-red-50 border border-red-200 rounded p-3 text-red-800 text-sm"></div>
+
+        <div class="space-y-3 pt-2">
+            <p class="text-sm font-medium text-slate-600">Step 2: Device model</p>
+            <div>
+                <label for="id_device_model_name" class="block text-sm font-medium text-slate-700 mb-1">{{ form.device_model_name.label }}</label>
+                {{ form.device_model_name }}
+                {% if form.device_model_name.help_text %}<p class="text-xs text-slate-500 mt-1">{{ form.device_model_name.help_text }}</p>{% endif %}
+                {% if form.device_model_name.errors %}<ul class="errorlist">{% for e in form.device_model_name.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <div>
+                <label for="id_device_model_version" class="block text-sm font-medium text-slate-700 mb-1">{{ form.device_model_version.label }}</label>
+                {{ form.device_model_version }}
+                {% if form.device_model_version.help_text %}<p class="text-xs text-slate-500 mt-1">{{ form.device_model_version.help_text }}</p>{% endif %}
+                {% if form.device_model_version.errors %}<ul class="errorlist">{% for e in form.device_model_version.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+            </div>
+            <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Register Device</button>
+        </div>
+    </form>
+</div>
+
+{% if device_status %}
+<div class="bg-gray-50 p-4 rounded-lg"><p class="font-medium">{{ device_status }}</p></div>
+{% endif %}
+
+<script>
+(function() {
+    const btn = document.getElementById('verify-taxpayer-btn');
+    const taxpayerInfo = document.getElementById('taxpayer-info');
+    const verifyError = document.getElementById('verify-error');
+    const csrf = document.querySelector('[name=csrfmiddlewaretoken]')?.value;
+
+    if (!btn) return;
+
+    btn.addEventListener('click', function() {
+        const deviceId = document.getElementById('id_device_id')?.value?.trim();
+        const activationKey = document.getElementById('id_activation_key')?.value?.trim();
+        const serialNo = document.getElementById('id_device_serial_no')?.value?.trim();
+
+        if (!deviceId || !activationKey || !serialNo) {
+            verifyError.textContent = 'Please fill in Device ID, Activation Key, and Device Serial Number.';
+            verifyError.classList.remove('hidden');
+            taxpayerInfo.classList.add('hidden');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Verifying...';
+        verifyError.classList.add('hidden');
+        taxpayerInfo.classList.add('hidden');
+
+        fetch('{% url "api_verify_taxpayer" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf,
+            },
+            body: JSON.stringify({
+                device_id: parseInt(deviceId, 10),
+                activation_key: activationKey,
+                device_serial_no: serialNo,
+            }),
+        })
+        .then(function(r) { return r.json().then(function(j) { return [r.status, j]; }); })
+        .then(function([status, data]) {
+            btn.disabled = false;
+            btn.textContent = 'Verify Taxpayer';
+            if (status >= 200 && status < 300 && data.success && data.taxpayer) {
+                const t = data.taxpayer;
+                document.getElementById('tpl-name').textContent = t.taxPayerName || '—';
+                document.getElementById('tpl-tin').textContent = t.taxPayerTIN || '—';
+                document.getElementById('tpl-branch').textContent = t.deviceBranchName || '—';
+                document.getElementById('tpl-address').textContent = t.deviceBranchAddress || '—';
+                document.getElementById('tpl-vat').textContent = t.vatNumber || '—';
+                taxpayerInfo.classList.remove('hidden');
+                verifyError.classList.add('hidden');
+            } else {
+                verifyError.textContent = data.error || 'Verification failed.';
+                verifyError.classList.remove('hidden');
+            }
+        })
+        .catch(function(err) {
+            btn.disabled = false;
+            btn.textContent = 'Verify Taxpayer';
+            verifyError.textContent = 'Network error: ' + (err.message || 'Request failed');
+            verifyError.classList.remove('hidden');
+        });
+    });
+})();
+</script>
+{% endblock %}

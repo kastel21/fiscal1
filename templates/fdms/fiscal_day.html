@@ -1,0 +1,129 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Fiscal Day</h1>
+
+{% if devices %}
+<form method="get" action="{% url 'fdms_fiscal' %}" class="mb-6 flex flex-wrap gap-4 items-end">
+    <div>
+        <label class="block text-sm font-medium text-gray-700 mb-1">Device</label>
+        <select name="device_id" onchange="this.form.submit()" class="border rounded px-3 py-2">
+            {% for d in devices %}
+            <option value="{{ d.device_id }}" {% if selected_device_id == d.device_id %}selected{% endif %}>Device #{{ d.device_id }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+{% endif %}
+
+{% if not device %}
+<div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+    <p class="font-semibold text-amber-800">No registered device</p>
+    <a href="{% url 'fdms_device' %}" class="inline-block mt-2 text-indigo-600 hover:underline">Register device first →</a>
+</div>
+{% else %}
+
+<div class="bg-white p-6 shadow rounded-lg mb-6">
+    <p class="mb-2"><span class="font-medium">Device:</span> #{{ device.device_id }}</p>
+    <p class="mb-2"><span class="font-medium">Current Day:</span> {{ fiscal.day_no|default:"—" }}</p>
+    <p class="mb-2"><span class="font-medium">Date:</span> {{ fiscal.date|default:"—" }}</p>
+    <p class="mb-2"><span class="font-medium">Status:</span> <span class="font-semibold">{{ fiscal.status|default:"—" }}</span></p>
+
+    <div class="mt-4 flex flex-wrap gap-4">
+        <form method="post" action="{% url 'fdms_open_day' %}" class="inline">
+            {% csrf_token %}
+            <input type="hidden" name="device_id" value="{{ device.device_id }}">
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                Open Day
+            </button>
+        </form>
+        <form method="post" action="{% url 'fdms_close_day' %}" class="inline">
+            {% csrf_token %}
+            <input type="hidden" name="device_id" value="{{ device.device_id }}">
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                Close Day
+            </button>
+        </form>
+    </div>
+
+    {% if open_msg %}
+    <p class="mt-3 text-green-700">{{ open_msg }}</p>
+    {% endif %}
+    {% if close_msg %}
+    <p class="mt-3 text-red-700">{{ close_msg }}</p>
+    {% endif %}
+</div>
+
+{% if device and fiscal_day_totals %}
+<div class="bg-white p-6 shadow rounded-lg mb-6">
+    <h2 class="font-semibold text-lg mb-4">Fiscal Day Totals (Day {{ fiscal.day_no }})</h2>
+    <p class="text-sm text-gray-600 mb-4">Total money considering all invoices, credit notes, and debit notes. Breakdown by currency.</p>
+
+    {% for row in fiscal_day_totals.by_currency %}
+    <div class="mb-6 last:mb-0">
+        <h3 class="text-md font-medium text-gray-800 mb-2">{{ row.currency }}</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full border border-gray-200 rounded-lg">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Document Type</th>
+                        <th class="px-4 py-2 text-right text-sm font-medium text-gray-700">Count</th>
+                        <th class="px-4 py-2 text-right text-sm font-medium text-gray-700">Subtotal (lines)</th>
+                        <th class="px-4 py-2 text-right text-sm font-medium text-gray-700">Tax</th>
+                        <th class="px-4 py-2 text-right text-sm font-medium text-gray-700">Total</th>
+                        <th class="px-4 py-2 text-left text-sm font-medium text-gray-700">Line totals</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr>
+                        <td class="px-4 py-2 font-medium">Invoices</td>
+                        <td class="px-4 py-2 text-right">{{ row.invoices.count }}</td>
+                        <td class="px-4 py-2 text-right">{{ row.invoices.subtotal|floatformat:2 }}</td>
+                        <td class="px-4 py-2 text-right">{{ row.invoices.tax|floatformat:2 }}</td>
+                        <td class="px-4 py-2 text-right font-medium">{{ row.invoices.total|floatformat:2 }}</td>
+                        <td class="px-4 py-2 text-sm text-gray-600">{% if row.invoices.tax_inclusive %}{{ row.invoices.tax_inclusive.summary }}{% else %}—{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2 font-medium">Credit Notes</td>
+                        <td class="px-4 py-2 text-right">{{ row.credit_notes.count }}</td>
+                        <td class="px-4 py-2 text-right">{{ row.credit_notes.subtotal|floatformat:2 }}</td>
+                        <td class="px-4 py-2 text-right">{{ row.credit_notes.tax|floatformat:2 }}</td>
+                        <td class="px-4 py-2 text-right font-medium text-red-600">{{ row.credit_notes.total|floatformat:2 }}</td>
+                        <td class="px-4 py-2 text-sm text-gray-600">{% if row.credit_notes.tax_inclusive %}{{ row.credit_notes.tax_inclusive.summary }}{% else %}—{% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2 font-medium">Debit Notes</td>
+                        <td class="px-4 py-2 text-right">{{ row.debit_notes.count }}</td>
+                        <td class="px-4 py-2 text-right">{{ row.debit_notes.subtotal|floatformat:2 }}</td>
+                        <td class="px-4 py-2 text-right">{{ row.debit_notes.tax|floatformat:2 }}</td>
+                        <td class="px-4 py-2 text-right font-medium">{{ row.debit_notes.total|floatformat:2 }}</td>
+                        <td class="px-4 py-2 text-sm text-gray-600">{% if row.debit_notes.tax_inclusive %}{{ row.debit_notes.tax_inclusive.summary }}{% else %}—{% endif %}</td>
+                    </tr>
+                </tbody>
+                <tfoot class="bg-gray-100 font-semibold">
+                    <tr>
+                        <td class="px-4 py-3" colspan="4">Net Total (Invoices − Credit Notes + Debit Notes)</td>
+                        <td class="px-4 py-3 text-right">{{ row.net_total|floatformat:2 }} {{ row.currency }}</td>
+                        <td class="px-4 py-3"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-sm text-gray-500">No receipts for this day.</p>
+    {% endfor %}
+
+    <p class="mt-3 text-xs text-gray-500">
+        <strong>Tax-inclusive:</strong> Line totals include tax. <strong>Tax-exclusive:</strong> Line totals are net; tax is added separately.
+    </p>
+</div>
+{% endif %}
+
+<div class="bg-white p-6 shadow rounded-lg">
+    <h2 class="font-semibold text-lg mb-2">Last Close Payload</h2>
+    <pre class="bg-gray-100 p-4 rounded overflow-auto text-sm max-h-64">{{ last_close_payload|default:"(no CloseDay logs yet)" }}</pre>
+</div>
+
+{% endif %}
+{% endblock %}

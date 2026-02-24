@@ -1,0 +1,149 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<div class="flex items-center gap-4 mb-6">
+  <a href="{% url 'fdms_tax_mappings' %}" class="text-indigo-600 hover:underline">← Back</a>
+  <h1 class="text-2xl font-bold text-slate-800">{% if mapping_id %}Edit Tax Mapping{% else %}Add Tax Mapping{% endif %}</h1>
+</div>
+
+<div id="error-msg" class="hidden bg-red-50 border border-red-200 rounded p-4 mb-6 text-red-800"></div>
+<p id="loading" class="hidden text-slate-600 mb-4">Loading...</p>
+
+<form id="mapping-form" class="bg-white rounded-lg shadow p-6 space-y-4 max-w-xl">
+  {% csrf_token %}
+  <div>
+    <label class="block text-sm font-medium text-slate-600 mb-1">Local Code *</label>
+    <input type="text" id="local_code" required maxlength="20" placeholder="e.g. VAT" class="w-full border border-slate-300 rounded px-3 py-2" />
+    <p class="text-xs text-slate-500 mt-1">Code used in products. Maps to FDMS tax.</p>
+  </div>
+  <div>
+    <label class="block text-sm font-medium text-slate-600 mb-1">Display Name</label>
+    <input type="text" id="display_name" maxlength="100" placeholder="e.g. VAT 15%" class="w-full border border-slate-300 rounded px-3 py-2" />
+  </div>
+  <div>
+    <label class="block text-sm font-medium text-slate-600 mb-1">FDMS Tax *</label>
+    <select id="fdms_tax_id" required class="w-full border border-slate-300 rounded px-3 py-2"></select>
+    <p class="text-xs text-slate-500 mt-1">Select tax from saved GetConfig (Device → Re-sync to refresh).</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div>
+      <label class="block text-sm font-medium text-slate-600 mb-1">Tax ID</label>
+      <input type="number" id="tax_id_display" readonly class="w-full border border-slate-200 rounded px-3 py-2 bg-slate-50" placeholder="—" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-600 mb-1">Tax Code</label>
+      <input type="text" id="fdms_tax_code" maxlength="3" placeholder="e.g. VAT" class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-600 mb-1">Tax Percent (%)</label>
+      <input type="number" id="tax_percent" min="0" max="100" step="0.01" placeholder="e.g. 15" class="w-full border border-slate-300 rounded px-3 py-2" />
+    </div>
+  </div>
+  <div class="flex gap-3">
+    <button type="submit" id="submit-btn" class="px-6 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 disabled:opacity-50">Save</button>
+    <a href="{% url 'fdms_tax_mappings' %}" class="px-6 py-2 border border-slate-300 rounded hover:bg-slate-50">Cancel</a>
+  </div>
+</form>
+
+<script>
+(function() {
+  var mappingId = {% if mapping_id %}{{ mapping_id }}{% else %}null{% endif %};
+  var csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  var fdmsTaxes = [];
+
+  function loadFdmsTaxes() {
+    return fetch('/api/config/taxes/?source=getconfig', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        fdmsTaxes = data.taxes || [];
+        var sel = document.getElementById('fdms_tax_id');
+        var opts = fdmsTaxes.filter(function(t) { return t.taxID != null; }).map(function(t) {
+          var tid = t.taxID;
+          var code = (t.taxCode || t.taxName || '').trim();
+          var pct = t.taxPercent || '0';
+          var label = code + ' (ID: ' + tid + ', ' + pct + '%)';
+          return '<option value="' + tid + '" data-tax-code="' + (code || '').replace(/"/g, '&quot;') + '" data-tax-percent="' + pct + '">' + label + '</option>';
+        });
+        sel.innerHTML = '<option value="">Select FDMS tax</option>' + opts.join('');
+        if (opts.length === 0) sel.innerHTML += '<option value="">— Re-sync Device to load FDMS taxes —</option>';
+        sel.addEventListener('change', onFdmsTaxSelect);
+      }).catch(function() { fdmsTaxes = []; });
+  }
+
+  function onFdmsTaxSelect() {
+    var sel = document.getElementById('fdms_tax_id');
+    var opt = sel.options[sel.selectedIndex];
+    if (opt && opt.value) {
+      document.getElementById('tax_id_display').value = opt.value;
+      document.getElementById('fdms_tax_code').value = opt.getAttribute('data-tax-code') || '';
+      document.getElementById('tax_percent').value = opt.getAttribute('data-tax-percent') || '';
+    } else {
+      document.getElementById('tax_id_display').value = '';
+      document.getElementById('fdms_tax_code').value = '';
+      document.getElementById('tax_percent').value = '';
+    }
+  }
+
+  loadFdmsTaxes().then(function() {
+    if (mappingId) {
+      document.getElementById('loading').classList.remove('hidden');
+      fetch('/api/tax-mappings/' + mappingId + '/', { credentials: 'same-origin' })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          var m = data.tax_mapping;
+          document.getElementById('local_code').value = m.local_code || '';
+          document.getElementById('display_name').value = m.display_name || '';
+          document.getElementById('fdms_tax_id').value = m.fdms_tax_id != null ? m.fdms_tax_id : '';
+          document.getElementById('fdms_tax_code').value = m.fdms_tax_code || '';
+          document.getElementById('tax_percent').value = m.tax_percent != null ? m.tax_percent : '';
+          document.getElementById('tax_id_display').value = m.fdms_tax_id != null ? m.fdms_tax_id : '';
+        })
+        .catch(function() { document.getElementById('error-msg').textContent = 'Failed to load mapping'; document.getElementById('error-msg').classList.remove('hidden'); })
+        .finally(function() { document.getElementById('loading').classList.add('hidden'); });
+    }
+  });
+
+  document.getElementById('mapping-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var taxPctEl = document.getElementById('tax_percent');
+    var taxPctVal = taxPctEl && taxPctEl.value.trim() ? parseFloat(taxPctEl.value) : null;
+    var payload = {
+      local_code: document.getElementById('local_code').value.trim(),
+      display_name: document.getElementById('display_name').value.trim(),
+      fdms_tax_id: parseInt(document.getElementById('fdms_tax_id').value, 10),
+      fdms_tax_code: document.getElementById('fdms_tax_code').value.trim().slice(0, 3),
+      tax_percent: !isNaN(taxPctVal) ? taxPctVal : null
+    };
+    if (!payload.local_code || isNaN(payload.fdms_tax_id)) {
+      document.getElementById('error-msg').textContent = 'Local code and FDMS tax are required';
+      document.getElementById('error-msg').classList.remove('hidden');
+      return;
+    }
+    document.getElementById('error-msg').classList.add('hidden');
+    document.getElementById('submit-btn').disabled = true;
+
+    var url = mappingId ? '/api/tax-mappings/' + mappingId + '/' : '/api/tax-mappings/';
+    var method = mappingId ? 'PUT' : 'POST';
+
+    fetch(url, {
+      method: method,
+      headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrf },
+      credentials: 'same-origin',
+      body: JSON.stringify(payload)
+    }).then(function(r) {
+      return r.json().then(function(data) {
+        if (r.ok && (data.success !== false)) {
+          window.location.href = '{% url "fdms_tax_mappings" %}';
+        } else {
+          throw new Error(data.error || 'Failed to save');
+        }
+      });
+    }).catch(function(err) {
+      document.getElementById('error-msg').textContent = err.message;
+      document.getElementById('error-msg').classList.remove('hidden');
+      document.getElementById('submit-btn').disabled = false;
+    });
+  });
+})();
+</script>
+{% endblock %}

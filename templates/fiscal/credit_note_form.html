@@ -1,0 +1,406 @@
+{% extends "fdms/base.html" %}
+{% load static %}
+{% block title %}Credit Note{% endblock %}
+{% block head %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/credit_note.css' %}">
+{% endblock %}
+{% block content %}
+<div class="container-fluid cn-form">
+  <header class="cn-header mb-4">
+    <h1>Credit Note</h1>
+    <p class="cn-header-subtitle">Create a credit note against an existing fiscal invoice</p>
+  </header>
+
+  {% if not can_submit_receipt %}
+  <div class="cn-alert cn-alert-warning">
+    <strong>Submit disabled:</strong> FDMS configs {{ config_status|lower }}. Refresh configs before submitting.
+  </div>
+  {% endif %}
+
+  {% if form.non_field_errors %}
+  <div class="cn-alert cn-alert-error">
+    {{ form.non_field_errors }}
+  </div>
+  {% endif %}
+
+  {% if form.credit_line_data.errors %}
+  <div class="cn-alert cn-alert-error">
+    <ul class="list-disc list-inside mb-0">{{ form.credit_line_data.errors }}</ul>
+  </div>
+  {% endif %}
+
+  {% if error_message %}
+  <div class="cn-alert cn-alert-error">{{ error_message }}</div>
+  {% endif %}
+
+  <form method="post" id="credit-note-form" novalidate>
+    {% csrf_token %}
+    <div class="section-card mb-6">
+      <div class="section-header">
+        <h2 class="mb-0 d-flex align-items-center">
+          <span class="cn-step-badge">1</span>
+          Reference <span class="text-muted fw-normal ms-1">(mandatory)</span>
+        </h2>
+      </div>
+      <div class="section-body">
+        <div>
+          <label for="original-invoice-id" class="form-label">Original Invoice *</label>
+          <select name="original_invoice_id" id="original-invoice-id" class="form-select" required disabled data-initial-value="{{ form.original_invoice_id.value|default:'' }}">
+            <option value="">— Loading invoices… —</option>
+          </select>
+          <p id="invoice-load-error" class="text-sm text-danger mt-1 d-none"></p>
+          <p id="no-invoices-msg" class="text-muted text-sm mt-1 d-none">No fiscalised invoices found. Create and fiscalise an invoice first.</p>
+        </div>
+        <div id="invoice-display" class="d-none cn-financial-summary">
+          <div class="cn-summary-grid">
+            <div class="cn-summary-item"><span class="cn-summary-label">Invoice</span><span id="disp-invoice-no" class="cn-summary-value">—</span></div>
+            <div class="cn-summary-item"><span class="cn-summary-label">Date</span><span id="disp-invoice-date" class="cn-summary-value">—</span></div>
+            <div class="cn-summary-item"><span class="cn-summary-label">Customer</span><span id="disp-customer" class="cn-summary-value">—</span></div>
+            <div class="cn-summary-item"><span class="cn-summary-label">Currency</span><span id="disp-currency" class="cn-summary-value">—</span></div>
+            <div class="cn-summary-item cn-remaining"><span class="cn-summary-label">Remaining balance</span><span id="disp-remaining" class="cn-summary-value">—</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card mb-6">
+      <div class="section-header">
+        <h2 class="mb-0 d-flex align-items-center">
+          <span class="cn-step-badge">2</span>
+          Credit Reason <span class="text-muted fw-normal ms-1">(mandatory)</span>
+        </h2>
+      </div>
+      <div class="section-body space-y-4">
+        <div>
+          <label for="id_credit_reason" class="form-label">Reason *</label>
+          <select name="credit_reason" id="id_credit_reason" class="form-select" required>
+            <option value="">Select reason</option>
+            {% for val, lbl in form.credit_reason.field.widget.choices %}
+            {% if val %}<option value="{{ val }}" {% if form.credit_reason.value == val %}selected{% endif %}>{{ lbl }}</option>{% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div id="reason-other-wrap" class="d-none">
+          <label for="id_credit_reason_other" class="form-label">Specify reason *</label>
+          <input type="text" name="credit_reason_other" id="id_credit_reason_other" class="form-input" maxlength="500" placeholder="Enter the reason for this credit note" value="{{ form.credit_reason_other.value|default:'' }}">
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card mb-6">
+      <div class="section-header">
+        <h2 class="mb-0 d-flex align-items-center">
+          <span class="cn-step-badge">3</span>
+          Items to Credit
+        </h2>
+      </div>
+      <div class="section-body">
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <label class="form-label fw-semibold">Credit type</label>
+            <div class="d-flex gap-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="credit_type" id="credit-type-full" value="full" checked>
+                <label class="form-check-label" for="credit-type-full">Full credit</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="credit_type" id="credit-type-partial" value="partial">
+                <label class="form-check-label" for="credit-type-partial">Partial credit</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped table-hover align-middle w-100" id="items-table">
+            <thead class="table-light">
+              <tr>
+                <th>Item</th>
+                <th>Qty Sold</th>
+                <th>Unit Price <span class="text-muted fw-normal">(excl. tax)</span></th>
+                <th>VAT %</th>
+                <th>Line Total <span class="text-muted fw-normal">(incl. tax)</span></th>
+                <th>Credit amount <span class="text-muted fw-normal">(incl. tax)</span></th>
+              </tr>
+            </thead>
+            <tbody id="items-tbody">
+            </tbody>
+          </table>
+        </div>
+        <div class="totals-row border-top pt-3 mt-3">
+          <span class="text-muted">Subtotal (excl. tax): <span id="calc-subtotal" class="fw-medium text-dark">0.00</span></span>
+          <span class="text-muted">Tax: <span id="calc-tax" class="fw-medium text-dark">0.00</span></span>
+          <span>Total (incl. tax): <span id="calc-total" class="fw-bold text-success fs-5">0.00</span></span>
+        </div>
+        <p class="small text-muted mt-2">Amounts are tax inclusive. VAT is calculated automatically.</p>
+        <input type="hidden" name="credit_line_data" id="credit-line-data" value="{% if form.is_bound %}{{ form.data.credit_line_data|default:'[]' }}{% else %}[]{% endif %}">
+      </div>
+    </div>
+
+    <div class="section-card mb-6">
+      <div class="section-header">
+        <h2 class="mb-0 d-flex align-items-center">
+          <span class="cn-step-badge">4</span>
+          Refund Method
+        </h2>
+      </div>
+      <div class="section-body">
+        <div>
+          <label for="id_refund_method" class="form-label">Method *</label>
+          <select name="refund_method" id="id_refund_method" class="form-select" required>
+            {% for val, lbl in form.refund_method.field.widget.choices %}
+            {% if val %}<option value="{{ val }}" {% if form.refund_method.value == val %}selected{% endif %}>{{ lbl }}</option>{% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <p class="text-sm text-slate-500 mt-2">Payment amount must equal the calculated credit total.</p>
+      </div>
+    </div>
+
+    <div class="cn-actions">
+      <button type="submit" class="btn-submit" id="submit-btn" {% if not can_submit_receipt %}disabled{% endif %}>Submit Credit Note</button>
+      <a href="{% url 'fdms_credit_note' %}" class="btn-cancel">Cancel</a>
+    </div>
+  </form>
+
+  {% if submit_debug %}
+  <div class="mt-4 section-card cn-debug">
+    <details class="group" open>
+      <summary class="cursor-pointer section-header font-semibold text-slate-700">
+        Request / Response (debug)
+      </summary>
+      <div class="section-body space-y-4">
+        <div>
+          <p class="text-sm font-medium text-slate-600 mb-1">Request (FDMS SubmitReceipt)</p>
+          <pre class="bg-slate-100 p-3 rounded text-xs overflow-auto max-h-64">{{ submit_debug.request }}</pre>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-slate-600 mb-1">Response (status {{ submit_debug.response_status }})</p>
+          <pre class="bg-slate-100 p-3 rounded text-xs overflow-auto max-h-64">{{ submit_debug.response }}</pre>
+        </div>
+      </div>
+    </details>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+(function() {
+  var invoices = [];
+  var selectedInvoice = null;
+
+  var selectEl = document.getElementById('original-invoice-id');
+  var displayEl = document.getElementById('invoice-display');
+  var tbody = document.getElementById('items-tbody');
+  var lineDataEl = document.getElementById('credit-line-data');
+
+  function loadInvoices() {
+    fetch('/api/credit-note-form/invoices/', { credentials: 'same-origin' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        invoices = data.invoices || [];
+        selectEl.innerHTML = '<option value="">— Select invoice —</option>' +
+          invoices.map(function(inv) {
+            var label = (inv.invoice_no || '#' + inv.receipt_global_no) + ' — ' + inv.currency + ' ' + (inv.total || 0).toFixed(2) + ' (balance: ' + (inv.remaining_balance || 0).toFixed(2) + ')';
+            return '<option value="' + inv.id + '">' + label + '</option>';
+          }).join('');
+        selectEl.disabled = false;
+        if (invoices.length === 0) {
+          var msg = document.getElementById('no-invoices-msg');
+          if (msg) msg.classList.remove('d-none');
+        }
+        var initialVal = selectEl.dataset.initialValue || '';
+        if (initialVal) {
+          selectEl.value = initialVal;
+          onInvoiceSelect();
+        }
+      })
+      .catch(function(err) {
+        selectEl.innerHTML = '<option value="">— Error loading invoices —</option>';
+        selectEl.disabled = false;
+        var errEl = document.getElementById('invoice-load-error');
+        if (errEl) { errEl.textContent = 'Failed to load invoices. ' + (err.message || ''); errEl.classList.remove('d-none'); }
+      });
+  }
+
+  function onInvoiceSelect() {
+    var val = selectEl.value;
+    if (!val) {
+      displayEl.classList.add('d-none');
+      selectedInvoice = null;
+      renderItems([]);
+      return;
+    }
+    var inv = invoices.find(function(i) { return String(i.id) === String(val); });
+    if (!inv) return;
+    selectedInvoice = { id: inv.id, invoice_no: inv.invoice_no || '', date: inv.date || '', customer: inv.customer || '', currency: inv.currency || 'USD', remaining: parseFloat(inv.remaining_balance || 0), lines: inv.lines || [] };
+    displayEl.classList.remove('d-none');
+    document.getElementById('disp-invoice-no').textContent = inv.invoice_no || '-';
+    document.getElementById('disp-invoice-date').textContent = inv.date || '-';
+    document.getElementById('disp-customer').textContent = inv.customer || '-';
+    document.getElementById('disp-currency').textContent = inv.currency || '-';
+    document.getElementById('disp-remaining').textContent = (inv.remaining_balance || 0).toFixed(2) + ' ' + (inv.currency || '');
+    renderItems(inv.lines || [], inv.remaining_balance || 0);
+    syncCreditTypeUI();
+    try {
+      var lineData = JSON.parse(lineDataEl.value || '[]');
+      if (Array.isArray(lineData) && lineData.length) {
+        lineData.forEach(function(item) {
+          var tr = tbody.querySelector('tr[data-line-index="' + item.line_index + '"]');
+          if (tr) {
+            var amtInp = tr.querySelector('.credit-amount');
+            var amtIncl = item.credit_amount_incl != null ? item.credit_amount_incl : (item.credit_quantity * parseFloat(tr.dataset.unitPriceExcl || 0) * (1 + parseFloat(tr.dataset.vatPct || 0) / 100));
+            if (amtInp && amtIncl > 0) amtInp.value = (typeof amtIncl === 'number' ? amtIncl : parseFloat(amtIncl)).toFixed(2);
+          }
+        });
+      }
+    } catch (e) {}
+    updateLineData();
+  }
+
+  function syncCreditTypeUI() {
+    var isFull = document.getElementById('credit-type-full').checked;
+    tbody.querySelectorAll('tr').forEach(function(tr) {
+      if (tr.dataset.lineIndex === undefined) return;
+      var amtInp = tr.querySelector('.credit-amount');
+      var creditableIncl = parseFloat(tr.dataset.creditableIncl) || 0;
+      if (amtInp) {
+        amtInp.disabled = isFull;
+        amtInp.value = isFull ? creditableIncl.toFixed(2) : (amtInp.value || 0);
+        amtInp.max = creditableIncl;
+      }
+    });
+    updateLineData();
+  }
+
+  function updateTotalsDisplay(subtotal, taxSum) {
+    var totalIncl = subtotal + taxSum;
+    document.getElementById('calc-subtotal').textContent = subtotal.toFixed(2);
+    document.getElementById('calc-tax').textContent = taxSum.toFixed(2);
+    document.getElementById('calc-total').textContent = totalIncl.toFixed(2);
+  }
+
+  function parseLineTotal(val) {
+    var n = parseFloat(val);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function extractTaxFromInclusive(totalIncl, vatPct) {
+    if (!totalIncl || !vatPct) return 0;
+    return Math.round((totalIncl * vatPct / (100 + vatPct)) * 100) / 100;
+  }
+
+  function renderItems(lines, remainingBalance) {
+    tbody.innerHTML = '';
+    if (!lines || !lines.length) {
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-5">Select an invoice to load items.</td></tr>';
+      return;
+    }
+    var invoiceTotalIncl = 0;
+    lines.forEach(function(ln) {
+      invoiceTotalIncl += parseLineTotal(ln.receiptLineTotal || ln.lineTotal) || 0;
+    });
+    remainingBalance = parseFloat(remainingBalance) || 0;
+    lines.forEach(function(ln, i) {
+      var qty = parseFloat(ln.receiptLineQuantity || ln.quantity || 1) || 1;
+      var totalIncl = parseLineTotal(ln.receiptLineTotal || ln.lineTotal) || 0;
+      var vat = parseFloat(ln.taxPercent || ln.receiptLineTaxPercent || 0) || 0;
+      var unitPriceExcl = totalIncl && qty ? (totalIncl / (1 + vat / 100) / qty) : 0;
+      var net = totalIncl && vat ? (totalIncl - extractTaxFromInclusive(totalIncl, vat)) : totalIncl;
+      var creditableIncl = invoiceTotalIncl > 0 ? Math.min(totalIncl, (totalIncl / invoiceTotalIncl) * remainingBalance) : 0;
+      creditableIncl = Math.round(creditableIncl * 100) / 100;
+      var tr = document.createElement('tr');
+      tr.dataset.lineIndex = i;
+      tr.dataset.qtySold = qty;
+      tr.dataset.unitPriceExcl = unitPriceExcl;
+      tr.dataset.vatPct = vat;
+      tr.dataset.lineTotalIncl = totalIncl;
+      tr.dataset.lineTotalExcl = net;
+      tr.dataset.creditableIncl = creditableIncl;
+      tr.innerHTML = '<td>' + (ln.receiptLineName || ln.description || 'Item') + '</td>' +
+        '<td class="qty-sold">' + qty + '</td>' +
+        '<td>' + unitPriceExcl.toFixed(2) + '</td>' +
+        '<td class="vat-pct">' + vat + '</td>' +
+        '<td class="line-total">' + totalIncl.toFixed(2) + '</td>' +
+        '<td><input type="number" min="0" max="' + creditableIncl + '" step="0.01" class="form-control form-control-sm credit-input credit-amount" value="0" placeholder="0.00" title="Max: ' + creditableIncl.toFixed(2) + '"></td>';
+      tr.querySelector('.credit-amount').addEventListener('input', function() { updateLineData(); });
+      tbody.appendChild(tr);
+    });
+    syncCreditTypeUI();
+  }
+
+  function updateLineData() {
+    var data = [];
+    var subtotal = 0, taxSum = 0;
+    tbody.querySelectorAll('tr').forEach(function(tr) {
+      if (tr.dataset.lineIndex === undefined) return;
+      var idx = parseInt(tr.dataset.lineIndex, 10);
+      var qtySold = parseFloat(tr.dataset.qtySold) || 1;
+      var lineTotalIncl = parseFloat(tr.dataset.lineTotalIncl) || 0;
+      var unitPriceExcl = parseFloat(tr.dataset.unitPriceExcl) || 0;
+      var amtIncl = parseFloat(tr.querySelector('.credit-amount') && tr.querySelector('.credit-amount').value) || 0;
+      if (amtIncl <= 0) return;
+      var vatPct = parseFloat(tr.dataset.vatPct) || 0;
+      var lineTax = extractTaxFromInclusive(amtIncl, vatPct);
+      var lineCreditExcl = Math.round((amtIncl - lineTax) * 100) / 100;
+      var creditQty = unitPriceExcl ? lineCreditExcl / unitPriceExcl : 0;
+      if (creditQty > qtySold) creditQty = qtySold;
+      data.push({ line_index: idx, credit_quantity: creditQty, credit_amount_incl: amtIncl });
+      subtotal += lineCreditExcl;
+      taxSum += lineTax;
+    });
+    lineDataEl.value = JSON.stringify(data);
+    updateTotalsDisplay(subtotal, taxSum);
+  }
+
+  selectEl.addEventListener('change', onInvoiceSelect);
+  loadInvoices();
+
+  document.getElementById('credit-type-full').addEventListener('change', function() { syncCreditTypeUI(); });
+  document.getElementById('credit-type-partial').addEventListener('change', function() { syncCreditTypeUI(); });
+
+  function toggleReasonOther() {
+    var wrap = document.getElementById('reason-other-wrap');
+    var reasonEl = document.getElementById('id_credit_reason');
+    var otherInput = document.getElementById('id_credit_reason_other');
+    if (!wrap || !reasonEl) return;
+    var val = reasonEl.value;
+    var isOther = val === 'OTHER';
+    wrap.classList.toggle('d-none', !isOther);
+    if (otherInput) {
+      if (isOther) {
+        otherInput.value = '';
+      } else if (val) {
+        var opt = reasonEl.options[reasonEl.selectedIndex];
+        otherInput.value = opt ? opt.text : '';
+      } else {
+        otherInput.value = '';
+      }
+    }
+  }
+  document.getElementById('id_credit_reason').addEventListener('change', toggleReasonOther);
+  toggleReasonOther();
+
+  document.getElementById('credit-note-form').addEventListener('submit', function() {
+    if (!selectEl.value) {
+      alert('Please select an original invoice.');
+      return false;
+    }
+    if (!selectedInvoice) {
+      alert('Please select an original invoice from the dropdown.');
+      return false;
+    }
+    var total = parseFloat(document.getElementById('calc-total').textContent) || 0;
+    if (total <= 0) {
+      alert('Credit amount must be greater than zero.');
+      return false;
+    }
+    if (total > selectedInvoice.remaining) {
+      alert('Credit total exceeds remaining invoice balance.');
+      return false;
+    }
+  });
+})();
+</script>
+{% endblock %}

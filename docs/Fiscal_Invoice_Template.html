@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>Fiscal Tax Invoice</title>
+<style>
+body{font-family:Arial;font-size:12px;margin:40px}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #000;padding:6px}
+th{background:#eee}
+.right{text-align:right}
+.mono{font-family:monospace}
+</style>
+</head>
+<body>
+
+<h1 style='text-align:center'>FISCAL TAX INVOICE</h1>
+
+<p>
+<strong>Seller:</strong><br>
+{{ seller.name }}<br>
+TIN: {{ seller.tin }}<br>
+VAT: {{ seller.vat }}<br>
+{{ seller.address }}
+</p>
+
+<p>
+<strong>Receipt ID:</strong> <span class='mono'>{{ fdms.receiptID }}</span><br>
+<strong>Date:</strong> {{ receipt.receiptDate }}
+</p>
+
+<table>
+<thead>
+<tr>
+<th>Item</th><th>Qty</th><th>Unit</th><th>Net</th><th>Tax</th><th>Total</th>
+</tr>
+</thead>
+<tbody>
+{% for line in receipt.receiptLines %}
+<tr>
+<td>{{ line.receiptLineName }}</td>
+<td class='right'>{{ line.receiptLineQuantity }}</td>
+<td class='right'>{{ line.unitPrice }}</td>
+<td class='right'>{{ line.netAmount }}</td>
+<td class='right'>{{ line.taxAmount }}</td>
+<td class='right'>{{ line.receiptLineTotal }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<p class='right'><strong>Grand Total: {{ receipt.receiptTotal }}</strong></p>
+
+<p>
+<strong>FDMS Server Signature:</strong><br>
+<span class='mono'>{{ fdms.receiptServerSignature }}</span>
+</p>
+
+<img src='{{ qr_code_url }}' width='120'>
+
+<p><em>This invoice was fiscalized by the Tax Authority.</em></p>
+
+</body>
+</html>

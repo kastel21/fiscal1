@@ -1,0 +1,15 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<div class="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
+    <h1 class="text-xl font-bold text-green-800 mb-2">Invoice Fiscalised</h1>
+    <p class="text-green-700">Invoice submitted successfully.</p>
+</div>
+
+{% if receipt %}
+<p class="mb-4">Receipt Global No: <strong>{{ receipt.receipt_global_no }}</strong></p>
+<p class="mb-4">Total: <strong>{{ receipt.receipt_total }}</strong> {{ receipt.currency }}</p>
+<a href="{% url 'fdms_receipt_detail' receipt.pk %}" class="text-indigo-600 hover:underline">View receipt</a> |
+{% endif %}
+<a href="{% url 'fdms_invoice_import_step1' %}" class="text-indigo-600 hover:underline">Import another invoice</a>
+{% endblock %}

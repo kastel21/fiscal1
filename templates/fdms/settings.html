@@ -1,0 +1,58 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Settings</h1>
+
+<section class="bg-white p-6 shadow rounded-lg mb-6">
+    <h2 class="font-semibold text-lg mb-4">QuickBooks</h2>
+    <p class="text-slate-600 text-sm mb-4">
+        Connect QuickBooks Online to sync and fiscalise invoices. OAuth credentials are configured in environment/settings (QB_CLIENT_ID, QB_CLIENT_SECRET).
+    </p>
+
+    {% if not qb_credentials_configured %}
+    <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+        <p class="font-medium text-amber-800">QuickBooks not configured</p>
+        <p class="text-amber-700 text-sm mt-1">
+            Set <code class="bg-amber-100 px-1 rounded">QB_CLIENT_ID</code> and <code class="bg-amber-100 px-1 rounded">QB_CLIENT_SECRET</code> in your environment or <code class="bg-amber-100 px-1 rounded">settings.py</code> to enable the Connect button.
+        </p>
+        <p class="text-amber-600 text-xs mt-2">
+            Optional: <code class="bg-amber-100 px-1 rounded">QB_REDIRECT_URI</code> for OAuth callback (defaults to /api/integrations/quickbooks/oauth/callback/).
+        </p>
+    </div>
+    {% endif %}
+
+    {% if qb_connected %}
+    <div class="flex flex-wrap items-center gap-4 mb-4">
+        <div class="bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+            <p class="font-medium text-green-800">Connected</p>
+            <p class="text-green-700 text-sm">
+                {% if qb_connection.company_name %}{{ qb_connection.company_name }}{% else %}QuickBooks company{% endif %}
+                <span class="text-green-600">(realm {{ qb_connection.realm_id }})</span>
+            </p>
+        </div>
+        <form method="post" action="{% url 'fdms_settings_qb_disconnect' %}" class="inline">
+            {% csrf_token %}
+            <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">Disconnect</button>
+        </form>
+        <a href="{% url 'fdms_qb_invoices' %}" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">View QB Invoices</a>
+    </div>
+    {% else %}
+    <div class="flex flex-wrap items-center gap-4 mb-4">
+        <p class="text-slate-600">Not connected.</p>
+        {% if qb_credentials_configured %}
+        <a href="{% url 'api_qb_oauth_connect' %}" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Connect QuickBooks</a>
+        {% else %}
+        <button type="button" disabled class="px-4 py-2 bg-slate-300 text-slate-500 rounded cursor-not-allowed">Connect QuickBooks (configure credentials first)</button>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <p class="text-slate-500 text-xs">
+        After connecting, use <a href="{% url 'fdms_qb_invoices' %}" class="text-indigo-600 hover:underline">QuickBooks Invoices</a> to sync and fiscalise, or rely on webhooks if configured.
+    </p>
+</section>
+
+<div class="text-slate-500 text-sm">
+    <a href="{% url 'fdms_dashboard' %}" class="text-indigo-600 hover:underline">← Back to Dashboard</a>
+</div>
+{% endblock %}

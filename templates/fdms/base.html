@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <title>{% block title %}FDMS Control Panel{% endblock %}</title>
+    {% block head %}{% endblock %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .form-input, .fdms-form input, .fdms-form select { border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.5rem 0.75rem; }
+        .errorlist { color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem; list-style: none; padding-left: 0; }
+        details summary::-webkit-details-marker { display: none; }
+        details summary { list-style: none; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex">
+
+{% if offline_status %}
+{% if offline_status.is_offline or offline_status.queue_size %}
+<div class="bg-amber-100 border-b border-amber-300 p-3 flex items-center justify-between">
+    <span class="text-amber-800">
+        {% if offline_status.is_offline %}FDMS offline.{% endif %}
+        {% if offline_status.queue_size > 0 %}Queue: {{ offline_status.queue_size }} receipt(s) pending.{% endif %}
+    </span>
+    {% if offline_status.queue_size > 0 %}
+    <form method="post" action="{% url 'offline_retry_submit' %}" class="inline">{% csrf_token %}
+        <button type="submit" class="px-3 py-1 bg-amber-600 text-white rounded text-sm">Retry submit</button>
+    </form>
+    {% endif %}
+</div>
+{% endif %}
+{% endif %}
+
+<aside class="w-56 bg-slate-800 text-slate-200 flex flex-col min-h-screen flex-shrink-0">
+    <div class="p-4 border-b border-slate-700">
+        <span class="font-bold text-lg">FDMS</span>
+        <span class="block text-xs text-slate-400 mt-0.5">Control Panel</span>
+    </div>
+    {% if fdms_devices %}
+    <div class="p-4 border-b border-slate-700">
+        <form method="post" action="{% url 'fdms_set_device' %}" id="fdms-device-form">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <label class="block text-xs font-medium text-slate-400 mb-1">Device</label>
+            <select name="device_id" onchange="this.form.submit()" class="w-full bg-slate-700 border border-slate-600 rounded px-2 py-1.5 text-slate-200 text-sm">
+                {% for d in fdms_devices %}
+                <option value="{{ d.device_id }}" {% if fdms_selected_device_id == d.device_id %}selected{% endif %}>#{{ d.device_id }}</option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+    {% endif %}
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
+        <a href="{% url 'fdms_dashboard' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Dashboard</a>
+        <a href="{% url 'fdms_fiscal' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Fiscal Day</a>
+        <a href="{% url 'fdms_receipts' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Receipts</a>
+        <a href="{% url 'fdms_receipt_new' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">New Receipt</a>
+        <a href="{% url 'fdms_credit_note' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Credit Note</a>
+        <a href="{% url 'fdms_debit_note_form' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Debit Note</a>
+        <div class="border-t border-slate-700 my-3"></div>
+        <details class="group" open>
+            <summary class="cursor-pointer px-3 py-2 rounded hover:bg-slate-700 text-slate-200 font-medium flex items-center justify-between [list-style:none]">
+                <span>Settings</span>
+                <span class="group-open:rotate-180 transition-transform">▼</span>
+            </summary>
+            <div class="pl-3 mt-1 space-y-0.5">
+                <a href="{% url 'fdms_settings' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm font-medium">Settings</a>
+                <a href="{% url 'fdms_device' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Device / Register</a>
+                <a href="{% url 'fdms_products' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Products</a>
+                <a href="{% url 'fdms_tax_mappings' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Tax Mapping</a>
+                {% if request.user.is_staff %}
+                <a href="{% url 'fdms_invoice_import_step1' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Import Invoice</a>
+                {% endif %}
+                <a href="{% url 'fdms_qb_invoices' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">QuickBooks</a>
+                <a href="{% url 'fdms_audit' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Audit</a>
+                <a href="{% url 'fdms_logs_tailwind' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Logs</a>
+            </div>
+        </details>
+        <div class="pt-4 mt-2 border-t border-slate-700 space-y-1">
+            <a href="{% url 'eula' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Legal (EULA)</a>
+            <a href="{% url 'privacy' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Privacy</a>
+        </div>
+    </nav>
+</aside>
+
+<main class="flex-1 overflow-auto">
+    {% if show_eula_banner %}
+    <div class="mx-6 mt-4 p-4 rounded-lg bg-blue-50 border border-blue-200 text-slate-800 text-sm">
+        <p class="mb-1"><strong>Terms and conditions</strong></p>
+        <p>Take a moment to read and accept our <a href="{% url 'eula' %}" class="text-indigo-600 font-medium hover:underline">terms and conditions</a>. Using the system for more than 30 days without accepting manually will automatically mean you have accepted by using the system.</p>
+    </div>
+    {% endif %}
+    <div class="container mx-auto p-6">
+        {% if messages %}
+        <div class="mb-4 space-y-2">
+            {% for message in messages %}
+            <div class="p-3 rounded-lg {% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-700{% elif message.tags == 'success' %}bg-emerald-50 border border-emerald-200 text-emerald-700{% else %}bg-slate-50 border border-slate-200 text-slate-700{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+    <footer class="border-t border-slate-200 mt-8 py-4 px-6 text-center text-sm text-slate-500">
+        <a href="{% url 'terms' %}" class="text-indigo-600 hover:underline">Terms of Service</a>
+        <span class="mx-2">·</span>
+        <a href="{% url 'privacy' %}" class="text-indigo-600 hover:underline">Privacy Policy</a>
+        <span class="mx-2">·</span>
+        <a href="{% url 'dpa' %}" class="text-indigo-600 hover:underline">Data Processing Addendum</a>
+        <span class="mx-2">·</span>
+        <a href="{% url 'cookies' %}" class="text-indigo-600 hover:underline">Cookie Policy</a>
+    </footer>
+</main>
+
+</body>
+</html>

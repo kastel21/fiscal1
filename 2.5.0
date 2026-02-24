@@ -1,0 +1,43 @@
+Collecting django-celery-beat
+  Downloading django_celery_beat-2.8.1-py3-none-any.whl.metadata (13 kB)
+Requirement already satisfied: celery<6.0,>=5.2.3 in D:\projects\fiscal day\.venv\Lib\site-packages (from django-celery-beat) (5.6.2)
+Collecting django-timezone-field>=5.0 (from django-celery-beat)
+  Downloading django_timezone_field-7.2.1-py3-none-any.whl.metadata (13 kB)
+Requirement already satisfied: tzdata in D:\projects\fiscal day\.venv\Lib\site-packages (from django-celery-beat) (2025.3)
+Collecting python-crontab>=2.3.4 (from django-celery-beat)
+  Downloading python_crontab-3.3.0-py3-none-any.whl.metadata (17 kB)
+Collecting cron-descriptor>=1.2.32 (from django-celery-beat)
+  Downloading cron_descriptor-2.0.6-py3-none-any.whl.metadata (8.1 kB)
+Collecting Django<6.0,>=2.2 (from django-celery-beat)
+  Downloading django-5.2.11-py3-none-any.whl.metadata (4.1 kB)
+Requirement already satisfied: billiard<5.0,>=4.2.1 in D:\projects\fiscal day\.venv\Lib\site-packages (from celery<6.0,>=5.2.3->django-celery-beat) (4.2.4)
+Requirement already satisfied: kombu>=5.6.0 in D:\projects\fiscal day\.venv\Lib\site-packages (from celery<6.0,>=5.2.3->django-celery-beat) (5.6.2)
+Requirement already satisfied: vine<6.0,>=5.1.0 in D:\projects\fiscal day\.venv\Lib\site-packages (from celery<6.0,>=5.2.3->django-celery-beat) (5.1.0)
+Requirement already satisfied: click<9.0,>=8.1.2 in D:\projects\fiscal day\.venv\Lib\site-packages (from celery<6.0,>=5.2.3->django-celery-beat) (8.3.1)
+Requirement already satisfied: click-didyoumean>=0.3.0 in D:\projects\fiscal day\.venv\Lib\site-packages (from celery<6.0,>=5.2.3->django-celery-beat) (0.3.1)
+Requirement already satisfied: click-repl>=0.2.0 in D:\projects\fiscal day\.venv\Lib\site-packages (from celery<6.0,>=5.2.3->django-celery-beat) (0.3.0)
+Requirement already satisfied: click-plugins>=1.1.1 in D:\projects\fiscal day\.venv\Lib\site-packages (from celery<6.0,>=5.2.3->django-celery-beat) (1.1.1.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in D:\projects\fiscal day\.venv\Lib\site-packages (from celery<6.0,>=5.2.3->django-celery-beat) (2.9.0.post0)
+Requirement already satisfied: tzlocal in D:\projects\fiscal day\.venv\Lib\site-packages (from celery<6.0,>=5.2.3->django-celery-beat) (5.3.1)
+Requirement already satisfied: colorama in D:\projects\fiscal day\.venv\Lib\site-packages (from click<9.0,>=8.1.2->celery<6.0,>=5.2.3->django-celery-beat) (0.4.6)
+Requirement already satisfied: asgiref>=3.8.1 in D:\projects\fiscal day\.venv\Lib\site-packages (from Django<6.0,>=2.2->django-celery-beat) (3.11.1)
+Requirement already satisfied: sqlparse>=0.3.1 in D:\projects\fiscal day\.venv\Lib\site-packages (from Django<6.0,>=2.2->django-celery-beat) (0.5.5)
+Requirement already satisfied: prompt-toolkit>=3.0.36 in D:\projects\fiscal day\.venv\Lib\site-packages (from click-repl>=0.2.0->celery<6.0,>=5.2.3->django-celery-beat) (3.0.52)
+Requirement already satisfied: typing_extensions in D:\projects\fiscal day\.venv\Lib\site-packages (from cron-descriptor>=1.2.32->django-celery-beat) (4.15.0)
+Requirement already satisfied: amqp<6.0.0,>=5.1.1 in D:\projects\fiscal day\.venv\Lib\site-packages (from kombu>=5.6.0->celery<6.0,>=5.2.3->django-celery-beat) (5.3.1)
+Requirement already satisfied: packaging in D:\projects\fiscal day\.venv\Lib\site-packages (from kombu>=5.6.0->celery<6.0,>=5.2.3->django-celery-beat) (26.0)
+Requirement already satisfied: wcwidth in D:\projects\fiscal day\.venv\Lib\site-packages (from prompt-toolkit>=3.0.36->click-repl>=0.2.0->celery<6.0,>=5.2.3->django-celery-beat) (0.6.0)
+Requirement already satisfied: six>=1.5 in D:\projects\fiscal day\.venv\Lib\site-packages (from python-dateutil>=2.8.2->celery<6.0,>=5.2.3->django-celery-beat) (1.17.0)
+Downloading django_celery_beat-2.8.1-py3-none-any.whl (104 kB)
+Downloading django-5.2.11-py3-none-any.whl (8.3 MB)
+   ---------------------------------------- 8.3/8.3 MB 63.0 kB/s  0:02:23
+Downloading cron_descriptor-2.0.6-py3-none-any.whl (74 kB)
+Downloading django_timezone_field-7.2.1-py3-none-any.whl (13 kB)
+Downloading python_crontab-3.3.0-py3-none-any.whl (27 kB)
+Installing collected packages: python-crontab, Django, cron-descriptor, django-timezone-field, django-celery-beat
+  Attempting uninstall: Django
+    Found existing installation: Django 6.0.2
+    Uninstalling Django-6.0.2:
+      Successfully uninstalled Django-6.0.2
+
+Successfully installed Django-5.2.11 cron-descriptor-2.0.6 django-celery-beat-2.8.1 django-timezone-field-7.2.1 python-crontab-3.3.0

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Fiscal Tax Invoice</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #000; }
+    .container { width: 800px; margin: auto; }
+    h1 { text-align: center; font-size: 18px; }
+    .section { margin-top: 16px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { border: 1px solid #000; padding: 6px; }
+    th { background: #f0f0f0; }
+    .totals td { font-weight: bold; }
+    .qr { text-align: center; margin-top: 20px; }
+    .small { font-size: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Fiscal Tax Invoice</h1>
+
+    <div class="section">
+      <strong>{{ business_name }}</strong><br/>
+      {{ business_address }}<br/>
+      VAT No: {{ vat_number }}<br/>
+      Device ID: {{ device_id }}
+    </div>
+
+    <div class="section">
+      Receipt Global No: {{ receipt_global_no }}<br/>
+      Fiscal Date: {{ fiscal_date }}<br/>
+      Currency: {{ currency }}
+    </div>
+
+    {% if customer_name %}
+    <div class="section">
+      <strong>Customer Details</strong><br/>
+      {{ customer_name }}<br/>
+      {{ customer_address }}
+    </div>
+    {% endif %}
+
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Qty</th>
+          <th>Unit Price</th>
+          <th>Line Total</th>
+          <th>Tax</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for line in lines %}
+        <tr>
+          <td>{{ line.name }}</td>
+          <td>{{ line.qty }}</td>
+          <td>{{ line.unit_price }}</td>
+          <td>{{ line.total }}</td>
+          <td>{{ line.tax }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <table class="section">
+      <tr class="totals"><td>Subtotal</td><td>{{ subtotal }}</td></tr>
+      <tr class="totals"><td>Total Tax</td><td>{{ total_tax }}</td></tr>
+      <tr class="totals"><td>Grand Total</td><td>{{ grand_total }}</td></tr>
+    </table>
+
+    <div class="section">
+      Payment Method: {{ payment_method }}<br/>
+      Amount Paid: {{ amount_paid }}
+    </div>
+
+    <div class="qr">
+      <img src="{{ qr_code_base64 }}" width="150"/><br/>
+      <span class="small">Scan the QR code to verify this invoice with ZIMRA.</span>
+    </div>
+
+    {% if qb_invoice_no %}
+    <div class="section small">
+      Synced from QuickBooks – Invoice {{ qb_invoice_no }}
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

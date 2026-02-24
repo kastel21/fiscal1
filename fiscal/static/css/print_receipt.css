@@ -1,0 +1,85 @@
+/**
+ * Receipt print layout and QR section styling.
+ * A4 printable, ZIMRA-compliant.
+ */
+
+/* Normal view - QR section */
+.qr-section {
+    margin-top: 30px;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+}
+
+.qr-image img {
+    width: 130px;
+    height: 130px;
+}
+
+.qr-text {
+    font-size: 11px;
+    margin-top: 10px;
+    word-break: break-all;
+}
+
+.verify-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 6px 14px;
+    background: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.verify-btn:hover {
+    background: #0056b3;
+}
+
+/* Print button - hidden when printing */
+.no-print {
+    display: inline-block;
+}
+
+.print-btn {
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.print-btn:hover {
+    background: #0056b3;
+}
+
+/* A4 print layout */
+@media print {
+    body {
+        background: white;
+    }
+
+    .no-print {
+        display: none !important;
+    }
+
+    .receipt-container {
+        width: 210mm;
+        min-height: 297mm;
+        padding: 20mm;
+        margin: 0 auto;
+        font-size: 12pt;
+    }
+
+    .qr-section {
+        margin-top: 30px;
+        text-align: center;
+    }
+
+    .qr-image img {
+        width: 120px;
+        height: 120px;
+    }
+}

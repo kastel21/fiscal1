@@ -1,0 +1,404 @@
+ERROR 2026-02-11 12:16:52,676 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:16:53,134 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:17:18,074 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:17:43,290 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:18:08,620 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:18:33,271 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:18:58,108 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:19:23,265 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:19:48,228 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:20:13,076 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:20:38,876 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:21:03,193 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:21:28,074 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:21:53,354 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:22:18,500 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:22:43,228 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:23:08,559 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:23:33,192 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:23:58,128 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:24:24,562 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:24:48,092 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:25:13,175 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:26:03,294 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:26:13,352 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:26:13,729 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:26:33,806 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:26:53,753 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:27:13,827 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:27:33,858 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:27:53,815 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:28:13,854 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:28:33,831 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:28:53,780 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:29:13,797 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:29:33,756 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:29:53,771 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:30:13,757 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:30:34,706 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:30:53,946 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:14,090 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:33,553 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:33,945 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:34,120 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:42,612 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:43,166 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:50,048 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:50,545 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:51,804 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:31:52,266 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:32:12,303 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:36:13,119 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:36:13,790 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:36:22,026 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:36:22,559 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:36:42,756 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:37:02,740 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:37:22,961 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:37:42,558 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:38:02,495 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:38:22,593 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:38:42,528 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:39:02,565 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:39:22,559 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:39:42,534 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:40:02,837 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:40:22,562 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:40:40,722 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:40:41,309 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:41:01,345 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:41:07,454 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:41:08,002 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:41:09,423 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:41:10,085 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:41:30,070 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:41:50,094 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:42:10,470 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:42:30,380 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:42:50,015 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:43:10,676 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:43:29,945 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:43:50,180 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:44:10,128 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:44:30,014 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:44:49,997 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:45:07,961 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:45:08,500 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:45:10,558 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:45:28,440 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:45:48,476 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:46:08,561 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:46:28,493 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:46:48,589 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:46:59,904 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:47:00,635 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:47:02,061 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:47:20,569 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:47:40,784 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:47:41,783 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:47:42,392 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:47:44,909 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-11 12:48:02,312 GetStatus failed for device 32327: Bad Request
+ERROR 2026-02-14 00:21:36,330 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:21:37,577 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:21:57,120 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:22:16,993 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:22:36,891 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:22:57,001 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:23:37,929 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:23:38,923 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:23:58,631 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:24:18,472 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:24:38,587 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:24:58,432 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:25:18,481 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:25:38,482 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:25:58,485 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:26:18,535 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:26:38,472 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:26:58,544 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:27:18,498 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:27:38,484 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:27:58,489 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:28:18,517 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:28:38,486 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:28:58,509 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:29:18,544 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:29:38,468 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:29:58,500 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:30:18,475 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:30:38,648 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:30:58,450 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:31:18,506 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:31:18,860 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:31:19,543 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:31:39,346 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:31:59,366 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:32:19,605 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:32:39,503 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:32:59,362 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:33:19,484 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:33:39,460 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:33:59,402 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:34:19,351 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:34:39,461 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:34:59,641 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:35:19,473 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:35:39,571 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:35:59,392 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:36:19,464 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:36:39,397 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:36:48,741 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:36:49,402 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:37:09,227 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:37:29,251 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:37:49,309 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:38:09,222 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:38:29,477 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:38:49,446 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:39:09,371 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:39:29,586 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:39:49,525 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:40:09,226 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:40:29,277 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:40:49,319 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:41:09,405 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:41:29,322 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:41:49,284 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:42:09,218 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:42:29,236 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:42:49,231 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:43:09,387 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:43:29,271 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:43:49,221 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:44:09,206 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:44:29,231 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:44:49,233 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:45:09,208 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:45:29,620 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:45:49,248 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:46:09,246 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:46:29,352 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:46:49,220 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:47:09,217 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:47:29,201 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:47:49,195 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:48:09,222 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:48:29,380 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:48:49,221 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:49:09,345 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:49:29,341 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:49:49,222 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:50:09,269 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:50:29,316 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:50:49,351 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:51:09,339 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:51:29,195 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:51:49,389 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:52:09,262 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:52:29,225 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:52:49,288 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:53:09,234 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:53:29,206 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:53:49,327 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:54:09,216 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:54:29,331 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:54:49,339 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:55:09,373 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:55:29,292 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:55:49,348 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:56:09,377 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:56:29,312 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:57:09,296 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:57:29,360 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:57:49,361 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:58:09,424 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:58:29,198 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:58:49,319 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:59:09,392 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:59:29,265 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 00:59:49,208 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:00:09,229 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:00:29,311 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:00:49,234 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:01:09,235 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:01:29,227 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:01:49,365 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:02:09,427 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:02:29,921 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:02:49,240 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:03:09,209 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:03:29,940 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:03:49,279 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:04:09,300 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:04:29,327 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:04:49,201 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:05:09,347 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:05:27,336 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:05:28,047 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:07:48,053 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:08:07,935 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:08:27,952 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:08:47,982 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:09:07,954 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:09:27,978 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:09:47,986 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:10:07,957 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:10:27,953 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:10:48,067 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:11:07,981 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:11:28,023 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:11:47,932 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:12:07,955 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:12:27,977 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:12:48,004 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:13:07,947 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:13:27,991 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:13:47,941 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:14:07,931 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:14:27,941 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:14:48,097 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:15:07,935 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:15:28,109 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:15:48,340 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:16:07,939 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:16:27,985 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:16:47,982 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:17:07,937 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:17:27,943 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:17:48,001 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:18:07,985 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:18:27,942 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:18:47,967 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:19:08,169 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:19:28,022 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:19:48,002 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:20:08,009 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:20:27,940 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:20:47,927 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:21:07,963 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:21:27,969 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:21:48,001 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:22:07,949 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:22:27,976 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:22:48,049 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:23:07,938 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:23:27,963 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:23:47,991 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:24:07,929 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:24:27,937 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:24:48,020 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:25:07,973 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:25:27,983 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:25:47,982 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:26:07,945 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:26:27,964 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:26:47,979 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:27:07,953 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:27:28,006 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:27:47,959 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:28:07,992 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:28:28,015 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:28:47,935 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:29:07,949 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:29:27,985 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:29:48,027 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:30:07,972 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:30:27,953 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:30:48,034 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:31:07,968 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:31:27,947 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:31:47,977 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:32:07,957 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:32:27,952 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:32:47,946 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:33:07,986 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:33:28,034 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:33:47,951 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:34:07,963 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:34:27,973 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:34:47,921 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:35:08,034 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:35:28,000 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:35:47,971 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:36:07,938 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:36:28,003 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:36:47,957 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:37:08,099 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:37:28,002 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:37:47,993 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:38:08,096 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:38:28,009 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:38:47,984 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:39:07,926 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:39:28,801 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:39:47,925 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:40:07,994 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:40:28,040 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:40:48,752 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:41:08,801 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:41:31,330 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:41:48,779 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:42:08,821 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:47:16,821 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:47:31,395 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:47:32,066 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:47:52,851 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:48:12,833 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:48:32,883 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:57:11,352 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:57:12,408 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:57:32,055 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:57:39,702 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:57:40,688 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:58:01,021 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:58:41,194 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:59:03,856 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:59:04,651 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:59:24,537 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 01:59:44,528 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 02:00:04,651 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 02:00:24,851 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 02:00:44,797 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 02:01:05,053 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 02:17:15,107 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 02:37:15,161 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 02:57:15,246 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 03:17:15,050 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:03:34,250 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:03:34,693 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:03:35,391 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:03:45,268 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:05:59,363 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:06:10,671 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:06:11,915 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:06:13,204 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:06:32,473 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:06:35,065 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:06:35,498 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:06:36,104 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:06:57,026 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:07:18,558 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:07:38,042 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:08:43,334 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:08:46,017 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:09:33,083 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:09:37,003 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:09:52,002 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:09:52,751 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:10:25,833 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:10:26,706 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:10:36,554 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:18:00,137 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:18:18,888 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:18:24,398 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:18:36,145 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:18:37,069 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:19:18,064 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:19:19,512 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:19:44,946 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:19:49,693 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:20:06,711 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:20:13,969 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:20:24,403 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-02-14 05:20:53,427 GetStatus failed for device 32678: Unauthorized

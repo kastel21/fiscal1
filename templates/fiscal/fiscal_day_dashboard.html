@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiscal Day State Dashboard</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 960px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            color: #1a1a2e;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .nav { margin-bottom: 1.5rem; }
+        .nav a { color: #2563eb; text-decoration: none; margin-right: 1rem; }
+        .nav a:hover { text-decoration: underline; }
+        .card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+        }
+        .card h2 { font-size: 1rem; margin: 0 0 0.75rem; color: #374151; }
+        .device-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+        .device-box {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 1rem;
+        }
+        .device-box .label { font-size: 0.8rem; color: #6b7280; }
+        .device-box .value { font-weight: 600; margin-bottom: 0.5rem; }
+        .status-opened { color: #2563eb; }
+        .status-closed { color: #059669; }
+        .status-closing { color: #d97706; }
+        .status-failed { color: #dc2626; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th, td { padding: 0.6rem 0.75rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        th { background: #f9fafb; color: #374151; font-weight: 600; }
+        tr:hover { background: #f9fafb; }
+    </style>
+</head>
+<body>
+    <h1>Fiscal Day State Dashboard</h1>
+    <p class="subtitle">Device and fiscal day status overview</p>
+
+    <nav class="nav">
+        <a href="{% url 'dashboard' %}">Fiscal Day Control</a>
+        <a href="{% url 'fiscal_day_dashboard' %}">Fiscal Day Dashboard</a>
+        <a href="{% url 'receipt_history' %}">Receipt History</a>
+        <a href="{% url 'fdms_logs' %}">Logs</a>
+        <a href="{% url 'device_register' %}">Register Device</a>
+    </nav>
+
+    <div class="card">
+        <h2>Devices</h2>
+        {% if devices %}
+        <div class="device-grid">
+            {% for d in devices %}
+            <div class="device-box">
+                <div class="label">Device ID</div>
+                <div class="value"><a href="{% url 'dashboard' %}?device_id={{ d.device_id }}">{{ d.device_id }}</a></div>
+                <div class="label">Fiscal Day Status</div>
+                <div class="value status-{% if d.fiscal_day_status == 'FiscalDayOpened' %}opened{% elif d.fiscal_day_status == 'FiscalDayClosed' %}closed{% elif d.fiscal_day_status == 'FiscalDayCloseInitiated' %}closing{% elif d.fiscal_day_status == 'FiscalDayCloseFailed' %}failed{% else %}opened{% endif %}">
+                    {{ d.fiscal_day_status|default:"—" }}
+                </div>
+                <div class="label">Last Fiscal Day No</div>
+                <div class="value">{{ d.last_fiscal_day_no|default:"—" }}</div>
+                <div class="label">Last Receipt Global No</div>
+                <div class="value">{{ d.last_receipt_global_no|default:"—" }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>No registered devices.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2>Recent Fiscal Days</h2>
+        {% if fiscal_days %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Device</th>
+                    <th>Fiscal Day No</th>
+                    <th>Status</th>
+                    <th>Opened</th>
+                    <th>Closed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for fd in fiscal_days %}
+                <tr>
+                    <td>{{ fd.device.device_id }}</td>
+                    <td>{{ fd.fiscal_day_no }}</td>
+                    <td class="status-{% if fd.status == 'FiscalDayOpened' %}opened{% elif fd.status == 'FiscalDayClosed' %}closed{% elif fd.status == 'FiscalDayCloseInitiated' %}closing{% elif fd.status == 'FiscalDayCloseFailed' %}failed{% else %}opened{% endif %}">{{ fd.status }}</td>
+                    <td>{{ fd.opened_at|date:"Y-m-d H:i" }}</td>
+                    <td>{{ fd.closed_at|date:"Y-m-d H:i"|default:"—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>No fiscal days recorded.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,182 @@
+{% comment %}
+FDMS-compliant fiscalised invoice layout per FDMS_Final_Invoice_Layout_Spec.
+Forbidden: operationID, receiptID, signatures, hashes, UUIDs, debug text.
+{% endcomment %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>{{ document_type }} #{{ receipt_global_no }}</title>
+  <link rel="stylesheet" href="{% static 'css/print_receipt.css' %}">
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #000; margin: 20px; }
+    .container { max-width: 700px; margin: 0 auto; }
+    h1 { text-align: center; font-size: 18px; margin-bottom: 20px; }
+    .section { margin-top: 16px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { border: 1px solid #333; padding: 6px; text-align: left; }
+    th { background: #f5f5f5; font-weight: bold; }
+    .totals { font-weight: bold; }
+    @media print { body { margin: 0; } }
+  </style>
+</head>
+<body>
+  <div class="no-print" style="margin-bottom: 16px; text-align: right;">
+    <button onclick="window.print()" class="print-btn">Print A4</button>
+  </div>
+  <div class="receipt-container container">
+    <h1>{{ document_type }}</h1>
+
+    <div class="section">
+      <strong>Supplier / Device Identity</strong>
+      <p>{{ business_name }}</p>
+      {% if business_address %}<p>{{ business_address }}</p>{% endif %}
+      {% if vat_number %}<p>VAT / Taxpayer No: {{ vat_number }}</p>{% endif %}
+      <p>FDMS Device ID: {{ device_id }}</p>
+    </div>
+
+    <div class="section">
+      <strong>Fiscal Header</strong>
+      <p>Document Type: {{ document_type }}</p>
+      <p>Receipt Global No: {{ receipt_global_no }}</p>
+      <p>Fiscalisation Date &amp; Time: {{ fiscal_date }}</p>
+      <p>Receipt Currency: {{ currency }}</p>
+    </div>
+
+    {% if customer %}
+    <div class="section">
+      <strong>Bill To</strong>
+      {% if customer.name %}<p>{{ customer.name }}</p>{% endif %}
+      {% if customer.address %}<p>{{ customer.address }}</p>{% endif %}
+      {% if customer.phone %}<p>Phone: {{ customer.phone }}</p>{% endif %}
+      {% if customer.email %}<p>Email: {{ customer.email }}</p>{% endif %}
+      {% if customer.tin %}<p>TIN: {{ customer.tin }}</p>{% endif %}
+      {% if customer.notes %}<p>Notes: {{ customer.notes }}</p>{% endif %}
+    </div>
+    {% endif %}
+
+    {% if invoice_no %}
+    <div class="section">
+      <strong>Invoice No</strong>
+      <p>{{ invoice_no }}</p>
+    </div>
+    {% endif %}
+
+    <div class="section">
+      <strong>Line Items</strong>
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Line Total</th>
+            <th>Tax</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for line in lines %}
+          <tr>
+            <td>{{ line.description }}</td>
+            <td>{{ line.quantity }}</td>
+            <td>{{ line.unit_price|floatformat:2 }}</td>
+            <td>{{ line.line_total|floatformat:2 }}</td>
+            <td>{{ line.tax_rate|default:"" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <strong>Tax Summary</strong>
+      <table>
+        <thead>
+          <tr>
+            <th>Tax Rate</th>
+            <th>Taxable Amount</th>
+            <th>Tax Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in tax_rows %}
+          <tr>
+            <td>{{ row.rate }}%</td>
+            <td>{{ row.taxable_amount|floatformat:2 }}</td>
+            <td>{{ row.tax_amount|floatformat:2 }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section">
+      <strong>Totals</strong>
+      <table>
+        <tr class="totals"><td>Subtotal</td><td>{{ subtotal|floatformat:2 }} {{ currency }}</td></tr>
+        <tr class="totals"><td>Total Tax</td><td>{{ total_tax|floatformat:2 }} {{ currency }}</td></tr>
+        <tr class="totals"><td>Grand Total</td><td>{{ grand_total|floatformat:2 }} {{ currency }}</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <strong>Payment Summary</strong>
+      <table>
+        <thead>
+          <tr>
+            <th>Payment Method</th>
+            <th>Amount Paid</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in payment_rows %}
+          <tr>
+            <td>{{ p.method }}</td>
+            <td>{{ p.amount|floatformat:2 }} {{ currency }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if validation_errors %}
+    <div class="section validation-errors" style="background: #fef2f2; border: 1px solid #fecaca; padding: 0.75rem 1rem; margin-bottom: 1rem; border-radius: 4px;">
+      <p class="verify-text" style="font-weight: 600; color: #b91c1c; margin-bottom: 0.5rem;">Submission validation errors (FDMS)</p>
+      <ul style="margin: 0; padding-left: 1.25rem; color: #991b1b; font-size: 0.875rem;">
+        {% for err in validation_errors %}
+        <li>{{ err }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div class="section qr-section">
+      {% if qr_code_value %}
+      <div class="qr-image">
+        {% if qr_image_base64 %}
+        <img src="data:image/png;base64,{{ qr_image_base64 }}" alt="ZIMRA QR" />
+        {% endif %}
+      </div>
+      <div class="qr-text">
+        <small>{{ qr_code_value }}</small>
+      </div>
+      <div class="qr-verify">
+        <a href="{{ qr_code_value }}" target="_blank" class="verify-btn">Verify on ZIMRA</a>
+      </div>
+      {% elif qr_data %}
+      <p class="verify-text">Scan to verify with ZIMRA FDMS.</p>
+      {% else %}
+      <p class="verify-text">Fiscalised. Verify with ZIMRA.</p>
+      {% endif %}
+    </div>
+
+    {% if qb_invoice_no %}
+    <div class="section" style="font-size: 10px; color: #666;">
+      <strong>Source Metadata</strong>
+      <p>Synced from QuickBooks – Invoice {{ qb_invoice_no }}</p>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>

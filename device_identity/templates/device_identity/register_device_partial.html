@@ -1,0 +1,71 @@
+{% if success_message %}
+<div class="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+    <p class="font-medium text-green-800">{{ success_message }}</p>
+    <p class="text-sm text-green-700 mt-1">Certificate stored. Device is ready for fiscal operations.</p>
+    <p class="text-sm mt-2">
+        <a href="{% url 'dashboard_home' %}" class="text-green-700 underline font-medium">Go to Dashboard</a>
+        &middot;
+        <a href="{% url 'fdms_device' %}" class="text-green-700 underline font-medium">Device Status</a>
+    </p>
+</div>
+{% endif %}
+
+{% if error_message %}
+<div class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+    <p class="font-medium text-red-800">{{ error_message }}</p>
+</div>
+{% endif %}
+
+<form method="post" action="{% url 'device_identity_register' %}"
+      hx-post="{% url 'device_identity_register' %}"
+      hx-target="#register-form-target"
+      hx-swap="innerHTML">
+    {% csrf_token %}
+    <div class="space-y-4">
+        <div>
+            <label for="id_device_id" class="block text-sm font-medium text-slate-700 mb-1">Device ID</label>
+            <input type="number" name="device_id" id="id_device_id" class="form-input w-full"
+                   placeholder="e.g. 12345" value="{{ form.device_id.value|default:'' }}"
+                   min="1">
+            <p class="text-xs text-slate-500 mt-1">Sold or active device ID from ZIMRA.</p>
+            {{ form.device_id.errors }}
+        </div>
+        <div>
+            <label for="id_activation_key" class="block text-sm font-medium text-slate-700 mb-1">Activation Key</label>
+            <input type="text" name="activation_key" id="id_activation_key" class="form-input w-full"
+                   placeholder="e.g. 12AXC178" value="{{ form.activation_key.value|default:'' }}"
+                   maxlength="8">
+            <p class="text-xs text-slate-500 mt-1">8-symbol activation key (case insensitive).</p>
+            {{ form.activation_key.errors }}
+        </div>
+        <div>
+            <label for="id_device_serial_no" class="block text-sm font-medium text-slate-700 mb-1">Device Serial Number</label>
+            <input type="text" name="device_serial_no" id="id_device_serial_no" class="form-input w-full"
+                   placeholder="e.g. SN-001" value="{{ form.device_serial_no.value|default:'' }}">
+            <p class="text-xs text-slate-500 mt-1">Serial number assigned by manufacturer.</p>
+            {{ form.device_serial_no.errors }}
+        </div>
+        <div>
+            <label for="id_device_model_name" class="block text-sm font-medium text-slate-700 mb-1">Device Model Name (optional)</label>
+            <input type="text" name="device_model_name" id="id_device_model_name" class="form-input w-full"
+                   placeholder="e.g. FDMS-Model-1" value="{{ form.device_model_name.value|default:'' }}">
+            {{ form.device_model_name.errors }}
+        </div>
+        <div>
+            <label for="id_device_model_version" class="block text-sm font-medium text-slate-700 mb-1">Device Model Version (optional)</label>
+            <input type="text" name="device_model_version" id="id_device_model_version" class="form-input w-full"
+                   placeholder="e.g. 1.0.0" value="{{ form.device_model_version.value|default:'' }}">
+            {{ form.device_model_version.errors }}
+        </div>
+        <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">
+            Register Device
+        </button>
+    </div>
+</form>
+
+{% if device_status %}
+<div class="mt-6 p-4 bg-slate-100 border border-slate-200 rounded-lg">
+    <p class="font-medium text-slate-800">Device status</p>
+    <p class="text-sm text-slate-600 mt-1">{{ device_status }}</p>
+</div>
+{% endif %}

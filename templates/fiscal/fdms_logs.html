@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDMS API Logs</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            color: #1a1a2e;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .nav { margin-bottom: 1.5rem; }
+        .nav a { color: #2563eb; text-decoration: none; margin-right: 1rem; }
+        .nav a:hover { text-decoration: underline; }
+        .filters {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        .filter-group label { display: block; font-size: 0.8rem; color: #6b7280; margin-bottom: 0.25rem; }
+        .filter-group input, .filter-group select { padding: 0.4rem 0.6rem; border: 1px solid #ccc; border-radius: 4px; }
+        .btn {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        .btn:hover { background: #1d4ed8; }
+        .btn-secondary { background: #6b7280; }
+        .btn-secondary:hover { background: #4b5563; }
+        .log-list { list-style: none; padding: 0; margin: 0; }
+        .log-item {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+        }
+        .log-header {
+            padding: 0.75rem 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            cursor: pointer;
+            background: #f9fafb;
+        }
+        .log-header:hover { background: #f3f4f6; }
+        .log-method { font-weight: 700; min-width: 3.5rem; }
+        .log-method.get { color: #059669; }
+        .log-method.post { color: #2563eb; }
+        .log-endpoint { flex: 1; font-family: monospace; font-size: 0.9rem; word-break: break-all; }
+        .log-status { font-weight: 600; }
+        .log-status.ok { color: #059669; }
+        .log-status.err { color: #dc2626; }
+        .log-operation-id { font-size: 0.8rem; color: #6b7280; font-family: monospace; max-width: 12rem; overflow: hidden; text-overflow: ellipsis; }
+        .log-time { font-size: 0.85rem; color: #6b7280; }
+        .log-toggle { font-size: 0.8rem; color: #6b7280; }
+        .log-details { padding: 0 1rem 1rem; border-top: 1px solid #e5e7eb; }
+        .log-section { margin-top: 0.75rem; }
+        .log-section-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.25rem; color: #374151; }
+        .log-section pre {
+            margin: 0;
+            padding: 0.75rem;
+            background: #1f2937;
+            color: #e5e7eb;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            overflow-x: auto;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .log-section.empty { color: #9ca3af; font-style: italic; font-size: 0.9rem; }
+        .no-logs { color: #6b7280; padding: 2rem; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>FDMS API Logs</h1>
+    <p class="subtitle">Audit trail for FDMS API calls (last 100, sensitive data masked)</p>
+
+    <nav class="nav">
+        <a href="{% url 'dashboard' %}">Fiscal Day Control</a>
+        <a href="{% url 'fiscal_day_dashboard' %}">Fiscal Day Dashboard</a>
+        <a href="{% url 'receipt_history' %}">Receipt History</a>
+        <a href="{% url 'fdms_logs' %}">Logs</a>
+        <a href="{% url 'device_register' %}">Register Device</a>
+    </nav>
+
+    <form method="get" class="filters">
+        <div class="filter-group">
+            <label>Endpoint</label>
+            <input type="text" name="endpoint" value="{{ filters.endpoint }}" placeholder="e.g. /Device/v1">
+        </div>
+        <div class="filter-group">
+            <label>Operation ID</label>
+            <input type="text" name="operation_id" value="{{ filters.operation_id }}" placeholder="e.g. 0HMPH9AF0QKKE:00000005">
+        </div>
+        <div class="filter-group">
+            <label>Status Code</label>
+            <input type="text" name="status_code" value="{{ filters.status_code }}" placeholder="e.g. 200">
+        </div>
+        <div class="filter-group">
+            <label>From Date</label>
+            <input type="date" name="date_from" value="{{ filters.date_from }}">
+        </div>
+        <div class="filter-group">
+            <label>To Date</label>
+            <input type="date" name="date_to" value="{{ filters.date_to }}">
+        </div>
+        <button type="submit" class="btn">Filter</button>
+        <a href="{% url 'fdms_logs' %}" class="btn btn-secondary">Clear</a>
+    </form>
+
+    {% if logs %}
+    <ul class="log-list">
+        {% for log in logs %}
+        <li class="log-item">
+            <div class="log-header" data-log-id="{{ log.id }}" onclick="toggleLog({{ log.id }})">
+                <span class="log-method {{ log.method|lower }}">{{ log.method }}</span>
+                <span class="log-endpoint">{{ log.endpoint }}</span>
+                {% if log.operation_id %}<span class="log-operation-id" title="Operation ID">{{ log.operation_id }}</span>{% endif %}
+                <span class="log-status {% if log.status_code and log.status_code < 400 %}ok{% else %}err{% endif %}">
+                    {{ log.status_code|default:"—" }}
+                </span>
+                <span class="log-time">{{ log.created_at|date:"Y-m-d H:i:s" }}</span>
+                <span class="log-toggle" id="toggle-{{ log.id }}">▼ Show details</span>
+            </div>
+            <div class="log-details" id="details-{{ log.id }}" style="display:none;">
+                <div class="log-section">
+                    <div class="log-section-title">Request Payload</div>
+                    {% if log.request_json %}
+                    <pre>{{ log.request_json }}</pre>
+                    {% else %}
+                    <div class="log-section empty">(empty)</div>
+                    {% endif %}
+                </div>
+                <div class="log-section">
+                    <div class="log-section-title">Response Payload</div>
+                    {% if log.response_json %}
+                    <pre>{{ log.response_json }}</pre>
+                    {% else %}
+                    <div class="log-section empty">(empty)</div>
+                    {% endif %}
+                </div>
+                {% if log.error_message %}
+                <div class="log-section">
+                    <div class="log-section-title">Error Message</div>
+                    <pre style="background:#fef2f2;color:#991b1b;">{{ log.error_message }}</pre>
+                </div>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="no-logs">No logs match the filters.</div>
+    {% endif %}
+
+    <script>
+        function toggleLog(id) {
+            var details = document.getElementById('details-' + id);
+            var toggle = document.getElementById('toggle-' + id);
+            if (details.style.display === 'none') {
+                details.style.display = 'block';
+                if (toggle) toggle.textContent = '▲ Hide details';
+            } else {
+                details.style.display = 'none';
+                if (toggle) toggle.textContent = '▼ Show details';
+            }
+        }
+    </script>
+</body>
+</html>

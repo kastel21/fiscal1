@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #1f2937; background: #f9fafb; margin: 0; padding: 0; }
+        .legal-wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 3rem; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-radius: 8px; margin-top: 2rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.75rem; font-weight: 700; margin: 0 0 0.25rem 0; color: #111827; }
+        .meta { font-size: 0.875rem; color: #6b7280; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e5e7eb; }
+        h2 { font-size: 1.125rem; font-weight: 600; margin: 1.75rem 0 0.5rem 0; color: #374151; }
+        p, li { margin: 0.5rem 0; font-size: 0.9375rem; }
+        ul { margin: 0.5rem 0 1rem 1.25rem; padding: 0; }
+        .legal-footer { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; font-size: 0.875rem; color: #6b7280; }
+        .legal-footer a { color: #2563eb; text-decoration: none; }
+        .legal-footer a:hover { text-decoration: underline; }
+        .legal-footer .sep { margin: 0 0.5rem; color: #9ca3af; }
+        .compliance-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; font-size: 0.9375rem; }
+    </style>
+</head>
+<body>
+    <div class="legal-wrap">
+        <h1>Terms of Service</h1>
+        <p class="meta">Last Updated: {{ last_updated|default:"February 2026" }}</p>
+
+        <h2>1. Introduction</h2>
+        <p>These Terms of Service (“Terms”) govern your use of the Fiscal Integration System and related services (“Service”) provided by MechaTechnologies (“Company”, “we”, “us”, or “our”). By accessing or using the Service, you agree to be bound by these Terms.</p>
+
+        <h2>2. Description of Service</h2>
+        <p>The Service provides:</p>
+        <ul>
+            <li><strong>Fiscal integration</strong> — Generation and submission of fiscal receipts, credit notes, and debit notes in compliance with applicable tax regulations.</li>
+            <li><strong>QuickBooks integration</strong> — Synchronization of invoice and accounting data with QuickBooks Online for fiscalisation and reporting.</li>
+            <li><strong>Tax authority integration (FDMS)</strong> — Integration with Fiscal Device Management Systems and tax authority platforms as required by law.</li>
+        </ul>
+        <p>The Service does not replace accounting, tax advisory, or legal advice.</p>
+
+        <h2>3. License Grant</h2>
+        <p>We grant you a non-exclusive, non-transferable, revocable license to use the Service solely for lawful business purposes in accordance with these Terms and applicable law. You may not reverse engineer, modify core fiscal logic, bypass tax authority integrations, or use the Service for unlawful tax evasion.</p>
+
+        <h2>4. Data Ownership</h2>
+        <p>You retain all ownership rights in your data. We process your data only as necessary to provide the Service, comply with legal obligations, and as described in our Privacy Policy and Data Processing Addendum.</p>
+
+        <h2>5. Compliance Responsibility</h2>
+        <p>You are solely responsible for ensuring that your use of the Service and your data comply with applicable tax laws, accounting standards, and regulations. We are not responsible for incorrect data you provide or for your failure to meet regulatory requirements.</p>
+
+        <div class="compliance-box">
+            <strong>Compliance statement.</strong> The Company does <strong>NOT</strong> access, review, analyze, or use customer financial or accounting data except for automated system processing and compliance purposes. We do not sell data, access financial records for commercial use, use invoice data for analytics, or share accounting data with unrelated third parties. Access is limited strictly to automated processing and compliance obligations.
+        </div>
+
+        <h2>6. Limitation of Liability</h2>
+        <p>To the maximum extent permitted by law, the Company shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or for loss of profits, revenue, data, or business opportunities. Our total liability shall not exceed the fees paid for the Service in the preceding 12 months. We do not guarantee uninterrupted availability of third-party systems (including tax authority or QuickBooks services).</p>
+
+        <h2>7. Termination</h2>
+        <p>You may stop using the Service at any time. We may suspend or terminate your access for breach of these Terms or for legal or operational reasons. Upon termination, your right to use the Service ceases; we may retain data as required by law or as set out in our Data Processing Addendum.</p>
+
+        <h2>8. Governing Law</h2>
+        <p>These Terms are governed by the laws of Zimbabwe, without regard to conflict of law principles. Any disputes shall be resolved in the courts of Zimbabwe, unless otherwise required by applicable law.</p>
+
+        <h2>9. Contact</h2>
+        <p>For questions regarding these Terms, contact MechaTechnologies at <a href="mailto:support@mecha.co.zw">support@mecha.co.zw</a> or <a href="https://mecha.co.zw">https://mecha.co.zw</a>.</p>
+
+        {% include "legal/_legal_footer.html" %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Device Registration{% endblock %}
+{% block header_title %}Device Registration{% endblock %}
+
+{% block content %}
+<div class="max-w-xl">
+    <p class="text-slate-600 mb-6">
+        Register your fiscal device with ZIMRA FDMS. Device ID, Activation Key, and Serial Number are required.
+    </p>
+
+    <div id="register-form-target">
+        {% include "device_identity/register_device_partial.html" %}
+    </div>
+</div>
+{% endblock %}

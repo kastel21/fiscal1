@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FDMS Device Registration</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 480px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            color: #1a1a2e;
+        }
+        h1 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 1.5rem; }
+        form { background: #f8f9fa; padding: 1.5rem; border-radius: 8px; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; font-weight: 600; margin-bottom: 0.25rem; font-size: 0.9rem; }
+        .form-input {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        .help-text { font-size: 0.8rem; color: #666; margin-top: 0.2rem; }
+        .error { color: #dc2626; font-size: 0.85rem; margin-top: 0.25rem; }
+        ul.errorlist { list-style: none; padding: 0; margin: 0.25rem 0 0; }
+        ul.errorlist li { color: #dc2626; font-size: 0.85rem; }
+        button[type="submit"] {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        button[type="submit"]:hover { background: #1d4ed8; }
+        .message {
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        .message.success { background: #d1fae5; color: #065f46; }
+        .message.error { background: #fee2e2; color: #991b1b; }
+        .status { margin-top: 1rem; padding: 0.75rem; background: #e0e7ff; border-radius: 4px; font-size: 0.9rem; }
+        .status strong { display: block; margin-bottom: 0.25rem; }
+        .status.cert-stored { background: #d1fae5; }
+    </style>
+</head>
+<body>
+    <h1>FDMS Device Registration</h1>
+    <nav style="margin-bottom: 1rem;">
+        <a href="{% url 'dashboard' %}" style="color:#2563eb;">Dashboard</a>
+        <a href="{% url 'fdms_logs' %}" style="color:#2563eb; margin-left: 0.5rem;">Logs</a>
+    </nav>
+    <p class="subtitle">Register your fiscal device with ZIMRA FDMS</p>
+
+    {% if success_message %}
+    <div class="message success">{{ success_message }}</div>
+    <div class="status cert-stored">
+        <strong>Certificate stored</strong>
+        Device ID {{ device_id }} is registered and ready for fiscal operations.
+    </div>
+    {% endif %}
+
+    {% if error_message %}
+    <div class="message error">{{ error_message }}</div>
+    {% endif %}
+
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="id_device_id">Device ID</label>
+            <input type="number" name="device_id" id="id_device_id" class="form-input"
+                   placeholder="e.g. 12345" value="{{ form.device_id.value|default:'' }}"
+                   min="1">
+            <p class="help-text">Sold or active device ID from ZIMRA.</p>
+            {{ form.device_id.errors }}
+        </div>
+        <div class="form-group">
+            <label for="id_activation_key">Activation Key</label>
+            <input type="text" name="activation_key" id="id_activation_key" class="form-input"
+                   placeholder="e.g. 12AXC178" value="{{ form.activation_key.value|default:'' }}"
+                   maxlength="8">
+            <p class="help-text">8-symbol activation key (case insensitive).</p>
+            {{ form.activation_key.errors }}
+        </div>
+        <div class="form-group">
+            <label for="id_device_serial_no">Device Serial Number</label>
+            <input type="text" name="device_serial_no" id="id_device_serial_no" class="form-input"
+                   placeholder="e.g. SN-001" value="{{ form.device_serial_no.value|default:'' }}">
+            <p class="help-text">Serial number assigned by manufacturer.</p>
+            {{ form.device_serial_no.errors }}
+        </div>
+        <div class="form-group">
+            <label for="id_device_model_name">Device Model Name</label>
+            <input type="text" name="device_model_name" id="id_device_model_name" class="form-input"
+                   placeholder="e.g. FDMS-Model-1" value="{{ form.device_model_name.value|default:'' }}">
+            <p class="help-text">Device model name.</p>
+            {{ form.device_model_name.errors }}
+        </div>
+        <div class="form-group">
+            <label for="id_device_model_version">Device Model Version</label>
+            <input type="text" name="device_model_version" id="id_device_model_version" class="form-input"
+                   placeholder="e.g. 1.0.0" value="{{ form.device_model_version.value|default:'' }}">
+            <p class="help-text">Device model version.</p>
+            {{ form.device_model_version.errors }}
+        </div>
+        <button type="submit">Register Device</button>
+    </form>
+
+    {% if device_status %}
+    <div class="status">
+        <strong>Device status</strong>
+        {{ device_status }}
+    </div>
+    {% endif %}
+</body>
+</html>

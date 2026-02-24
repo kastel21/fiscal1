@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Processing Addendum</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #1f2937; background: #f9fafb; margin: 0; padding: 0; }
+        .legal-wrap { max-width: 860px; margin: 0 auto; padding: 2rem 1.5rem 3rem; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border-radius: 8px; margin-top: 2rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.75rem; font-weight: 700; margin: 0 0 0.25rem 0; color: #111827; }
+        .meta { font-size: 0.875rem; color: #6b7280; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e5e7eb; }
+        h2 { font-size: 1.125rem; font-weight: 600; margin: 1.75rem 0 0.5rem 0; color: #374151; }
+        p, li { margin: 0.5rem 0; font-size: 0.9375rem; }
+        ul { margin: 0.5rem 0 1rem 1.25rem; padding: 0; }
+        .legal-footer { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #e5e7eb; font-size: 0.875rem; color: #6b7280; }
+        .legal-footer a { color: #2563eb; text-decoration: none; }
+        .legal-footer a:hover { text-decoration: underline; }
+        .legal-footer .sep { margin: 0 0.5rem; color: #9ca3af; }
+        .compliance-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 6px; padding: 1rem 1.25rem; margin: 1rem 0; font-size: 0.9375rem; }
+    </style>
+</head>
+<body>
+    <div class="legal-wrap">
+        <h1>Data Processing Addendum</h1>
+        <p class="meta">Last Updated: {{ last_updated|default:"February 2026" }}</p>
+
+        <p>This Data Processing Addendum (“DPA”) forms part of the agreement between you (“Controller”) and MechaTechnologies (“Processor”) governing the processing of personal and business data in connection with the Fiscal Integration System (“Service”).</p>
+
+        <h2>1. Definitions</h2>
+        <ul>
+            <li><strong>Controller</strong> — The user or organization that determines the purposes and means of processing (you).</li>
+            <li><strong>Processor</strong> — MechaTechnologies, which processes data on behalf of the Controller.</li>
+            <li><strong>Personal Data / Data</strong> — Data processed under the Service as described in this DPA.</li>
+        </ul>
+
+        <div class="compliance-box">
+            <strong>Instruction-based processing.</strong> The Processor processes data solely on documented instructions of the Controller. The Processor does not process data for its own purposes except as necessary to provide the Service, comply with law, or as instructed by the Controller.
+        </div>
+
+        <h2>2. Scope of Processing</h2>
+        <p>Processing is limited to:</p>
+        <ul>
+            <li>Fiscalisation of invoices, credit notes, and debit notes</li>
+            <li>Integration with QuickBooks Online and tax authority systems (e.g., FDMS)</li>
+            <li>Storage and transmission of data necessary for the Service</li>
+            <li>Audit logs and compliance records as required by law</li>
+        </ul>
+        <p>The Processor does not use data for independent commercial purposes, monetization, analytics, or resale. The Processor does not share Controller data with unrelated third parties.</p>
+
+        <h2>3. Security Measures</h2>
+        <p>The Processor implements appropriate technical and organizational measures, including:</p>
+        <ul>
+            <li>Encryption in transit (HTTPS/TLS) and at rest where applicable</li>
+            <li>Access controls and role-based permissions</li>
+            <li>Secure storage of credentials and tokens</li>
+            <li>Restricted access to production data</li>
+        </ul>
+
+        <h2>4. Subprocessors</h2>
+        <p>The Processor may use the following categories of subprocessors:</p>
+        <ul>
+            <li><strong>Cloud / hosting provider</strong> — For application and database hosting</li>
+            <li><strong>QuickBooks (Intuit)</strong> — For accounting integration as authorized by the Controller</li>
+            <li><strong>Tax authority systems (e.g., FDMS)</strong> — For fiscal submission as required by law</li>
+        </ul>
+        <p>Subprocessors are bound by obligations consistent with this DPA. The Processor remains liable for subprocessor compliance.</p>
+
+        <h2>5. Data Retention</h2>
+        <p>Data is retained only as necessary to provide the Service and to meet legal, tax, or regulatory obligations. Retention periods follow applicable law and the Processor’s Privacy Policy. The Processor does not retain data beyond what is required for these purposes.</p>
+
+        <h2>6. No Independent Data Usage</h2>
+        <p>The Processor agrees that it will not:</p>
+        <ul>
+            <li>Use Controller data for its own commercial purposes</li>
+            <li>Monetize or sell Controller data</li>
+            <li>Resell or share Controller data with unrelated third parties</li>
+            <li>Use Controller data for marketing, advertising, or behavioral analytics</li>
+        </ul>
+        <p>Access to Controller data is limited strictly to automated processing and compliance obligations.</p>
+
+        <h2>7. Contact</h2>
+        <p>For questions regarding this DPA, contact MechaTechnologies at <a href="mailto:support@mecha.co.zw">support@mecha.co.zw</a> or <a href="https://mecha.co.zw">https://mecha.co.zw</a>.</p>
+
+        {% include "legal/_legal_footer.html" %}
+    </div>
+</body>
+</html>
