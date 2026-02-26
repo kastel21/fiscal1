@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default:"Select Tenant" }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Dark mode: Tailwind CDN uses prefers-color-scheme: dark by default -->
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6">
+    <div class="w-full max-w-md sm:max-w-lg bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div class="bg-slate-800 dark:bg-slate-700 text-white px-6 py-4 flex items-center justify-between flex-wrap gap-2">
+            <div>
+                <h1 class="text-xl font-semibold">{{ title|default:"Select Tenant" }}</h1>
+                <p class="text-slate-300 text-sm mt-0.5">Choose a tenant to continue</p>
+            </div>
+            <form method="post" action="{% url 'admin:logout' %}" class="inline">{% csrf_token %}
+                <button type="submit" class="text-sm px-3 py-1.5 rounded-lg bg-slate-600 hover:bg-slate-500 text-slate-200 transition cursor-pointer">
+                    Logout
+                </button>
+            </form>
+        </div>
+        <div class="p-4 sm:p-6">
+            {% if tenants %}
+                {% if show_search %}
+                <div class="mb-4">
+                    <label for="tenant-search" class="sr-only">Search tenants</label>
+                    <input type="text" id="tenant-search" placeholder="Search by name or device…" autocomplete="off"
+                        class="w-full px-4 py-2.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:ring-2 focus:ring-slate-500 focus:border-transparent">
+                </div>
+                {% endif %}
+                <form method="post" action="{% url 'select_tenant' %}" id="tenant-form" class="space-y-3">
+                    {% csrf_token %}
+                    <div class="space-y-2" id="tenant-list">
+                        {% for tenant in tenants %}
+                            <button type="submit" name="tenant_slug" value="{{ tenant.slug }}"
+                                data-tenant-card
+                                data-name="{{ tenant.name|lower }}"
+                                data-slug="{{ tenant.slug|lower }}"
+                                data-device="{{ tenant.device_id }}"
+                                class="tenant-card w-full text-left px-4 py-3 rounded-lg border transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 dark:focus:ring-offset-slate-800
+                                    {% if current_tenant_slug == tenant.slug %}
+                                        border-slate-500 dark:border-slate-400 bg-slate-50 dark:bg-slate-700 ring-2 ring-slate-500 dark:ring-slate-400
+                                    {% else %}
+                                        border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 hover:border-slate-300 dark:hover:border-slate-500
+                                    {% endif %}">
+                                <div class="flex items-start justify-between gap-2">
+                                    <div class="min-w-0 flex-1">
+                                        <span class="font-medium text-slate-800 dark:text-slate-100 block truncate">{{ tenant.name }}</span>
+                                        <span class="text-sm text-slate-500 dark:text-slate-400 mt-0.5 block">Device ID: {{ tenant.device_id }}</span>
+                                    </div>
+                                    <span class="flex-shrink-0 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                                        {% if tenant.is_active %}bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300
+                                        {% else %}bg-slate-100 text-slate-600 dark:bg-slate-600 dark:text-slate-300{% endif %}">
+                                        {% if tenant.is_active %}Active{% else %}Inactive{% endif %}
+                                    </span>
+                                </div>
+                                <span class="text-xs text-slate-400 dark:text-slate-500 mt-1 block">{{ tenant.slug }}</span>
+                            </button>
+                        {% endfor %}
+                    </div>
+                </form>
+            {% else %}
+                <p class="text-slate-600 dark:text-slate-400">No active tenants. Create one in the admin.</p>
+                <a href="{% url 'admin:tenants_tenant_changelist' %}" class="inline-block mt-3 text-slate-600 dark:text-slate-400 underline hover:text-slate-800 dark:hover:text-slate-200">Admin → Tenants</a>
+            {% endif %}
+        </div>
+    </div>
+    {% if show_search %}
+    <script>
+        (function() {
+            var search = document.getElementById('tenant-search');
+            var cards = document.querySelectorAll('[data-tenant-card]');
+            if (!search || !cards.length) return;
+            search.addEventListener('input', function() {
+                var q = (this.value || '').toLowerCase().trim();
+                cards.forEach(function(card) {
+                    var name = (card.getAttribute('data-name') || '');
+                    var slug = (card.getAttribute('data-slug') || '');
+                    var device = (card.getAttribute('data-device') || '').toString();
+                    var show = !q || name.indexOf(q) !== -1 || slug.indexOf(q) !== -1 || device.indexOf(q) !== -1;
+                    card.style.display = show ? '' : 'none';
+                });
+            });
+        })();
+    </script>
+    {% endif %}
+</body>
+</html>

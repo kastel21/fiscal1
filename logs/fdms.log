@@ -11146,3 +11146,92 @@ INFO 2026-02-24 14:53:54,401 FDMS Headers: {'DeviceModelName': 'Server', 'Device
 INFO 2026-02-24 14:53:57,261 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
 INFO 2026-02-24 14:55:09,916 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
 INFO 2026-02-24 14:55:11,323 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-24 23:59:33,436 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-24 23:59:34,331 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-24 23:59:43,137 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-24 23:59:46,107 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-25 00:00:05,279 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-25 00:00:06,469 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-25 00:00:34,749 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-25 00:00:36,214 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-25 00:02:00,315 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-25 00:02:01,305 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-25 06:00:27,621 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-25 06:00:28,411 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-25 06:00:40,282 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-25 06:00:41,074 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-25 06:01:05,890 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-25 06:01:06,597 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-25 06:05:18,110 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-25 06:05:18,826 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-25 06:05:22,974 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-25 06:05:23,744 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-25 06:45:53,136 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+WARNING 2026-02-25 06:46:05,158 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 1.0s.
+WARNING 2026-02-25 06:46:18,166 FDMS request failed (attempt 2/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 2.0s.
+WARNING 2026-02-25 06:46:32,174 FDMS request failed (attempt 3/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 4.0s.
+INFO 2026-02-25 06:46:48,183 Offline detected: HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)"))
+INFO 2026-02-25 07:00:19,922 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-25 07:00:33,873 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:18:24,860 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:18:32,531 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+WARNING 2026-02-26 19:18:59,068 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 1.0s.
+WARNING 2026-02-26 19:18:59,068 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 1.0s.
+INFO 2026-02-26 19:29:03,084 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:29:05,006 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:29:07,629 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:29:09,270 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:30:12,454 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:30:13,369 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:30:19,333 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:30:20,358 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:30:44,549 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:30:45,502 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:30:52,590 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:30:55,413 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:52:52,479 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:52:53,329 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:52:59,411 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:53:00,189 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:53:03,692 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:53:04,777 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 19:53:24,040 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 19:53:24,847 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:16:39,562 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:16:41,264 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:16:44,389 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:16:45,081 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:16:51,061 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:16:52,225 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:18:06,794 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:11,468 FDMS call logged: GET /Device/v1/31285/GetStatus -> 200
+INFO 2026-02-26 20:18:11,480 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:13,718 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:18:21,906 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:27,510 FDMS call logged: GET /Device/v1/31285/GetStatus -> 200
+INFO 2026-02-26 20:18:27,520 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:28,614 FDMS call logged: GET /Device/v1/31285/GetConfig -> 200
+INFO 2026-02-26 20:18:28,620 GetConfig OK for device 31285
+INFO 2026-02-26 20:18:28,842 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:29,682 FDMS call logged: GET /Device/v1/31285/GetStatus -> 200
+INFO 2026-02-26 20:18:29,693 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:30,740 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:18:40,719 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:42,774 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-02-26 20:18:42,788 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:44,610 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:18:50,248 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:51,588 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-02-26 20:18:51,600 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:52,907 FDMS call logged: GET /Device/v1/32327/GetConfig -> 200
+INFO 2026-02-26 20:18:52,915 GetConfig OK for device 32327
+INFO 2026-02-26 20:18:53,017 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:53,971 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-02-26 20:18:53,984 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:18:55,128 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:19:19,881 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:19:21,182 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:19:32,322 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:19:34,045 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-02-26 20:19:41,537 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-02-26 20:19:45,143 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200

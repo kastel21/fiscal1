@@ -459,7 +459,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=15, decimal_places=2, default=0)
-    tax_code = models.CharField(max_length=10, default="VAT")
+    tax_code = models.CharField(max_length=50, default="VAT")
     tax_percent = models.DecimalField(max_digits=5, decimal_places=2, default=15)
     hs_code = models.CharField(max_length=20)
     is_active = models.BooleanField(default=True)

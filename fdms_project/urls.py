@@ -20,9 +20,11 @@ from django.shortcuts import redirect
 from django.urls import include, path
 
 from fiscal.views_health import fdms_health
+from tenants.views import select_tenant
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("select-tenant/", select_tenant, name="select_tenant"),
     path("health/fdms/", fdms_health),
     path("", lambda r: redirect("fdms_dashboard")),
     path("dashboard/", lambda r: redirect("fdms_dashboard")),
