@@ -244,6 +244,10 @@ class DeviceApiService(FDMSBaseService):
         device.fiscal_day_status = "FiscalDayOpened"
         device.save(update_fields=["last_fiscal_day_no", "fiscal_day_status"])
         logger.info("OpenDay OK for device %s: fiscal day #%s", device_id, returned_fiscal_day_no)
+        # GetStatus on open day: sync device state from FDMS after opening
+        _, _err = self.get_status(device)
+        if _err:
+            logger.warning("GetStatus after OpenDay failed (non-fatal): %s", _err)
         return fiscal_day, None
 
     def _build_close_day_payload(

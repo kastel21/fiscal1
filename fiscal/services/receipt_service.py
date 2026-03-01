@@ -428,12 +428,12 @@ def submit_receipt(
     """
     Submit receipt to FDMS. Returns (Receipt, None) or (None, error_message).
 
-    Phase 06 Error Recovery:
-    - Always re-sync with GetStatus first (never use device.last_receipt_global_no for next number)
-    - receipt_global_no = lastReceiptGlobalNo + 1 (from FDMS only)
+    GetStatus is only run: on open day, after close day, and for/after the 1st receipt or note.
+    - First receipt of the day: call GetStatus once to get lastReceiptGlobalNo; after success call GetStatus again.
+    - Subsequent receipts: use device.last_receipt_global_no + 1 (no GetStatus).
     - Idempotent: if Receipt(device, fiscal_day_no, invoice_no) exists with fdms_receipt_id, return it
     - Detect duplicate receiptGlobalNo: if Receipt(device, receipt_global_no) exists, return it
-    - Network failures: retried by http_client; on failure, re-GetStatus and retry submit (max 3)
+    - Network failures: retried by http_client (no GetStatus on retry).
     """
     last_error = None
     for attempt in range(MAX_SUBMIT_RETRIES):
@@ -468,16 +468,11 @@ def submit_receipt(
         is_network_err = any(
             x in err_lower for x in ("connection", "timeout", "refused", "unreachable")
         )
-        if (
-            attempt < MAX_SUBMIT_RETRIES - 1
-            and is_network_err
-            and "GetStatus failed" not in (err or "")
-        ):
+        if attempt < MAX_SUBMIT_RETRIES - 1 and is_network_err:
             logger.warning(
-                "SubmitReceipt attempt %d failed (network): %s. Re-syncing and retrying.",
+                "SubmitReceipt attempt %d failed (network): %s. Retrying.",
                 attempt + 1, err,
             )
-            re_sync_device_from_get_status(device)
             continue
         break
 
@@ -544,7 +539,7 @@ def _do_submit_receipt(
     referenced_receipt: dict | None = None,
     receipt_notes: str | None = None,
 ) -> tuple[Receipt | None, str | None]:
-    """Inner submit logic. Must call GetStatus first. Never use stale lastReceiptGlobalNo."""
+    """Inner submit logic. GetStatus only for first receipt of day; else use device.last_receipt_global_no."""
     if receipt_type == "CreditNote":
         logger.info("[CreditNote Submit] _do_submit_receipt entered")
 
@@ -557,15 +552,26 @@ def _do_submit_receipt(
     if config_err:
         return None, config_err
 
-    try:
-        status_data = FDMSDeviceService().get_status(device)
-    except Exception as e:
-        return None, f"GetStatus failed: {e}"
+    first_receipt = not Receipt.objects.filter(device=device, fiscal_day_no=fiscal_day_no).exists()
+    status_data = None
+    if first_receipt:
+        try:
+            status_data = FDMSDeviceService().get_status(device)
+        except Exception as e:
+            return None, f"GetStatus failed: {e}"
+        fdms_last_receipt_global_no = status_data.get("lastReceiptGlobalNo")
+        if fdms_last_receipt_global_no is None:
+            fdms_last_receipt_global_no = 0
+        receipt_global_no = int(fdms_last_receipt_global_no) + 1
+    else:
+        device.refresh_from_db()
+        last_no = device.last_receipt_global_no
+        if last_no is None:
+            last_no = 0
+        receipt_global_no = int(last_no) + 1
+        status_data = None
 
-    fdms_last_receipt_global_no = status_data.get("lastReceiptGlobalNo")
-    if fdms_last_receipt_global_no is None:
-        fdms_last_receipt_global_no = 0
-    receipt_global_no = int(fdms_last_receipt_global_no) + 1
+    fdms_last_receipt_global_no = receipt_global_no - 1
 
     existing_by_global = Receipt.objects.filter(
         device=device, receipt_global_no=receipt_global_no
@@ -594,7 +600,7 @@ def _do_submit_receipt(
             )
             return existing_by_invoice, None
 
-    status = status_data.get("fiscalDayStatus")
+    status = status_data.get("fiscalDayStatus") if status_data else device.fiscal_day_status
     if status not in ("FiscalDayOpened", "FiscalDayCloseFailed"):
         return None, f"Cannot submit: status must be FiscalDayOpened or FiscalDayCloseFailed (current: {status})"
 
@@ -1046,6 +1052,12 @@ def _do_submit_receipt(
             )
         device.last_receipt_global_no = receipt_global_no
         device.save(update_fields=["last_receipt_global_no"])
+
+    if first_receipt:
+        try:
+            FDMSDeviceService().get_status(device)
+        except Exception as e:
+            logger.warning("GetStatus after first receipt (non-fatal): %s", e)
 
     try:
         from fiscal.services.receipt_submission_response_service import store_receipt_submission_response
