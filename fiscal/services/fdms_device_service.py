@@ -191,15 +191,15 @@ class FDMSDeviceService(FDMSBaseService):
 
     def ping(self, device: FiscalDevice) -> dict:
         """
-        GET /Device/v1/{deviceID}/Ping
+        POST /Device/v1/{deviceID}/Ping
         Report device is online to FDMS. Returns operationID and reportingFrequency (minutes).
         """
         if not device.is_registered:
             raise ValueError("Device is not registered")
 
         path = f"/Device/v1/{device.device_id}/Ping"
-        logger.info("Ping request: GET %s", path)
-        response = self.device_request("GET", path, device=device)
+        logger.info("Ping request: POST %s", path)
+        response = self.device_request("POST", path, device=device)
 
         if response.status_code != 200:
             try:

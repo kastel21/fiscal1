@@ -45,7 +45,7 @@ class DeviceApiService(FDMSBaseService):
 
     def ping(self, device: FiscalDevice) -> tuple[dict | None, str | None]:
         """
-        Call GET /Device/v1/{deviceID}/Ping to report device is online to FDMS.
+        Call POST /Device/v1/{deviceID}/Ping to report device is online to FDMS.
         Returns (response_data with operationID, reportingFrequency, None) or (None, error_message).
         """
         from fiscal.services.fdms_device_service import FDMSDeviceService, FDMSDeviceError
