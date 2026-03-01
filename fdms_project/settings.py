@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     "invoices",
     "offline",
     "legal",
+    "quickbooks",
 ]
 
 MIDDLEWARE = [
@@ -232,6 +233,23 @@ QB_REDIRECT_URI = os.environ.get("QB_REDIRECT_URI", "")
 QB_WEBHOOK_VERIFIER = os.environ.get("QB_WEBHOOK_VERIFIER", "")
 QB_REALM_ID = os.environ.get("QB_REALM_ID", "")
 QB_ACCESS_TOKEN = os.environ.get("QB_ACCESS_TOKEN", "")
+
+# QuickBooks OAuth2 (quickbooks app) - use env only.
+QUICKBOOKS_CLIENT_ID = os.environ.get("QUICKBOOKS_CLIENT_ID", "")
+QUICKBOOKS_CLIENT_SECRET = os.environ.get("QUICKBOOKS_CLIENT_SECRET", "")
+QUICKBOOKS_REDIRECT_URI = os.environ.get(
+    "QUICKBOOKS_REDIRECT_URI", "https://takatel.tech/qb/callback/"
+)
+QUICKBOOKS_ENVIRONMENT = os.environ.get("QUICKBOOKS_ENVIRONMENT", "production").lower()
+# Base API URLs (no trailing slash)
+if QUICKBOOKS_ENVIRONMENT == "sandbox":
+    QUICKBOOKS_API_BASE_URL = "https://sandbox-quickbooks.api.intuit.com"
+else:
+    QUICKBOOKS_API_BASE_URL = "https://quickbooks.api.intuit.com"
+# OAuth2 endpoints (same for prod/sandbox)
+QUICKBOOKS_OAUTH_AUTHORIZE_URL = "https://appcenter.intuit.com/connect/oauth2"
+QUICKBOOKS_OAUTH_TOKEN_URL = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
+QUICKBOOKS_OAUTH_REVOKE_URL = "https://oauth.platform.intuit.com/oauth2/v1/tokens/revoke"
 
 # ZIMRA Section 11 QR verification URL for invoice deep link
 ZIMRA_QR_URL = "https://invoice.zimra.co.zw"

@@ -31,5 +31,6 @@ urlpatterns = [
     path("device/", include("device_identity.urls")),
     path("offline/", include("offline.urls")),
     path("legal/", include("legal.urls")),
+    path("qb/", include("quickbooks.urls")),
     path("", include("fiscal.urls")),
 ]
