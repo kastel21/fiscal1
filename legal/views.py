@@ -66,3 +66,9 @@ def dpa_view(request):
 def cookies_view(request):
     """Public Cookie Policy. /legal/cookies/. No authentication required."""
     return render(request, "legal/cookies.html", {"last_updated": "February 2026"})
+
+
+@require_http_methods(["GET"])
+def contact_view(request):
+    """Public Contact Us page. /legal/contact/. No authentication required."""
+    return render(request, "legal/contact.html")

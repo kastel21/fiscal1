@@ -2,12 +2,15 @@
 QuickBooks OAuth2 and API views. No frontend UI; backend only.
 """
 
+import json
 import logging
-from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import redirect
-from django.views.decorators.http import require_GET, require_http_methods
+from django.utils import timezone
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
-from quickbooks.models import QuickBooksToken
+from quickbooks.models import QuickBooksToken, QuickBooksWebhookEvent
 from quickbooks.services import (
     build_connect_url,
     exchange_code_for_tokens,
@@ -15,9 +18,98 @@ from quickbooks.services import (
     pull_invoices,
     push_invoice_update,
 )
-from quickbooks.utils import QuickBooksTokenError
+from quickbooks.utils import QuickBooksAPIException, QuickBooksTokenError, verify_qb_webhook_signature
 
 logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Webhook: QuickBooks invoice events (signature verified, process async)
+# ---------------------------------------------------------------------------
+
+
+@csrf_exempt
+@require_POST
+def qb_webhook(request):
+    """
+    POST /qb/webhook/
+    QuickBooks webhook. Verify intuit-signature (HMAC SHA256), parse eventNotifications,
+    persist only Invoice events to QuickBooksWebhookEvent, trigger Celery task.
+    Return 200 quickly. Never fiscalise in view. Never process unverified webhooks.
+    """
+    raw_body = request.body
+    if raw_body is None:
+        raw_body = b""
+    signature_header = (request.META.get("HTTP_INTUIT_SIGNATURE") or "").strip()
+
+    if not verify_qb_webhook_signature(raw_body, signature_header):
+        logger.warning(
+            "QuickBooks webhook signature verification failed",
+            extra={"realm_id": None, "event_type": "webhook", "verification": "failed"},
+        )
+        return HttpResponseForbidden(b"Invalid signature")
+
+    try:
+        body = json.loads(raw_body.decode("utf-8") if raw_body else "{}")
+    except (json.JSONDecodeError, UnicodeDecodeError) as e:
+        logger.warning(
+            "QuickBooks webhook malformed JSON",
+            extra={"error": str(e), "verification": "success"},
+        )
+        return JsonResponse({"status": "ok"}, status=200)
+
+    event_notifications = body.get("eventNotifications") or []
+    event_time = timezone.now()
+
+    for notif in event_notifications:
+        dce = notif.get("dataChangeEvent") or {}
+        realm_id = str(dce.get("realmId") or body.get("realmId") or "")
+        entities = dce.get("entities") or []
+        for entity in entities:
+            name = (entity.get("name") or "").strip()
+            if name != "Invoice":
+                continue
+            entity_id = entity.get("id")
+            if not entity_id:
+                continue
+            entity_id = str(entity_id)
+            operation = (entity.get("operation") or "").strip()
+            event_type = operation or "Create"
+            try:
+                ev = QuickBooksWebhookEvent.objects.create(
+                    realm_id=realm_id,
+                    event_type=event_type,
+                    entity_name=name,
+                    entity_id=entity_id,
+                    event_time=event_time,
+                    payload=dict(notif),
+                    processed=False,
+                )
+                from quickbooks.tasks import process_qb_invoice_webhook
+                process_qb_invoice_webhook.delay(realm_id, entity_id)
+                logger.info(
+                    "QuickBooks webhook event saved and task queued",
+                    extra={
+                        "realm_id": realm_id,
+                        "invoice_id": entity_id,
+                        "event_type": event_type,
+                        "verification": "success",
+                        "webhook_event_id": ev.pk,
+                    },
+                )
+            except Exception as e:
+                logger.exception(
+                    "QuickBooks webhook save/task queue failed: %s",
+                    e,
+                    extra={
+                        "realm_id": realm_id,
+                        "invoice_id": entity_id,
+                        "event_type": event_type,
+                        "verification": "success",
+                    },
+                )
+
+    return JsonResponse({"status": "ok"}, status=200)
 
 
 def _get_user(request):
@@ -143,7 +235,7 @@ def qb_invoices_pull(request):
     try:
         invoices = pull_invoices(realm_id=realm_id, user=user, max_results=max_results)
         return JsonResponse({"invoices": invoices})
-    except QuickBooksTokenError as e:
+    except (QuickBooksTokenError, QuickBooksAPIException) as e:
         logger.warning("QuickBooks invoice pull failed: %s", e)
         return JsonResponse({"error": str(e)}, status=400)
 
@@ -190,6 +282,6 @@ def qb_invoices_push(request, invoice_id):
             user=user,
         )
         return JsonResponse({"success": True, "invoice": result})
-    except QuickBooksTokenError as e:
+    except (QuickBooksTokenError, QuickBooksAPIException) as e:
         logger.warning("QuickBooks invoice push failed: %s", e)
         return JsonResponse({"error": str(e)}, status=400)

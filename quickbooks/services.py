@@ -1,5 +1,6 @@
 """
 QuickBooks API: OAuth2 connect URL, code exchange, revoke, invoice pull/push.
+Uses QuickBooksClient for all API calls (captures intuit_tid, logs to QuickBooksAPILog).
 """
 
 import logging
@@ -8,8 +9,9 @@ from django.conf import settings
 from django.utils import timezone
 import requests
 
+from quickbooks.client import QuickBooksClient
 from quickbooks.models import QuickBooksToken
-from quickbooks.utils import QuickBooksTokenError, refresh_quickbooks_token
+from quickbooks.utils import QuickBooksAPIException, QuickBooksTokenError, get_valid_token, refresh_quickbooks_token
 
 logger = logging.getLogger(__name__)
 
@@ -178,78 +180,59 @@ def revoke_quickbooks_token(token_model):
 # ---------------------------------------------------------------------------
 
 
-def get_valid_token(realm_id, user=None):
-    """
-    Return an active QuickBooksToken for realm_id (and optionally user).
-    Refreshes token if expired. Raises QuickBooksTokenError if not found or refresh fails.
-    """
-    qs = QuickBooksToken.objects.filter(realm_id=realm_id, is_active=True)
-    if user is not None:
-        qs = qs.filter(user=user)
-    token = qs.order_by("-updated_at").first()
-    if not token:
-        raise QuickBooksTokenError(f"No active QuickBooks connection for realm_id={realm_id}")
-
-    if token.is_expired():
-        refresh_quickbooks_token(token)
-        token.refresh_from_db()
-    return token
-
-
-def _api_headers(access_token):
-    return {
-        "Authorization": f"Bearer {access_token}",
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-    }
-
-
-def _base_url():
-    return (getattr(settings, "QUICKBOOKS_API_BASE_URL", "") or "").rstrip("/")
-
-
 # ---------------------------------------------------------------------------
-# Invoice pull
+# Invoice query (pull)
 # ---------------------------------------------------------------------------
+
+
+def query_invoice(realm_id, user=None, max_results=20):
+    """
+    Query QuickBooks for invoices via QuickBooksClient.
+    Returns (invoices_list, intuit_tid). intuit_tid may be None if header missing.
+    """
+    client = QuickBooksClient(realm_id, user=user)
+    data, intuit_tid = client.get(
+        "query",
+        params={"query": f"SELECT * FROM Invoice MAXRESULTS {max_results}"},
+        endpoint_label="query?query=SELECT * FROM Invoice",
+    )
+    query_response = data.get("QueryResponse", {}) if data else {}
+    invoices = query_response.get("Invoice", [])
+    if not isinstance(invoices, list):
+        invoices = [invoices] if invoices else []
+    return invoices, intuit_tid
 
 
 def pull_invoices(realm_id, user=None, max_results=20):
     """
     Query QuickBooks for invoices. Returns list of invoice dicts from QueryResponse.
+    Uses QuickBooksClient; captures intuit_tid and logs to QuickBooksAPILog.
     """
-    token = get_valid_token(realm_id, user=user)
-    base = _base_url()
-    if not base:
-        raise QuickBooksTokenError("QUICKBOOKS_API_BASE_URL is not configured")
+    invoices, _ = query_invoice(realm_id, user=user, max_results=max_results)
+    return invoices
 
-    url = f"{base}/v3/company/{realm_id}/query"
-    params = {"query": f"SELECT * FROM Invoice MAXRESULTS {max_results}"}
 
-    try:
-        response = requests.get(
-            url,
-            headers=_api_headers(token.access_token),
-            params=params,
-            timeout=30,
-        )
-        if response.status_code != 200:
-            try:
-                err_body = response.json()
-                err_msg = err_body.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-            except Exception:
-                err_msg = response.text
-            logger.error("QuickBooks invoice pull failed: status=%s body=%s", response.status_code, response.text[:500])
-            raise QuickBooksTokenError(err_msg or f"Invoice pull failed (HTTP {response.status_code})")
+# ---------------------------------------------------------------------------
+# Invoice fetch (single by id)
+# ---------------------------------------------------------------------------
 
-        data = response.json()
-        query_response = data.get("QueryResponse", {})
-        invoices = query_response.get("Invoice", [])
-        return invoices if isinstance(invoices, list) else [invoices] if invoices else []
-    except QuickBooksTokenError:
-        raise
-    except requests.RequestException as e:
-        logger.exception("QuickBooks invoice pull request failed")
-        raise QuickBooksTokenError(str(e)) from e
+
+def fetch_invoice(realm_id, invoice_id, entity_name="Invoice", user=None):
+    """
+    Fetch a single invoice or creditmemo by id via QuickBooksClient.
+    Returns (payload_dict, intuit_tid). Raises QuickBooksAPIException on API error.
+    """
+    resource = "creditmemo" if entity_name == "CreditMemo" else "invoice"
+    path = f"{resource}/{invoice_id}"
+    client = QuickBooksClient(realm_id, user=user)
+    data, intuit_tid = client.get(
+        path,
+        endpoint_label=path,
+        qb_invoice_id=str(invoice_id),
+    )
+    entity_key = "CreditMemo" if entity_name == "CreditMemo" else "Invoice"
+    payload = (data.get(entity_key) or data) if data else None
+    return payload, intuit_tid
 
 
 # ---------------------------------------------------------------------------
@@ -257,47 +240,38 @@ def pull_invoices(realm_id, user=None, max_results=20):
 # ---------------------------------------------------------------------------
 
 
-def push_invoice_update(realm_id, invoice_id, sync_token, private_note=None, user=None):
+def update_invoice(realm_id, invoice_id, sync_token, private_note=None, user=None):
     """
     Update a QuickBooks invoice (e.g. set PrivateNote after fiscalisation).
-    invoice_id and sync_token are the QuickBooks Id and SyncToken.
+    Uses QuickBooksClient; captures intuit_tid and logs to QuickBooksAPILog.
+    Returns (response_body, intuit_tid). intuit_tid may be None.
     """
-    token = get_valid_token(realm_id, user=user)
-    base = _base_url()
-    if not base:
-        raise QuickBooksTokenError("QUICKBOOKS_API_BASE_URL is not configured")
-
-    url = f"{base}/v3/company/{realm_id}/invoice?operation=update"
+    client = QuickBooksClient(realm_id, user=user)
     payload = {
         "Id": str(invoice_id),
         "SyncToken": str(sync_token),
     }
     if private_note is not None:
         payload["PrivateNote"] = private_note
+    data, intuit_tid = client.post(
+        "invoice?operation=update",
+        json_payload=payload,
+        endpoint_label="invoice?operation=update",
+        qb_invoice_id=str(invoice_id),
+    )
+    return data, intuit_tid
 
-    try:
-        response = requests.post(
-            url,
-            headers=_api_headers(token.access_token),
-            json=payload,
-            timeout=30,
-        )
-        if response.status_code not in (200, 201):
-            try:
-                err_body = response.json()
-                err_msg = err_body.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-            except Exception:
-                err_msg = response.text
-            logger.error(
-                "QuickBooks invoice update failed: status=%s body=%s",
-                response.status_code,
-                response.text[:500],
-            )
-            raise QuickBooksTokenError(err_msg or f"Invoice update failed (HTTP {response.status_code})")
 
-        return response.json()
-    except QuickBooksTokenError:
-        raise
-    except requests.RequestException as e:
-        logger.exception("QuickBooks invoice update request failed")
-        raise QuickBooksTokenError(str(e)) from e
+def push_invoice_update(realm_id, invoice_id, sync_token, private_note=None, user=None):
+    """
+    Update a QuickBooks invoice (e.g. set PrivateNote after fiscalisation).
+    Returns response body (for backward compatibility). intuit_tid stored in QuickBooksAPILog.
+    """
+    data, _ = update_invoice(
+        realm_id=realm_id,
+        invoice_id=invoice_id,
+        sync_token=sync_token,
+        private_note=private_note,
+        user=user,
+    )
+    return data

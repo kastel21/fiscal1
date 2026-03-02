@@ -41,34 +41,83 @@ def verify_qb_webhook_signature(body: bytes, signature_header: str) -> bool:
 
 
 def get_qb_access_token() -> str:
-    """Return QB access token from settings. Used for API calls."""
+    """Return QB access token from settings. Used for API calls (legacy path)."""
     return getattr(settings, "QB_ACCESS_TOKEN", "") or ""
+
+
+def _log_qb_api_call(realm_id: str, endpoint: str, method: str, status_code: int, intuit_tid: str | None, request_body=None, response_body=None, qb_invoice_id: str | None = None):
+    """Create QuickBooksAPILog entry (fiscal app has no QuickBooksToken; use quickbooks app log model)."""
+    try:
+        from quickbooks.models import QuickBooksAPILog
+        QuickBooksAPILog.objects.create(
+            realm_id=realm_id,
+            endpoint=endpoint,
+            method=method,
+            status_code=status_code,
+            intuit_tid=intuit_tid,
+            request_body=request_body,
+            response_body=response_body,
+            qb_invoice_id=qb_invoice_id,
+        )
+    except Exception as e:
+        logger.warning("QuickBooksAPILog create failed: %s", e)
 
 
 def fetch_invoice_from_qb(invoice_id: str, realm_id: str, entity_name: str = "Invoice") -> dict | None:
     """
     Fetch full invoice or creditmemo from QuickBooks API.
-    GET https://quickbooks.api.intuit.com/v3/company/{realmId}/invoice/{invoiceId}
-    or /creditmemo/{id} for CreditMemo.
-    Returns parsed JSON payload or None on failure.
+    Uses quickbooks.client when QuickBooksToken exists for realm_id; otherwise legacy QB_ACCESS_TOKEN.
+    Captures intuit_tid and logs to QuickBooksAPILog. Returns parsed payload or None on failure.
     """
+    if not realm_id or not invoice_id:
+        return None
+
+    # Prefer quickbooks app client (OAuth2 token) when available
+    try:
+        from quickbooks.services import fetch_invoice
+        payload, _ = fetch_invoice(realm_id, invoice_id, entity_name=entity_name, user=None)
+        return payload
+    except Exception as e:
+        # No QuickBooksToken or quickbooks not configured; fall back to legacy token
+        if "No active QuickBooks connection" not in str(e) and "not configured" not in str(e).lower():
+            logger.warning("QuickBooks fetch via quickbooks app failed: %s; trying legacy token", e)
+
     token = get_qb_access_token()
     if not token:
         logger.warning("QB_ACCESS_TOKEN not set; cannot fetch from QB API")
         return None
-    if not realm_id or not invoice_id:
-        return None
+
     resource = "creditmemo" if entity_name == "CreditMemo" else "invoice"
     url = f"{QB_API_BASE}/{realm_id}/{resource}/{invoice_id}"
+    endpoint = f"{resource}/{invoice_id}"
     headers = {
         "Authorization": f"Bearer {token}",
         "Accept": "application/json",
     }
     try:
         resp = requests.get(url, headers=headers, timeout=15)
+        intuit_tid = resp.headers.get("intuit_tid") if resp.headers else None
+        status_code = resp.status_code
+
+        logger.info(
+            "QuickBooks API Call",
+            extra={
+                "realm_id": realm_id,
+                "endpoint": endpoint,
+                "method": "GET",
+                "status_code": status_code,
+                "intuit_tid": intuit_tid,
+            },
+        )
+
+        try:
+            response_body = resp.json() if resp.text else None
+        except (ValueError, TypeError):
+            response_body = {"_raw": (resp.text[:5000] if resp.text else None)}
+        _log_qb_api_call(realm_id=realm_id, endpoint=endpoint, method="GET", status_code=status_code, intuit_tid=intuit_tid, response_body=response_body, qb_invoice_id=invoice_id)
+
         resp.raise_for_status()
         data = resp.json()
-        # QB returns { "Invoice": { ... } } or { "CreditMemo": { ... } }
         entity_key = "CreditMemo" if entity_name == "CreditMemo" else "Invoice"
         return data.get(entity_key) or data
     except requests.RequestException as e:

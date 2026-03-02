@@ -3,7 +3,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import QuickBooksToken
+from .models import QuickBooksAPILog, QuickBooksToken, QuickBooksWebhookEvent
 
 
 @admin.register(QuickBooksToken)
@@ -37,3 +37,21 @@ class QuickBooksTokenAdmin(admin.ModelAdmin):
         return format_html("<code>{}…</code>", (obj.refresh_token[:20] if len(obj.refresh_token) > 20 else obj.refresh_token))
 
     refresh_token_preview.short_description = "Refresh token"
+
+
+@admin.register(QuickBooksAPILog)
+class QuickBooksAPILogAdmin(admin.ModelAdmin):
+    list_display = ("realm_id", "method", "endpoint", "status_code", "intuit_tid", "qb_invoice_id", "created_at")
+    list_filter = ("method", "status_code")
+    search_fields = ("realm_id", "intuit_tid", "qb_invoice_id", "endpoint")
+    readonly_fields = ("realm_id", "endpoint", "method", "status_code", "intuit_tid", "request_body", "response_body", "qb_invoice_id", "created_at")
+    date_hierarchy = "created_at"
+
+
+@admin.register(QuickBooksWebhookEvent)
+class QuickBooksWebhookEventAdmin(admin.ModelAdmin):
+    list_display = ("realm_id", "entity_name", "entity_id", "event_type", "processed", "created_at")
+    list_filter = ("processed", "entity_name", "event_type")
+    search_fields = ("realm_id", "entity_id")
+    readonly_fields = ("realm_id", "event_type", "entity_name", "entity_id", "event_time", "payload", "processed", "created_at")
+    date_hierarchy = "created_at"

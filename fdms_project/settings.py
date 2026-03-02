@@ -230,6 +230,7 @@ FDMS_DEVICE_MODEL_VERSION = os.environ.get("FDMS_DEVICE_MODEL_VERSION", "v1")
 QB_CLIENT_ID = os.environ.get("QB_CLIENT_ID", "")
 QB_CLIENT_SECRET = os.environ.get("QB_CLIENT_SECRET", "")
 QB_REDIRECT_URI = os.environ.get("QB_REDIRECT_URI", "")
+# Webhook signature verification (HMAC SHA256). Required for /qb/webhook/ and /api/qb/webhook/
 QB_WEBHOOK_VERIFIER = os.environ.get("QB_WEBHOOK_VERIFIER", "")
 QB_REALM_ID = os.environ.get("QB_REALM_ID", "")
 QB_ACCESS_TOKEN = os.environ.get("QB_ACCESS_TOKEN", "")

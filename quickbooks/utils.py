@@ -20,6 +20,16 @@ class QuickBooksTokenError(Exception):
         self.response_body = response_body
 
 
+class QuickBooksAPIException(Exception):
+    """Raised when a QuickBooks API request fails (HTTP >= 400)."""
+
+    def __init__(self, message, status_code=None, response_body=None, intuit_tid=None):
+        super().__init__(message)
+        self.status_code = status_code
+        self.response_body = response_body
+        self.intuit_tid = intuit_tid
+
+
 def _get_token_request_headers():
     """Basic auth header for Intuit token endpoint: base64(client_id:client_secret)."""
     client_id = (getattr(settings, "QUICKBOOKS_CLIENT_ID", "") or "").strip()
@@ -98,3 +108,48 @@ def refresh_quickbooks_token(token_model):
     except requests.RequestException as e:
         logger.exception("QuickBooks token refresh request failed")
         raise QuickBooksTokenError(str(e)) from e
+
+
+def verify_qb_webhook_signature(body: bytes, signature_header: str) -> bool:
+    """
+    Verify QuickBooks webhook signature using HMAC SHA256.
+    Header: intuit-signature
+    expected = base64(HMAC_SHA256(QB_WEBHOOK_VERIFIER, raw_request_body))
+    Returns True if valid. Never process unverified webhooks.
+    """
+    from django.conf import settings
+    import base64
+    import hmac
+    import hashlib
+
+    verifier = (getattr(settings, "QB_WEBHOOK_VERIFIER", None) or "").strip()
+    if not verifier or not signature_header:
+        return False
+    expected = base64.b64encode(
+        hmac.new(
+            verifier.encode("utf-8"),
+            body,
+            hashlib.sha256,
+        ).digest()
+    ).decode("ascii")
+    return hmac.compare_digest(signature_header.strip(), expected)
+
+
+def get_valid_token(realm_id, user=None):
+    """
+    Return an active QuickBooksToken for realm_id (and optionally user).
+    Refreshes token if expired. Raises QuickBooksTokenError if not found or refresh fails.
+    """
+    from quickbooks.models import QuickBooksToken
+
+    qs = QuickBooksToken.objects.filter(realm_id=realm_id, is_active=True)
+    if user is not None:
+        qs = qs.filter(user=user)
+    token = qs.order_by("-updated_at").first()
+    if not token:
+        raise QuickBooksTokenError(f"No active QuickBooks connection for realm_id={realm_id}")
+
+    if token.is_expired():
+        refresh_quickbooks_token(token)
+        token.refresh_from_db()
+    return token

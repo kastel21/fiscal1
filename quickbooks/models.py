@@ -70,3 +70,60 @@ class QuickBooksToken(models.Model):
         from quickbooks.utils import refresh_quickbooks_token
 
         refresh_quickbooks_token(self)
+
+
+class QuickBooksAPILog(models.Model):
+    """
+    Audit log for QuickBooks API calls. Stores intuit_tid for debugging and support.
+    """
+
+    realm_id = models.CharField(max_length=64, db_index=True)
+    endpoint = models.CharField(max_length=255)
+    method = models.CharField(max_length=10)
+    status_code = models.IntegerField(null=True, blank=True)
+    intuit_tid = models.CharField(max_length=255, null=True, blank=True, db_index=True)
+    request_body = models.JSONField(null=True, blank=True)
+    response_body = models.JSONField(null=True, blank=True)
+    qb_invoice_id = models.CharField(max_length=100, null=True, blank=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "quickbooks_quickbooksapilog"
+        verbose_name = "QuickBooks API Log"
+        verbose_name_plural = "QuickBooks API Logs"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["realm_id", "created_at"]),
+            models.Index(fields=["intuit_tid"]),
+        ]
+
+    def __str__(self):
+        return f"{self.method} {self.endpoint} - {self.status_code} (tid={self.intuit_tid or 'N/A'})"
+
+
+class QuickBooksWebhookEvent(models.Model):
+    """
+    QuickBooks webhook event (Invoice, etc.). Persisted before async processing.
+    Idempotency and processing state tracked via processed flag.
+    """
+
+    realm_id = models.CharField(max_length=64, db_index=True)
+    event_type = models.CharField(max_length=64)
+    entity_name = models.CharField(max_length=64)
+    entity_id = models.CharField(max_length=100, db_index=True)
+    event_time = models.DateTimeField(null=True, blank=True)
+    payload = models.JSONField(default=dict)
+    processed = models.BooleanField(default=False, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "quickbooks_quickbookswebhookevent"
+        verbose_name = "QuickBooks Webhook Event"
+        verbose_name_plural = "QuickBooks Webhook Events"
+        ordering = ["-created_at"]
+        indexes = [
+            models.Index(fields=["realm_id", "entity_id", "processed"]),
+        ]
+
+    def __str__(self):
+        return f"Webhook {self.entity_name} {self.entity_id} (realm={self.realm_id}, processed={self.processed})"
