@@ -209,6 +209,8 @@ SIMPLE_JWT = {
 }
 
 # FDMS Integration Settings (use env in production)
+# Production API base: https://fdmsapi.zimra.co.zw (Swagger: https://fdmsapi.zimra.co.zw/swagger/index.html)
+# Test API base: https://fdmsapitest.zimra.co.zw
 FDMS_ENV = os.environ.get("FDMS_ENV", "TEST")
 _FDMS_BASE_URL = os.environ.get("FDMS_BASE_URL")
 if _FDMS_BASE_URL:
@@ -252,8 +254,8 @@ QUICKBOOKS_OAUTH_AUTHORIZE_URL = "https://appcenter.intuit.com/connect/oauth2"
 QUICKBOOKS_OAUTH_TOKEN_URL = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
 QUICKBOOKS_OAUTH_REVOKE_URL = "https://oauth.platform.intuit.com/oauth2/v1/tokens/revoke"
 
-# ZIMRA Section 11 QR verification URL for invoice deep link
-ZIMRA_QR_URL = "https://invoice.zimra.co.zw"
+# ZIMRA verification portal: QR code URL and URL printed on invoices (production: https://fdms.zimra.co.zw)
+ZIMRA_QR_URL = os.environ.get("ZIMRA_QR_URL", "https://fdms.zimra.co.zw")
 
 # Logging Configuration
 LOGS_DIR = BASE_DIR / "logs"

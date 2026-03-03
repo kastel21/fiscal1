@@ -11,6 +11,7 @@ from typing import Any
 
 import requests
 
+from fiscal.utils import mask_sensitive_fields, redact_string_for_log
 from quickbooks.models import QuickBooksToken, QuickBooksAPILog
 from quickbooks.utils import get_valid_token
 from quickbooks.utils import QuickBooksAPIException, QuickBooksTokenError
@@ -103,16 +104,22 @@ class QuickBooksClient:
             },
         )
 
-        # Persist to QuickBooksAPILog (never crash if save fails)
+        # Persist to QuickBooksAPILog (never crash if save fails); mask tokens/secrets
         try:
+            def _redact_raw(d):
+                if isinstance(d, dict) and "_raw" in d and isinstance(d["_raw"], str):
+                    d = {**d, "_raw": redact_string_for_log(d["_raw"], max_length=2000)}
+                return d
+            req_log = mask_sensitive_fields(_redact_raw(_safe_json_serializable(request_body) or {})) if request_body is not None else None
+            resp_log = mask_sensitive_fields(_redact_raw(_safe_json_serializable(response_body) or {}))
             QuickBooksAPILog.objects.create(
                 realm_id=self.realm_id,
                 endpoint=endpoint,
                 method=method,
                 status_code=status_code,
                 intuit_tid=intuit_tid,
-                request_body=_safe_json_serializable(request_body) if request_body is not None else None,
-                response_body=_safe_json_serializable(response_body),
+                request_body=req_log,
+                response_body=resp_log,
                 qb_invoice_id=qb_invoice_id,
             )
         except Exception as e:
@@ -131,7 +138,7 @@ class QuickBooksClient:
                 err_msg = f"HTTP {status_code}"
             logger.error(
                 "QuickBooks API error: %s",
-                err_msg,
+                redact_string_for_log(str(err_msg)),
                 extra={
                     "realm_id": self.realm_id,
                     "endpoint": endpoint,

@@ -20,6 +20,7 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 
 from fiscal.models import FiscalDevice, Receipt
+from fiscal.utils import mask_sensitive_fields, redact_string_for_log
 from fiscal.services.config_service import (
     TAX_CODE_MAX_LENGTH,
     configs_are_fresh,
@@ -881,8 +882,8 @@ def _do_submit_receipt(
         receipt_tax_lines=taxes_for_canonical_decimal,
         previous_receipt_hash=previous_receipt_hash,
     )
-    logger.info("[SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=%s receiptGlobalNo=%s: %s", receipt_type, receipt_global_no, repr(canonical))
-    logger.debug("[SubmitReceipt] CANONICAL STRING (being hashed): %s", repr(canonical))
+    logger.info("[SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=%s receiptGlobalNo=%s: [REDACTED]", receipt_type, receipt_global_no)
+    logger.debug("[SubmitReceipt] CANONICAL STRING (being hashed): [REDACTED]")
 
     _progress(40, "Signing")
     sig = sign_receipt(device, canonical)
@@ -946,8 +947,9 @@ def _do_submit_receipt(
     body = _fdms_json_dumps(payload)
     if debug_capture is not None:
         debug_capture["request"] = body
-    logger.info("[SubmitReceipt] REQUEST POST %s receiptType=%s receiptGlobalNo=%s\n%s", path, receipt_type, receipt_global_no, body)
-    logger.debug("[SubmitReceipt] REQUEST POST %s payload:\n%s", path, body)
+    body_for_log = _fdms_json_dumps(mask_sensitive_fields(copy.deepcopy(payload)))
+    logger.info("[SubmitReceipt] REQUEST POST %s receiptType=%s receiptGlobalNo=%s\n%s", path, receipt_type, receipt_global_no, body_for_log)
+    logger.debug("[SubmitReceipt] REQUEST POST %s payload:\n%s", path, body_for_log)
     service = FDMSDeviceService()
     try:
         response = service.device_request("POST", path, body=body, device=device)
@@ -955,7 +957,10 @@ def _do_submit_receipt(
             resp_body = response.json() if response.content else {}
         except Exception:
             resp_body = {}
-        resp_log = json.dumps(resp_body, indent=2, default=str) if resp_body else (response.text or "(empty)")
+        if isinstance(resp_body, dict):
+            resp_log = json.dumps(mask_sensitive_fields(resp_body), indent=2, default=str)
+        else:
+            resp_log = redact_string_for_log(response.text or "(empty)")
         logger.info("[SubmitReceipt] RESPONSE status=%s receiptType=%s receiptGlobalNo=%s\n%s", response.status_code, receipt_type, receipt_global_no, resp_log)
         logger.debug("[SubmitReceipt] RESPONSE status=%s body:\n%s", response.status_code, resp_log)
         if debug_capture is not None:

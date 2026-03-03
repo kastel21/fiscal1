@@ -12,7 +12,7 @@ from django.shortcuts import redirect, render
 
 from fiscal.forms import DeviceRegistrationForm
 from fiscal.models import FDMSApiLog, FiscalDay, FiscalDevice, Receipt
-from fiscal.utils import safe_json_dumps
+from fiscal.utils import redact_for_ui, safe_json_dumps
 from fiscal.services.device_api import DeviceApiService
 from fiscal.services.device_registration import DeviceRegistrationService
 from fiscal.services.fdms_events import emit_metrics_updated
@@ -229,7 +229,7 @@ def submit_receipt_api(request):
         logger.debug("[submit_receipt_api] RESPONSE: %s", json.dumps(resp))
         return JsonResponse(resp, status=400)
 
-    logger.debug("[submit_receipt_api] REQUEST payload: %s", json.dumps(body, indent=2, default=str))
+    logger.debug("[submit_receipt_api] REQUEST payload: %s", safe_json_dumps(body))
 
     device_id = body.get("device_id")
     if device_id is not None:
@@ -295,7 +295,7 @@ def submit_receipt_api(request):
         original_receipt_global_no=original_receipt_global_no if receipt_type == "CreditNote" else None,
     )
     if err:
-        resp = {"success": False, "error": err}
+        resp = {"success": False, "error": redact_for_ui(err)}
         logger.debug("[submit_receipt_api] RESPONSE (error): %s", json.dumps(resp, indent=2))
         return JsonResponse(resp, status=400)
     emit_metrics_updated()

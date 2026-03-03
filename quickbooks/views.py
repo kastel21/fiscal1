@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_http_methods, require_POST
 
+from fiscal.utils import redact_for_ui
 from quickbooks.models import QuickBooksToken, QuickBooksWebhookEvent
 from quickbooks.services import (
     build_connect_url,
@@ -209,7 +210,7 @@ def qb_disconnect(request):
         return JsonResponse({"success": True, "message": "QuickBooks disconnected."})
     except Exception as e:
         logger.exception("QuickBooks disconnect failed: %s", e)
-        return JsonResponse({"success": False, "error": str(e)}, status=500)
+        return JsonResponse({"success": False, "error": redact_for_ui(str(e))}, status=500)
 
 
 # ---------------------------------------------------------------------------
@@ -237,7 +238,7 @@ def qb_invoices_pull(request):
         return JsonResponse({"invoices": invoices})
     except (QuickBooksTokenError, QuickBooksAPIException) as e:
         logger.warning("QuickBooks invoice pull failed: %s", e)
-        return JsonResponse({"error": str(e)}, status=400)
+        return JsonResponse({"error": redact_for_ui(str(e))}, status=400)
 
 
 # ---------------------------------------------------------------------------
@@ -284,4 +285,4 @@ def qb_invoices_push(request, invoice_id):
         return JsonResponse({"success": True, "invoice": result})
     except (QuickBooksTokenError, QuickBooksAPIException) as e:
         logger.warning("QuickBooks invoice push failed: %s", e)
-        return JsonResponse({"error": str(e)}, status=400)
+        return JsonResponse({"error": redact_for_ui(str(e))}, status=400)

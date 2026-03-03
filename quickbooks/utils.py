@@ -5,6 +5,8 @@ QuickBooks OAuth2 token refresh and secure token handling.
 import base64
 import logging
 from django.conf import settings
+
+from fiscal.utils import redact_string_for_log
 from django.utils import timezone
 import requests
 
@@ -81,7 +83,7 @@ def refresh_quickbooks_token(token_model):
             logger.error(
                 "QuickBooks token refresh failed: status=%s body=%s",
                 response.status_code,
-                body[:500],
+                redact_string_for_log(body or ""),
             )
             raise QuickBooksTokenError(
                 err_msg or f"Token refresh failed (HTTP {response.status_code})",

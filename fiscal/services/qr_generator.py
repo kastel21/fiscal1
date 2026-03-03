@@ -1,6 +1,7 @@
 """
 ZIMRA-compliant QR generation for fiscal receipts.
 Format: qrUrl/deviceID(10)receiptDate(ddMMyyyy)receiptGlobalNo(10)receiptQrData(16)
+QR URL and printed verification URL come from settings.ZIMRA_QR_URL (verification portal).
 """
 
 import base64
@@ -8,8 +9,12 @@ import hashlib
 from io import BytesIO
 
 import qrcode
+from django.conf import settings
 
-ZIMRA_QR_URL = "https://invoice.zimra.co.zw"
+
+def _get_zimra_qr_url() -> str:
+    """Verification portal URL for QR code and invoice (production: https://fdms.zimra.co.zw)."""
+    return (getattr(settings, "ZIMRA_QR_URL", None) or "https://fdms.zimra.co.zw").strip().rstrip("/")
 
 
 def get_receipt_device_signature_hash_hex(receipt) -> str:
@@ -37,7 +42,8 @@ def generate_receipt_qr_string(receipt):
         return ""
     md5_hash = hashlib.md5(signature_hex.encode()).hexdigest().upper()
     receipt_qr_data = md5_hash[:16]
-    return f"{ZIMRA_QR_URL}/{device_id}{receipt_date}{receipt_global_no}{receipt_qr_data}"
+    base_url = _get_zimra_qr_url()
+    return f"{base_url}/{device_id}{receipt_date}{receipt_global_no}{receipt_qr_data}"
 
 
 def generate_qr_base64(qr_string):

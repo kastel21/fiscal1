@@ -6,6 +6,8 @@ Uses QuickBooksClient for all API calls (captures intuit_tid, logs to QuickBooks
 import logging
 import secrets
 from django.conf import settings
+
+from fiscal.utils import redact_string_for_log
 from django.utils import timezone
 import requests
 
@@ -93,7 +95,7 @@ def exchange_code_for_tokens(code, realm_id, user=None):
             logger.error(
                 "QuickBooks token exchange failed: status=%s body=%s",
                 response.status_code,
-                body[:500],
+                redact_string_for_log(body or ""),
             )
             raise QuickBooksTokenError(
                 err_msg or f"Token exchange failed (HTTP {response.status_code})",
@@ -162,7 +164,7 @@ def revoke_quickbooks_token(token_model):
                 logger.warning(
                     "QuickBooks revoke returned status=%s body=%s",
                     response.status_code,
-                    response.text[:300],
+                    redact_string_for_log((response.text or "")[:300]),
                 )
             else:
                 logger.info("QuickBooks token revoked for realm_id=%s", token_model.realm_id)

@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 
 from fiscal.models import FiscalDevice, QuickBooksEvent, QuickBooksInvoice, Receipt
+from fiscal.utils import redact_for_ui
 
 from .views import _fetch_status_for_dashboard, get_device_for_request
 
@@ -282,7 +283,7 @@ def api_qb_fiscalise_invoice(request):
     qb_inv, err = fiscalise_qb_invoice(invoice_id, body)
 
     if not qb_inv:
-        return JsonResponse({"success": False, "error": err}, status=500)
+        return JsonResponse({"success": False, "error": redact_for_ui(err or "")}, status=500)
 
     if qb_inv.fiscalised:
         return JsonResponse({
@@ -298,7 +299,7 @@ def api_qb_fiscalise_invoice(request):
         "success": False,
         "fiscalised": False,
         "qb_invoice_id": invoice_id,
-        "error": err or qb_inv.fiscal_error,
+        "error": redact_for_ui(err or qb_inv.fiscal_error or ""),
         "status": "PENDING_FISCALISATION",
     }, status=202)
 
@@ -345,7 +346,7 @@ def api_qb_oauth_callback(request):
     redirect_uri = get_redirect_uri(request)
     data, err = exchange_code_for_tokens(code, redirect_uri, realm_id)
     if err:
-        return JsonResponse({"error": err}, status=400)
+        return JsonResponse({"error": redact_for_ui(err)}, status=400)
     return redirect("fdms_qb_invoices")
 
 
@@ -356,7 +357,7 @@ def api_qb_sync(request):
     from fiscal.services.qb_sync import sync_from_quickbooks
     result = sync_from_quickbooks(max_per_type=50)
     if "error" in result:
-        return JsonResponse(result, status=400)
+        return JsonResponse({**result, "error": redact_for_ui(result.get("error", ""))}, status=400)
     return JsonResponse(result)
 
 
@@ -390,5 +391,5 @@ def api_qb_retry_fiscalise(request):
     return JsonResponse({
         "success": False,
         "fiscalised": False,
-        "error": err or qb_inv.fiscal_error if qb_inv else None,
+        "error": redact_for_ui(err or (qb_inv.fiscal_error if qb_inv else "") or ""),
     }, status=400)

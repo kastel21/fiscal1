@@ -42,13 +42,14 @@ Set these in your environment or in a `.env` file in the project root (loaded au
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
 | `FDMS_ENV` | No | `TEST` or `PROD`. | `PROD` |
-| `FDMS_BASE_URL` | **Production** | FDMS API base URL. | `https://fdmsapi.zimra.co.zw` |
+| `FDMS_BASE_URL` | **Production** | FDMS API base URL. Production: `https://fdmsapi.zimra.co.zw` (Swagger: `https://fdmsapi.zimra.co.zw/swagger/index.html`). | `https://fdmsapi.zimra.co.zw` |
 | `FDMS_DEVICE_ID` | **Production** | Registered device ID. | `12345` |
 | `FDMS_DEVICE_SERIAL_NO` | **Production** | Device serial number. | From ZIMRA |
 | `FDMS_ACTIVATION_KEY` | **Production** | Device activation key. | From ZIMRA |
 | `FDMS_DEVICE_MODEL_NAME` | No | Model name. Default: `Server` | `Server` |
 | `FDMS_DEVICE_MODEL_VERSION` | No | Model version. Default: `v1` | `v1` |
 | `FDMS_ENCRYPTION_KEY` | Optional | Fernet key (base64) to encrypt private keys at rest. | From `cryptography.fernet.Fernet.generate_key()` |
+| `ZIMRA_QR_URL` | No | Verification portal URL for QR code and URL on invoices. Production: `https://fdms.zimra.co.zw`. Default: `https://fdms.zimra.co.zw`. | `https://fdms.zimra.co.zw` |
 
 ---
 
