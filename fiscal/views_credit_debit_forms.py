@@ -23,11 +23,19 @@ def _serialize_invoices(invoices: list) -> str:
     out = []
     for inv in invoices:
         lines = inv.get("lines", [])
+        taxes = inv.get("taxes", [])
         for ln in lines:
             for k in ("receiptLineQuantity", "receiptLineTotal", "receiptLinePrice", "taxPercent", "receiptLineTaxPercent"):
                 if k in ln and ln[k] is not None:
                     try:
                         ln[k] = float(ln[k])
+                    except (TypeError, ValueError):
+                        pass
+        for tx in taxes:
+            for k in ("taxPercent", "fiscalCounterTaxPercent"):
+                if k in tx and tx[k] is not None:
+                    try:
+                        tx[k] = float(tx[k])
                     except (TypeError, ValueError):
                         pass
         out.append({
@@ -40,6 +48,7 @@ def _serialize_invoices(invoices: list) -> str:
             "date": inv.get("date", ""),
             "customer": inv.get("customer", ""),
             "lines": lines,
+            "taxes": taxes,
             "tax_percent": float(inv.get("tax_percent", 0)),
         })
     return json.dumps(out)

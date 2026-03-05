@@ -88,6 +88,8 @@
               <tr>
                 <th>Description</th>
                 <th style="width: 140px;">Amount</th>
+                <th style="width: 140px;">Tax</th>
+                <th style="width: 130px;">HS Code</th>
                 <th style="width: 80px;"></th>
               </tr>
             </thead>
@@ -95,6 +97,12 @@
               <tr>
                 <td><input type="text" class="form-control form-control-sm debit-desc" placeholder="e.g. Freight charge"></td>
                 <td><input type="number" min="0" step="0.01" class="form-control form-control-sm debit-amount" value="0" placeholder="0.00"></td>
+                <td>
+                  <select class="form-select form-select-sm debit-tax">
+                    <option value="0">Tax 0%</option>
+                  </select>
+                </td>
+                <td><input type="text" class="form-control form-control-sm debit-hs" maxlength="8" placeholder="e.g. 10010000"></td>
                 <td></td>
               </tr>
             </tbody>
@@ -125,6 +133,64 @@
   var idEl = document.getElementById('original-invoice-id');
   var tbody = document.getElementById('debit-items-tbody');
   var lineDataEl = document.getElementById('debit-line-data');
+
+  function taxOptionsForInvoice(inv) {
+    var seen = {};
+    var out = [];
+    var taxIdToPct = {};
+    if (inv && Array.isArray(inv.taxes)) {
+      inv.taxes.forEach(function(tx) {
+        var txPct = tx && (tx.taxPercent != null ? tx.taxPercent : tx.fiscalCounterTaxPercent);
+        var txNum = Number(txPct);
+        if (Number.isFinite(txNum)) {
+          var key = txNum.toFixed(2);
+          taxIdToPct[String(tx.taxID)] = txNum;
+          if (!seen[key]) {
+            seen[key] = true;
+            out.push(txNum);
+          }
+        }
+      });
+    }
+    if (inv && Array.isArray(inv.lines)) {
+      inv.lines.forEach(function(ln) {
+        var pct = ln && (ln.taxPercent != null ? ln.taxPercent : ln.receiptLineTaxPercent);
+        if ((pct == null || pct === '') && ln && ln.taxID != null) {
+          pct = taxIdToPct[String(ln.taxID)];
+        }
+        var n = Number(pct);
+        if (!Number.isFinite(n)) return;
+        var k = n.toFixed(2);
+        if (!seen[k]) {
+          seen[k] = true;
+          out.push(n);
+        }
+      });
+    }
+    if (!out.length && inv) out.push(Number(inv.tax_percent) || 0);
+    if (!out.length) out.push(0);
+    out.sort(function(a, b) { return a - b; });
+    return out;
+  }
+
+  function renderTaxSelectOptions(selectEl, inv, selectedValue) {
+    if (!selectEl) return;
+    var options = taxOptionsForInvoice(inv);
+    var selected = Number(selectedValue);
+    if (!Number.isFinite(selected)) selected = options[0];
+    selectEl.innerHTML = options.map(function(pct) {
+      var v = Number(pct).toFixed(2);
+      var isSelected = Number(v) === Number(selected.toFixed(2));
+      return '<option value="' + v + '"' + (isSelected ? ' selected' : '') + '>Tax ' + v + '%</option>';
+    }).join('');
+  }
+
+  function refreshRowTaxSelects() {
+    tbody.querySelectorAll('.debit-tax').forEach(function(sel) {
+      var current = sel.value;
+      renderTaxSelectOptions(sel, selectedInvoice, current);
+    });
+  }
 
   function filterInvoices(q) {
     q = (q || '').toLowerCase().trim();
@@ -159,6 +225,7 @@
     document.getElementById('disp-customer').textContent = inv.customer || '-';
     document.getElementById('disp-currency').textContent = inv.currency || '-';
     document.getElementById('disp-remaining-balance').textContent = (inv.remaining_balance != null ? inv.currency + ' ' + Number(inv.remaining_balance).toFixed(2) : '-');
+    refreshRowTaxSelects();
     updateDebitLineData();
   }
 
@@ -166,13 +233,18 @@
     var tr = document.createElement('tr');
     tr.innerHTML = '<td><input type="text" class="form-control form-control-sm debit-desc" placeholder="Description"></td>' +
       '<td><input type="number" min="0" step="0.01" class="form-control form-control-sm debit-amount" value="0"></td>' +
+      '<td><select class="form-select form-select-sm debit-tax"></select></td>' +
+      '<td><input type="text" class="form-control form-control-sm debit-hs" maxlength="8" placeholder="e.g. 10010000"></td>' +
       '<td><button type="button" class="btn btn-sm btn-link text-danger debit-remove">Remove</button></td>';
     tr.querySelector('.debit-remove').addEventListener('click', function() {
       tr.remove();
       updateDebitLineData();
     });
+    renderTaxSelectOptions(tr.querySelector('.debit-tax'), selectedInvoice);
     tr.querySelector('.debit-desc').addEventListener('input', updateDebitLineData);
     tr.querySelector('.debit-amount').addEventListener('input', updateDebitLineData);
+    tr.querySelector('.debit-tax').addEventListener('change', updateDebitLineData);
+    tr.querySelector('.debit-hs').addEventListener('input', updateDebitLineData);
     tbody.appendChild(tr);
   }
 
@@ -182,8 +254,15 @@
     tbody.querySelectorAll('tr').forEach(function(tr) {
       var desc = (tr.querySelector('.debit-desc') && tr.querySelector('.debit-desc').value) || '';
       var amt = parseFloat(tr.querySelector('.debit-amount') && tr.querySelector('.debit-amount').value) || 0;
+      var taxPct = parseFloat(tr.querySelector('.debit-tax') && tr.querySelector('.debit-tax').value);
+      var hsCode = (tr.querySelector('.debit-hs') && tr.querySelector('.debit-hs').value || '').trim();
       if (amt <= 0) return;
-      data.push({ description: desc || 'Additional charge', amount: amt });
+      data.push({
+        description: desc || 'Additional charge',
+        amount: amt,
+        tax_percent: Number.isFinite(taxPct) ? taxPct : 0,
+        hs_code: hsCode
+      });
       captured += amt;
     });
     lineDataEl.value = JSON.stringify(data);
@@ -196,9 +275,11 @@
 
   document.getElementById('add-debit-line').addEventListener('click', addDebitRow);
 
-  tbody.querySelectorAll('.debit-desc, .debit-amount').forEach(function(el) {
+  tbody.querySelectorAll('.debit-desc, .debit-amount, .debit-tax, .debit-hs').forEach(function(el) {
     el.addEventListener('input', updateDebitLineData);
+    el.addEventListener('change', updateDebitLineData);
   });
+  refreshRowTaxSelects();
 
   searchEl.addEventListener('focus', function() { renderDropdown(filterInvoices(searchEl.value)); });
   searchEl.addEventListener('input', function() { renderDropdown(filterInvoices(searchEl.value)); });

@@ -110,10 +110,18 @@ class DebitNoteForm(forms.Form):
                 continue
             if amt_dec <= 0:
                 continue
+            hs_code = str(row.get("hs_code") or row.get("receiptLineHSCode") or "").strip()[:8]
+            tax_pct = row.get("tax_percent")
+            try:
+                tax_pct_val = float(tax_pct) if tax_pct is not None else None
+            except (TypeError, ValueError):
+                tax_pct_val = None
             lines.append({
                 "description": desc,
                 "line_total": float(amt_dec),
                 "quantity": 1,
                 "row_num": i + 1,
+                "hs_code": hs_code,
+                "tax_percent": tax_pct_val,
             })
         return lines

@@ -12797,3 +12797,123 @@ INFO 2026-03-05 11:03:19,866 FDMS Headers: {'DeviceModelName': 'Server', 'Device
 INFO 2026-03-05 11:03:20,435 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
 INFO 2026-03-05 11:03:22,019 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
 INFO 2026-03-05 11:03:22,551 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 11:38:51,302 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:38:52,143 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:38:53,010 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:38:53,525 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:38:55,898 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:38:56,460 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:02,640 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:03,229 FDMS call logged: GET /Device/v1/31285/GetStatus -> 401
+ERROR 2026-03-05 11:39:03,231 GetStatus failed for device 31285: Unauthorized
+INFO 2026-03-05 11:39:03,250 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:03,811 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:11,240 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:11,722 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:29,427 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:30,079 FDMS call logged: GET /Device/v1/31285/GetStatus -> 401
+ERROR 2026-03-05 11:39:30,081 GetStatus failed for device 31285: Unauthorized
+INFO 2026-03-05 11:39:30,139 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:30,779 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:37,247 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:37,835 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:37,881 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:38,459 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:41,889 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:42,428 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:42,443 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:42,977 FDMS call logged: POST /Device/v1/32702/OpenDay -> 200
+INFO 2026-03-05 11:39:42,995 OpenDay OK for device 32702: fiscal day #10
+INFO 2026-03-05 11:39:42,995 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:43,578 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:43,681 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:44,225 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:44,247 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:44,743 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:50,480 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:50,959 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:39:53,886 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:39:54,479 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:40:30,589 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:40:31,171 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:40:31,190 [SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=DebitNote receiptGlobalNo=57: [REDACTED]
+INFO 2026-03-05 11:40:31,234 [SubmitReceipt] REQUEST POST /Device/v1/32702/SubmitReceipt receiptType=DebitNote receiptGlobalNo=57
+{
+  "receipt": {
+    "deviceID": 32702,
+    "receiptType": "DEBITNOTE",
+    "receiptCurrency": "USD",
+    "receiptGlobalNo": 57,
+    "receiptCounter": 1,
+    "invoiceNo": "DB-2026-8",
+    "receiptDate": "2026-03-05T11:40:31",
+    "receiptTotal": 11.55,
+    "receiptLinesTaxInclusive": true,
+    "receiptLines": [
+      {
+        "receiptLineNo": 1,
+        "receiptLineQuantity": 1.00,
+        "receiptLinePrice": 11.55,
+        "receiptLineTotal": 11.55,
+        "receiptLineName": "ggg",
+        "receiptLineHSCode": "0000",
+        "receiptLineType": "Sale",
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5
+      }
+    ],
+    "receiptTaxes": [
+      {
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5,
+        "taxAmount": 1.55,
+        "salesAmountWithTax": 11.55
+      }
+    ],
+    "receiptPayments": [
+      {
+        "moneyTypeCode": "Cash",
+        "paymentAmount": 11.55
+      }
+    ],
+    "receiptDeviceSignature": {
+      "hash": "[REDACTED]",
+      "signature": "[REDACTED]"
+    },
+    "creditDebitNote": {
+      "deviceID": 32702,
+      "receiptGlobalNo": 54,
+      "fiscalDayNo": 9,
+      "receiptID": 10699039
+    },
+    "receiptNotes": "ggg"
+  }
+}
+INFO 2026-03-05 11:40:31,235 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:40:31,840 FDMS call logged: POST /Device/v1/32702/SubmitReceipt -> 200
+INFO 2026-03-05 11:40:31,841 [SubmitReceipt] RESPONSE status=200 receiptType=DebitNote receiptGlobalNo=57
+{
+  "receiptID": 10700405,
+  "serverDate": "2026-03-05T11:40:29",
+  "receiptServerSignature": {
+    "certificateThumbprint": "[REDACTED]",
+    "hash": "[REDACTED]",
+    "signature": "[REDACTED]"
+  },
+  "validationErrors": [],
+  "operationID": "0HNJJFH7BFKGK:00000001"
+}
+INFO 2026-03-05 11:40:31,877 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:40:32,464 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:40:32,482 SubmitReceipt OK: device=32702 receiptGlobalNo=57 receiptID=10700405
+WARNING 2026-03-05 11:40:32,533 InvoiceA4 PDF generation failed for receipt 57: ['Totals must reconcile with receiptTotal: subtotal + tax = 13.10, receiptTotal = 11.55.']
+INFO 2026-03-05 11:40:32,669 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:40:33,232 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:40:40,993 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:40:41,526 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:43:35,541 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:43:36,145 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:47:18,282 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:47:18,933 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200

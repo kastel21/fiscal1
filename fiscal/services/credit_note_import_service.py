@@ -78,6 +78,7 @@ def get_enriched_invoices_for_form(
             "date": date_val,
             "customer": cust.get("name", cust.get("buyerRegisterName", "")) or "-",
             "lines": r.receipt_lines or [],
+            "taxes": r.receipt_taxes or [],
             "receipt_global_no": r.receipt_global_no,
             "tax_percent": tax_pct,
         })
