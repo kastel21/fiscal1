@@ -343,7 +343,7 @@ def fdms_receipt_invoice_pdf(request, pk):
     receipt = get_object_or_404(qs, pk=pk)
     try:
         from fiscal.services.pdf_generator import generate_fiscal_invoice_pdf_from_template
-        pdf_bytes = generate_fiscal_invoice_pdf_from_template(receipt)
+        pdf_bytes = generate_fiscal_invoice_pdf_from_template(receipt, request=request)
     except ValidationError as e:
         return HttpResponseServerError(
             f"PDF generation failed: {e}. Ensure WeasyPrint is installed (pip install weasyprint).",
@@ -376,7 +376,7 @@ def fdms_receipt_invoice_html_pdf(request, pk):
     try:
         template_name, ctx = get_receipt_print_template_and_context(receipt)
         html = render_to_string(template_name, ctx)
-        pdf_bytes = _html_to_pdf(html)
+        pdf_bytes = _html_to_pdf(html, request=request)
     except ValidationError as e:
         return HttpResponseServerError(
             f"PDF generation failed: {e}. Ensure WeasyPrint or xhtml2pdf is installed.",
@@ -414,7 +414,7 @@ def fdms_receipt_debit_note_html_pdf(request, pk):
     try:
         template_name, ctx = get_receipt_print_template_and_context(receipt)
         html = render_to_string(template_name, ctx)
-        pdf_bytes = _html_to_pdf(html)
+        pdf_bytes = _html_to_pdf(html, request=request)
     except ValidationError as e:
         return HttpResponseServerError(
             f"PDF generation failed: {e}. Ensure WeasyPrint or xhtml2pdf is installed.",
@@ -445,7 +445,7 @@ def fdms_receipt_invoice_a4_pdf(request, pk):
     receipt = get_object_or_404(qs, pk=pk)
     try:
         from fiscal.services.pdf_generator import generate_fiscal_invoice_pdf_from_template
-        pdf_bytes = generate_fiscal_invoice_pdf_from_template(receipt)
+        pdf_bytes = generate_fiscal_invoice_pdf_from_template(receipt, request=request)
     except ValidationError as e:
         return HttpResponseServerError(
             f"PDF generation failed: {e}. Ensure WeasyPrint is installed (pip install weasyprint).",
@@ -472,7 +472,7 @@ def fdms_receipt_fiscal_invoice_a4_pdf(request, pk):
     receipt = get_object_or_404(qs, pk=pk)
     try:
         from fiscal.services.pdf_generator import generate_fiscal_invoice_a4_pdf_section10
-        pdf_bytes = generate_fiscal_invoice_a4_pdf_section10(receipt)
+        pdf_bytes = generate_fiscal_invoice_a4_pdf_section10(receipt, request=request)
     except ValidationError as e:
         return HttpResponseBadRequest(f"Validation error: {e}", content_type="text/plain")
     resp = HttpResponse(pdf_bytes, content_type="application/pdf")

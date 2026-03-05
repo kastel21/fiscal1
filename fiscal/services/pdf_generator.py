@@ -1,66 +1,24 @@
 """
 ZIMRA FDMS API v7.2 – InvoiceA4 PDF generator.
 Section 10 (InvoiceA4 View), Section 11 (QR Code), Section 13 (Signature Rules).
-Uses WeasyPrint for HTML→PDF when available; falls back to xhtml2pdf on Windows
-(where WeasyPrint requires GTK/Cairo). Validates mandatory fields and total reconciliation.
+Uses WeasyPrint for HTML→PDF. Validates mandatory fields and total reconciliation.
 """
 
 import logging
-import re
-from io import BytesIO
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
-from django.template.loader import render_to_string
+from utils.pdf import render_pdf, html_string_to_pdf
 
 logger = logging.getLogger("fiscal")
 
 
-def _strip_weasyprint_only_css(html: str) -> str:
+def _html_to_pdf(html: str, request=None) -> bytes:
     """
-    Remove @page margin boxes (@bottom-right, counter(page), etc.) that xhtml2pdf
-    does not support and returns NotImplemented for, causing 'NotImplementedType' object is not iterable.
-    Keeps a simple @page { size: A4; margin: 12mm; } so xhtml2pdf can parse the stylesheet.
+    Convert HTML string to PDF bytes using WeasyPrint only.
+    request is optional and used for absolute base URL resolution when available.
     """
-    # Remove @bottom-right { ... } block (and any similar margin box)
-    html = re.sub(
-        r"@bottom-right\s*\{[^}]*\}",
-        "",
-        html,
-        flags=re.DOTALL,
-    )
-    # Remove @top-left, @top-right, @bottom-left, @bottom-center, @top-center if present
-    for at in ("@top-left", "@top-right", "@bottom-left", "@bottom-center", "@top-center"):
-        html = re.sub(rf"{re.escape(at)}\s*\{{[^}}]*\}}", "", html, flags=re.DOTALL)
-    return html
-
-
-def _html_to_pdf(html: str) -> bytes:
-    """
-    Convert HTML string to PDF bytes. Tries WeasyPrint first, then xhtml2pdf.
-    WeasyPrint often fails on Windows (missing GTK/Cairo libs); xhtml2pdf is pure Python and used as fallback.
-    xhtml2pdf does not support @page margin boxes (e.g. @bottom-right, counter(page)); we strip them for the fallback.
-    """
-    # 1. WeasyPrint (best CSS support; requires system libs on Windows)
-    try:
-        from weasyprint import HTML
-        return HTML(string=html, base_url=None).write_pdf()
-    except Exception as e:
-        logger.info("WeasyPrint unavailable (%s), using xhtml2pdf fallback", e)
-    # 2. xhtml2pdf (pure Python, no system libs; works on Windows)
-    try:
-        from xhtml2pdf import pisa
-        html_safe = _strip_weasyprint_only_css(html)
-        dest = BytesIO()
-        pisa_status = pisa.CreatePDF(html_safe, dest=dest, encoding="utf-8")
-        if pisa_status.err:
-            raise ValidationError("xhtml2pdf failed to generate PDF")
-        return dest.getvalue()
-    except ImportError:
-        raise ValidationError(
-            "PDF generation failed (WeasyPrint needs extra libraries on this system). "
-            "Install xhtml2pdf for a fallback: pip install xhtml2pdf"
-        )
+    return html_string_to_pdf(html, request=request)
 
 
 def _validate_receipt_for_invoice_a4(receipt) -> None:
@@ -125,7 +83,7 @@ def _validate_receipt_for_invoice_a4(receipt) -> None:
                 )
 
 
-def generate_fiscal_invoice_pdf(receipt) -> bytes:
+def generate_fiscal_invoice_pdf(receipt, request=None) -> bytes:
     """
     Generate 100% ZIMRA-compliant InvoiceA4 PDF for a fiscalised receipt.
 
@@ -147,11 +105,10 @@ def generate_fiscal_invoice_pdf(receipt) -> bytes:
 
     _validate_receipt_for_invoice_a4(receipt)
     template_name, ctx = get_receipt_print_template_and_context(receipt)
-    html = render_to_string(template_name, ctx)
-    return _html_to_pdf(html)
+    return render_pdf(template_name, ctx, request=request)
 
 
-def generate_fiscal_invoice_a4_pdf_section10(receipt) -> bytes:
+def generate_fiscal_invoice_a4_pdf_section10(receipt, request=None) -> bytes:
     """
     Generate Section 10 compliant A4 PDF: Tax Invoice or Fiscal Credit Note.
     Runs Section 10 validation first. Uses VAT breakdown and buyer fields.
@@ -163,18 +120,16 @@ def generate_fiscal_invoice_a4_pdf_section10(receipt) -> bytes:
 
     validate_receipt_for_section10_pdf(receipt)
     template_name, ctx = get_receipt_print_template_and_context(receipt)
-    html = render_to_string(template_name, ctx)
-    return _html_to_pdf(html)
+    return render_pdf(template_name, ctx, request=request)
 
 
-def generate_fiscal_invoice_pdf_from_template(receipt) -> bytes:
+def generate_fiscal_invoice_pdf_from_template(receipt, request=None) -> bytes:
     """
     Generate A4 PDF from the exact same template and context as the print view.
     So the PDF is a copy of what is shown on print (same HTML rendered to PDF).
-    Uses WeasyPrint when available, else xhtml2pdf (Windows-friendly).
+    Uses WeasyPrint.
     """
     from fiscal.services.fiscal_invoice_context import get_receipt_print_template_and_context
 
     template_name, ctx = get_receipt_print_template_and_context(receipt)
-    html = render_to_string(template_name, ctx)
-    return _html_to_pdf(html)
+    return render_pdf(template_name, ctx, request=request)

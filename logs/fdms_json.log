@@ -5653,3 +5653,41 @@
 {"timestamp": "2026-03-05T11:00:30.088Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF saved for receipt 77: 77.pdf"}
 {"timestamp": "2026-03-05T11:01:32.986Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF persistence disabled (on-demand mode) for receipt 44"}
 {"timestamp": "2026-03-05T11:01:32.990Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF saved for receipt 77: 77.pdf"}
+{"timestamp": "2026-03-05T12:43:19.664Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF persistence disabled (on-demand mode) for receipt 44"}
+{"timestamp": "2026-03-05T12:44:08.095Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF persistence disabled (on-demand mode) for receipt 44"}
+{"timestamp": "2026-03-05T12:44:46.320Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF persistence disabled (on-demand mode) for receipt 44"}
+{"timestamp": "2026-03-05T12:44:46.325Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF saved for receipt 77: 77.pdf"}
+{"timestamp": "2026-03-05T12:45:38.691Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:45:39.358Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:45:39.412Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:45:40.020Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:45:42.858Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:45:43.339Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:45:44.710Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:45:45.302Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:45:49.901Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:45:50.441Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:45:52.749Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:45:53.291Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:46:20.964Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:46:21.410Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:46:24.040Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:46:24.613Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:46:50.234Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:46:50.737Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:46:55.203Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:46:55.784Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:52:45.363Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:52:45.920Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:52:47.864Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:52:48.465Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:53:11.297Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:53:11.990Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:53:15.000Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:53:15.630Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:53:31.759Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:53:32.440Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:53:33.942Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:53:34.535Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T12:53:47.425Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-05T12:53:48.023Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}

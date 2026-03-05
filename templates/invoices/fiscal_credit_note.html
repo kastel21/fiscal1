@@ -57,29 +57,28 @@ body {
 }
 
 /* 1. Header */
-.invoice-header {
+.header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: flex-start;
     width: 100%;
     page-break-inside: avoid;
 }
-.invoice-header .header-right {
-    text-align: right;
-}
-.invoice-header .qr {
-    margin-bottom: 6px;
-}
-.invoice-header .verify {
-    font-size: 10px;
-}
-
-.title {
-    text-align: center;
+.header .title {
+    margin: 0;
     font-size: 16px;
     font-weight: bold;
-    margin: 8px 0;
-    page-break-after: avoid;
+}
+.header .verify {
+    text-align: right;
+    font-size: 10px;
+}
+.header .qr {
+    width: 90px;
+    height: 90px;
+    object-fit: contain;
+    display: block;
+    margin: 0 0 6px auto;
 }
 
 /* 2. Seller/Buyer — 2 column grid */
@@ -224,25 +223,20 @@ table.items td:nth-child(7) { width: 12%; }  /* Line Total */
 <div class="main-content">
 
 <!-- 1. Header -->
-<div class="invoice-header">
-    <div class="header-right">
-        <div class="qr">
-            {% if credit_note.qr_code_base64 %}
-            <img src="data:image/png;base64,{{ credit_note.qr_code_base64 }}" width="90">
-            {% endif %}
-        </div>
-        <div class="verify">
-            <strong>Verification Code</strong><br>
-            {{ credit_note.verification_code|default:"N/A" }}<br>
-            You can verify this receipt manually at<br>
-            https://fdms.zimra.co.zw
-        </div>
+<header class="header">
+    <div class="title">
+        FISCAL CREDIT NOTE ({{ credit_note.currency|default:"USD" }})
     </div>
-</div>
-
-<div class="title">
-    FISCAL CREDIT NOTE ({{ credit_note.currency|default:"USD" }})
-</div>
+    <div class="verify">
+        {% if credit_note.qr_code_base64 %}
+        <img src="data:image/png;base64,{{ credit_note.qr_code_base64 }}" class="qr" alt="QR">
+        {% endif %}
+        <strong>Verification Code</strong><br>
+        {{ credit_note.verification_code|default:"N/A" }}<br>
+        You can verify this receipt manually at<br>
+        https://fdms.zimra.co.zw
+    </div>
+</header>
 
 <!-- 2. Seller/Buyer grid -->
 <div class="seller-buyer">
@@ -267,9 +261,9 @@ table.items td:nth-child(7) { width: 12%; }  /* Line Total */
     <div class="meta-item"><strong>Fiscal Day No:</strong> {{ credit_note.fiscal_day_no }}</div>
     <div class="meta-item"><strong>Device Serial No:</strong> {{ credit_note.device_serial|default:credit_note.device_id }}</div>
     <div class="meta-item"><strong>Fiscal Device ID:</strong> {{ credit_note.device_id }}</div>
-    <div class="meta-item"><strong>Customer Ref No:</strong> {{ credit_note.customer_ref|default:"—" }}</div>
     <div class="meta-item"><strong>Date:</strong> {{ credit_note.fiscalisation_datetime }}</div>
     <div class="meta-item"><strong>Seller Invoice:</strong> {{ credit_note.receipt_number }}</div>
+    <div class="meta-item"><strong>Customer Ref No:</strong> {{ credit_note.customer_ref|default:"—" }}</div>
     <div class="meta-item"><strong>Ref:</strong> {{ credit_note.reference|default:"—" }}</div>
 </div>
 
@@ -329,6 +323,12 @@ table.items td:nth-child(7) { width: 12%; }  /* Line Total */
 </div>
 
 </div><!-- .invoice-container -->
+
+{% if request.GET.autoprint %}
+<script>
+window.addEventListener("load", function() { window.print(); });
+</script>
+{% endif %}
 
 </body>
 </html>

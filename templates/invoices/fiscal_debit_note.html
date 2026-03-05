@@ -5,7 +5,7 @@
 <title>Fiscal Debit Note</title>
 
 <style>
-/* A4 page */
+/* Print: A4 page */
 @page {
     size: A4;
     margin: 12mm;
@@ -31,10 +31,11 @@
 .download-btn:hover {
     background: #1d4ed8;
 }
-.page-break { page-break-after: always; }
-.page-break-before { page-break-before: always; }
-table {
-    page-break-inside: avoid;
+.page-break {
+    page-break-after: always;
+}
+.page-break-before {
+    page-break-before: always;
 }
 
 body {
@@ -43,21 +44,32 @@ body {
     color: #000;
     margin: 0;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background: #e0e0e0;
     padding: 16px 0;
 }
 
 .invoice-container {
     width: 210mm;
-    margin: auto;
-    padding: 12mm;
     min-height: 297mm;
     background: #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    padding: 12mm;
     box-sizing: border-box;
 }
 
-/* STEP 1 — Header: table layout for browser + PDF engines */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+/* 1. Header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -67,107 +79,127 @@ body {
 }
 .header .title {
     margin: 0;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
-    width: 55%;
 }
 .header .verify {
     text-align: right;
     font-size: 10px;
-    width: 45%;
 }
 .header .qr {
-    margin-bottom: 6px;
-}
-.header .qr img {
     width: 90px;
+    height: 90px;
+    object-fit: contain;
     display: block;
+    margin: 0 0 6px auto;
 }
 
-/* Shared section spacing */
-.section {
-    margin-top: 10px;
-}
-
-/* STEP 2 — Seller / Buyer */
+/* 2. Seller/Buyer — 2 column grid */
 .seller-buyer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-top: 15px;
+    gap: 16px 24px;
+    margin-top: 8px;
+    margin-bottom: 8px;
     page-break-inside: avoid;
 }
-.seller-buyer strong {
+.seller-buyer .block {
+    min-width: 0;
+}
+.seller-buyer .block strong {
     display: block;
     margin-bottom: 2px;
 }
 
-/* STEP 3 — Metadata table (html2pdf-friendly) */
-.meta-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-    font-size: 12px;
+/* 3. Metadata — 4 column grid */
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px 16px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+    font-size: 11px;
 }
-.meta-table td {
-    padding: 2px 10px;
-    vertical-align: top;
+.meta-grid .meta-item {
+    min-width: 0;
+    padding: 2px 0;
+}
+.meta-grid .meta-item strong {
+    white-space: nowrap;
+}
+.meta-grid .meta-item.col-span-2 {
+    grid-column: span 2;
 }
 
-/* STEP 4 — Item table */
-.items-table {
+/* 4. Line items table — fixed column widths */
+table.items {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 15px;
-    page-break-inside: avoid;
+    table-layout: fixed;
+    margin-top: 8px;
+    page-break-inside: auto;
 }
-.items-table thead {
+table.items thead {
     display: table-header-group;
 }
-.items-table th {
-    background: #f2f2f2;
-    font-weight: 600;
-    padding: 8px;
-    border: 1px solid #ddd;
+table.items tfoot {
+    display: table-footer-group;
 }
-.items-table td {
-    padding: 7px;
-    border-bottom: 1px solid #ddd;
+table.items th,
+table.items td {
+    border: 1px solid #000;
+    padding: 4px 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-.items-table tbody tr {
+table.items th {
+    background: #eee;
+}
+table.items tbody tr {
     page-break-inside: avoid;
 }
-.right,
-.items-table .num {
+table.items th:nth-child(1),
+table.items td:nth-child(1) { width: 8%; }
+table.items th:nth-child(2),
+table.items td:nth-child(2) { width: 32%; }
+table.items th:nth-child(3),
+table.items td:nth-child(3) { width: 7%; }
+table.items th:nth-child(4),
+table.items td:nth-child(4) { width: 11%; }
+table.items th:nth-child(5),
+table.items td:nth-child(5) { width: 7%; }
+table.items th:nth-child(6),
+table.items td:nth-child(6) { width: 11%; }
+table.items th:nth-child(7),
+table.items td:nth-child(7) { width: 12%; }
+.num {
     text-align: right;
     white-space: nowrap;
 }
 
-/* STEP 5 — Totals */
-.totals {
-    width: 40%;
-    margin-left: auto;
-    margin-top: 15px;
+/* 5. Totals — right-aligned under line totals */
+.totals-wrap {
+    margin-top: 6px;
+    width: 100%;
+    page-break-inside: avoid;
+}
+.totals-table {
+    width: 100%;
     border-collapse: collapse;
-    page-break-inside: avoid;
+    table-layout: fixed;
 }
-.totals td {
-    padding: 6px;
+.totals-table td {
+    padding: 2px 6px;
+    vertical-align: top;
 }
-.totals td:last-child {
+.totals-table td:first-child {
     text-align: right;
+}
+.totals-table td:last-child {
+    text-align: right;
+    width: 12%;
     white-space: nowrap;
-}
-.totals .grand {
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.footer {
-    margin-top: 18px;
-    padding-top: 8px;
-    border-top: 1px solid #ddd;
-    font-size: 11px;
 }
 
 @media print {
@@ -179,19 +211,23 @@ body {
     .invoice-container {
         width: 100%;
         min-height: auto;
-        margin: 0;
         box-shadow: none;
         padding: 0;
     }
     .no-print {
         display: none !important;
     }
-    .page-break { page-break-after: always; }
-    .page-break-before { page-break-before: always; }
+    .page-break {
+        page-break-after: always;
+    }
+    .page-break-before {
+        page-break-before: always;
+    }
 }
 </style>
 
 </head>
+
 <body>
 
 <div class="actions-bar no-print">
@@ -199,17 +235,16 @@ body {
 </div>
 
 <div class="invoice-container">
+<div class="main-content">
 
-<!-- STEP 1 — Header: title left, QR + verification right -->
+<!-- 1. Header -->
 <header class="header">
     <div class="title">
         FISCAL DEBIT NOTE ({{ debit_note.currency|default:"USD" }})
     </div>
     <div class="verify">
         {% if debit_note.qr_code_base64 %}
-        <div class="qr">
-            <img src="data:image/png;base64,{{ debit_note.qr_code_base64 }}" alt="QR">
-        </div>
+        <img src="data:image/png;base64,{{ debit_note.qr_code_base64 }}" class="qr" alt="QR">
         {% endif %}
         <strong>Verification Code</strong><br>
         {{ debit_note.verification_code|default:"N/A" }}<br>
@@ -218,66 +253,52 @@ body {
     </div>
 </header>
 
-<!-- STEP 2 — Seller / Buyer -->
-<section class="seller-buyer section">
-    <div>
+<!-- 2. Seller/Buyer grid -->
+<div class="seller-buyer">
+    <div class="block">
         <strong>SELLER</strong>
         {{ company.name }}<br>
         TIN: {{ company.tin }}<br>
         VAT No: {{ company.vat_number }}<br>
         {{ company.address }}
     </div>
-    <div>
+    <div class="block">
         <strong>BUYER</strong>
         {{ debit_note.buyer_name }}<br>
         TIN: {{ debit_note.buyer_tin|default:"—" }}<br>
         VAT No: {{ debit_note.buyer_vat|default:"—" }}
     </div>
-</section>
+</div>
 
-<!-- STEP 3 — Metadata (8 fields in 4-column grid) -->
-<table class="meta-table section">
-    <tr>
-        <td><strong>Debit No:</strong> {{ debit_note.fiscal_debit_number }}</td>
-        <td><strong>Fiscal Day No:</strong> {{ debit_note.fiscal_day_no }}</td>
-    </tr>
-    <tr>
-        <td><strong>Device Serial No:</strong> {{ debit_note.device_serial|default:debit_note.device_id }}</td>
-        <td><strong>Fiscal Device ID:</strong> {{ debit_note.device_id }}</td>
-    </tr>
-    <tr>
-        <td><strong>Date:</strong> {{ debit_note.fiscalisation_datetime }}</td>
-        <td><strong>Seller Invoice:</strong> {{ debit_note.receipt_number }}</td>
-    </tr>
-    <tr>
-        <td><strong>Original Invoice:</strong> {{ debit_note.original_invoice_number }}</td>
-        <td><strong>Original Receipt Global No:</strong> {{ debit_note.original_receipt_global_no }}</td>
-    </tr>
-</table>
+<!-- 3. Metadata grid -->
+<div class="meta-grid">
+    <div class="meta-item"><strong>Debit No:</strong> {{ debit_note.fiscal_debit_number }}</div>
+    <div class="meta-item"><strong>Fiscal Day No:</strong> {{ debit_note.fiscal_day_no }}</div>
+    <div class="meta-item"><strong>Device Serial No:</strong> {{ debit_note.device_serial|default:debit_note.device_id }}</div>
+    <div class="meta-item"><strong>Fiscal Device ID:</strong> {{ debit_note.device_id }}</div>
+    <div class="meta-item"><strong>Date:</strong> {{ debit_note.fiscalisation_datetime }}</div>
+    <div class="meta-item"><strong>Seller Invoice:</strong> {{ debit_note.receipt_number }}</div>
+    <div class="meta-item"><strong>Customer Ref No:</strong> {{ debit_note.customer_ref|default:"—" }}</div>
+    <div class="meta-item"><strong>Ref:</strong> {{ debit_note.reference|default:"—" }}</div>
+</div>
 
-<table class="meta-table section">
-    <tr>
-        <td><strong>Customer Ref No:</strong> {{ debit_note.customer_ref|default:"—" }}</td>
-        <td><strong>Ref:</strong> {{ debit_note.reference|default:"—" }}</td>
-    </tr>
-</table>
+<div class="meta-grid">
+    <div class="meta-item"><strong>Original Invoice No:</strong> {{ debit_note.original_invoice_number }}</div>
+    <div class="meta-item"><strong>Original Receipt Global No:</strong> {{ debit_note.original_receipt_global_no }}</div>
+    <div class="meta-item col-span-2"><strong>Reason for Debit:</strong> {{ debit_note.reason }}</div>
+</div>
 
-<section class="section">
-    <strong>Reason for Debit</strong><br>
-    {{ debit_note.reason }}
-</section>
-
-<!-- STEP 4 — Line items table (fixed column widths, numeric right-aligned) -->
-<table class="items-table section">
+<!-- 4. Line items table -->
+<table class="items">
     <thead>
         <tr>
             <th>Code</th>
             <th>Description</th>
             <th class="num">Qty</th>
-            <th class="num">Unit Price (Incl. VAT)</th>
+            <th class="num">Unit Price</th>
             <th class="num">VAT %</th>
             <th class="num">VAT</th>
-            <th class="num">Line Total (Incl. VAT)</th>
+            <th class="num">Line Total</th>
         </tr>
     </thead>
     <tbody>
@@ -295,29 +316,33 @@ body {
     </tbody>
 </table>
 
-<!-- STEP 5 — Totals (right-aligned) -->
-<table class="totals section">
-    <tr>
-        <td><strong>Total (excl. VAT)</strong></td>
-        <td class="right">{{ debit_note.subtotal|floatformat:2 }}</td>
-    </tr>
-    <tr>
-        <td><strong>VAT</strong></td>
-        <td class="right">{{ debit_note.total_tax|floatformat:2 }}</td>
-    </tr>
-    <tr>
-        <td><strong>Debit Total</strong></td>
-        <td class="right grand">{{ debit_note.total|floatformat:2 }}</td>
-    </tr>
-</table>
-
-<div class="footer section">
-    <strong>Fiscal Signature</strong>: {{ debit_note.fiscal_signature }}<br>
-    <strong>Receipt Global No</strong>: {{ debit_note.receipt_global_no }}<br>
-    <strong>Fiscal Device ID</strong>: {{ debit_note.device_id }}
+<!-- 5. Totals -->
+<div class="totals-wrap">
+    <table class="totals-table">
+        <tr>
+            <td><strong>Total (excl. VAT)</strong></td>
+            <td class="num">{{ debit_note.subtotal|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td><strong>VAT</strong></td>
+            <td class="num">{{ debit_note.total_tax|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td><strong>Debit Total</strong></td>
+            <td class="num"><strong>{{ debit_note.total|floatformat:2 }}</strong></td>
+        </tr>
+    </table>
 </div>
 
 </div>
+
+</div><!-- .invoice-container -->
+
+{% if request.GET.autoprint %}
+<script>
+window.addEventListener("load", function() { window.print(); });
+</script>
+{% endif %}
 
 </body>
 </html>

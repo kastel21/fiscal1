@@ -1,3 +1,4 @@
+import importlib
 from unittest.mock import Mock, patch
 
 from django.contrib.auth.models import User
@@ -22,13 +23,14 @@ class PdfPersistenceToggleTests(TestCase):
         receipt.refresh_from_db.assert_not_called()
 
     @override_settings(FDMS_PERSIST_PDF=True)
-    @patch("fiscal.services.pdf_generator.generate_fiscal_invoice_pdf", return_value=b"%PDF-1.4")
-    def test_pdf_saved_when_persistence_enabled(self, mock_generate):
+    def test_pdf_saved_when_persistence_enabled(self):
+        pdf_generator = importlib.import_module("fiscal.services.pdf_generator")
         receipt = Mock()
         receipt.pdf_file = Mock()
         receipt.fdms_receipt_id = 0
 
-        saved = _persist_invoice_pdf_if_enabled(receipt, 77)
+        with patch.object(pdf_generator, "generate_fiscal_invoice_pdf", return_value=b"%PDF-1.4") as mock_generate:
+            saved = _persist_invoice_pdf_if_enabled(receipt, 77)
 
         self.assertTrue(saved)
         receipt.refresh_from_db.assert_called_once()
@@ -71,15 +73,13 @@ class PdfDownloadEndpointTests(TestCase):
             receipt_total=0,
         )
 
-    @patch(
-        "fiscal.services.pdf_generator.generate_fiscal_invoice_pdf_from_template",
-        return_value=b"%PDF-1.4 test",
-    )
-    def test_pdf_download_is_generated_on_demand(self, _mock_generate):
+    def test_pdf_download_is_generated_on_demand(self):
+        pdf_generator = importlib.import_module("fiscal.services.pdf_generator")
         req = self.rf.get(f"/fdms/receipts/{self.receipt.pk}/invoice/pdf/")
         req.user = self.user
         req.tenant = None
-        resp = fdms_receipt_invoice_pdf(req, self.receipt.pk)
+        with patch.object(pdf_generator, "generate_fiscal_invoice_pdf_from_template", return_value=b"%PDF-1.4 test"):
+            resp = fdms_receipt_invoice_pdf(req, self.receipt.pk)
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp["Content-Type"], "application/pdf")
         self.assertTrue(resp.content.startswith(b"%PDF"))

@@ -29,7 +29,7 @@
         {% if receipt.receipt_type == "CreditNote" %}Fiscal Credit Note{% elif receipt.receipt_type == "DebitNote" %}Fiscal Debit Note{% else %}Fiscal Tax Invoice{% endif %} #{{ receipt.receipt_global_no }}
     </h1>
     <div class="flex gap-4">
-        <a href="{% url 'fdms_receipt_invoice' receipt.pk %}" target="_blank" class="text-indigo-600 hover:underline">Print Invoice</a>
+        <a href="{% url 'fdms_receipt_invoice' receipt.pk %}?autoprint=1" target="_blank" class="text-indigo-600 hover:underline">Print Invoice</a>
         <a href="{% url 'fdms_receipt_invoice_pdf' receipt.pk %}" class="text-indigo-600 hover:underline">Download PDF</a>
     </div>
 </div>
