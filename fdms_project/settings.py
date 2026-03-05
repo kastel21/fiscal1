@@ -257,6 +257,11 @@ QUICKBOOKS_OAUTH_REVOKE_URL = "https://oauth.platform.intuit.com/oauth2/v1/token
 # ZIMRA verification portal: QR code URL and URL printed on invoices (production: https://fdms.zimra.co.zw)
 ZIMRA_QR_URL = os.environ.get("ZIMRA_QR_URL", "https://fdms.zimra.co.zw")
 
+# PDF persistence mode:
+# False (default) => on-demand generation only; do not persist Receipt.pdf_file on submit.
+# True => keep legacy behavior and save generated PDF file to media/fiscal_invoices/.
+FDMS_PERSIST_PDF = os.environ.get("FDMS_PERSIST_PDF", "false").lower() in ("1", "true", "yes")
+
 # Logging Configuration
 LOGS_DIR = BASE_DIR / "logs"
 LOGS_DIR.mkdir(exist_ok=True)

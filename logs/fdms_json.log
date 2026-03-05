@@ -5649,3 +5649,7 @@
 {"timestamp": "2026-03-05T09:43:36.145Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
 {"timestamp": "2026-03-05T09:47:18.283Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
 {"timestamp": "2026-03-05T09:47:18.933Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-05T11:00:30.084Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF persistence disabled (on-demand mode) for receipt 44"}
+{"timestamp": "2026-03-05T11:00:30.088Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF saved for receipt 77: 77.pdf"}
+{"timestamp": "2026-03-05T11:01:32.986Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF persistence disabled (on-demand mode) for receipt 44"}
+{"timestamp": "2026-03-05T11:01:32.990Z", "level": "INFO", "logger": "fiscal", "message": "InvoiceA4 PDF saved for receipt 77: 77.pdf"}

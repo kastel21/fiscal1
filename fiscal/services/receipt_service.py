@@ -16,6 +16,7 @@ from datetime import datetime
 from decimal import Decimal, ROUND_CEILING, ROUND_HALF_UP
 from typing import Callable
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import transaction
 
@@ -44,6 +45,34 @@ from fiscal.services.tax_mapper import (
 logger = logging.getLogger("fiscal")
 
 MAX_SUBMIT_RETRIES = 3
+
+
+def _persist_invoice_pdf_if_enabled(receipt_obj: Receipt, receipt_global_no: int) -> bool:
+    """
+    Optionally persist generated PDF to Receipt.pdf_file.
+    Disabled by default for on-demand generation.
+    TODO: remove Receipt.pdf_file field in a later migration window.
+    """
+    if not getattr(settings, "FDMS_PERSIST_PDF", False):
+        logger.info(
+            "InvoiceA4 PDF persistence disabled (on-demand mode) for receipt %s",
+            receipt_global_no,
+        )
+        return False
+
+    try:
+        from django.core.files.base import ContentFile
+        from fiscal.services.pdf_generator import generate_fiscal_invoice_pdf
+
+        receipt_obj.refresh_from_db()
+        pdf_bytes = generate_fiscal_invoice_pdf(receipt_obj)
+        filename = f"{receipt_obj.fdms_receipt_id or receipt_global_no}.pdf"
+        receipt_obj.pdf_file.save(filename, ContentFile(pdf_bytes), save=True)
+        logger.info("InvoiceA4 PDF saved for receipt %s: %s", receipt_global_no, filename)
+        return True
+    except Exception as e:
+        logger.warning("InvoiceA4 PDF generation failed for receipt %s: %s", receipt_global_no, e)
+        return False
 
 
 def _cents_to_decimal(cents) -> float:
@@ -1172,16 +1201,6 @@ def _do_submit_receipt(
     except Exception as e:
         logger.warning("QR attach failed for receipt %s: %s", receipt_global_no, e)
 
-    # ZIMRA InvoiceA4 PDF: save to media/fiscal_invoices/{receiptID}.pdf (Section 10/11/13)
-    try:
-        from django.core.files.base import ContentFile
-        from fiscal.services.pdf_generator import generate_fiscal_invoice_pdf
-        receipt_obj.refresh_from_db()
-        pdf_bytes = generate_fiscal_invoice_pdf(receipt_obj)
-        filename = f"{receipt_obj.fdms_receipt_id or receipt_global_no}.pdf"
-        receipt_obj.pdf_file.save(filename, ContentFile(pdf_bytes), save=True)
-        logger.info("InvoiceA4 PDF saved for receipt %s: %s", receipt_global_no, filename)
-    except Exception as e:
-        logger.warning("InvoiceA4 PDF generation failed for receipt %s: %s", receipt_global_no, e)
+    _persist_invoice_pdf_if_enabled(receipt_obj, receipt_global_no)
 
     return receipt_obj, None

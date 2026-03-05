@@ -12917,3 +12917,7 @@ INFO 2026-03-05 11:43:35,541 FDMS Headers: {'DeviceModelName': 'Server', 'Device
 INFO 2026-03-05 11:43:36,145 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
 INFO 2026-03-05 11:47:18,282 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
 INFO 2026-03-05 11:47:18,933 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 13:00:30,083 InvoiceA4 PDF persistence disabled (on-demand mode) for receipt 44
+INFO 2026-03-05 13:00:30,088 InvoiceA4 PDF saved for receipt 77: 77.pdf
+INFO 2026-03-05 13:01:32,985 InvoiceA4 PDF persistence disabled (on-demand mode) for receipt 44
+INFO 2026-03-05 13:01:32,990 InvoiceA4 PDF saved for receipt 77: 77.pdf
