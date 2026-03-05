@@ -85,6 +85,48 @@ def _validate_credit_note_tax_ids(original_invoice: Receipt, receipt_lines_in: l
             )
 
 
+def _validate_credit_note_tax_matches_original(
+    original_invoice: Receipt,
+    receipt_lines_in: list,
+) -> None:
+    """Credit note line tax must match original invoice line at same index (fiscal accounting)."""
+    orig_lines = original_invoice.receipt_lines if isinstance(getattr(original_invoice, "receipt_lines", None), list) else []
+    if not orig_lines or not receipt_lines_in:
+        return
+    tax_map = {}
+    for t in original_invoice.receipt_taxes or []:
+        tid = t.get("taxID") or t.get("fiscalCounterTaxID")
+        if tid is not None:
+            tid = int(tid)
+            pct = t.get("taxPercent") or t.get("fiscalCounterTaxPercent")
+            tax_map[tid] = float(pct) if pct is not None else 0.0
+    if not tax_map:
+        tax_map[1] = 0.0
+    for i, credit_ln in enumerate(receipt_lines_in):
+        if i >= len(orig_lines):
+            break
+        orig_ln = orig_lines[i]
+        orig_tid = orig_ln.get("taxID") or orig_ln.get("fiscalCounterTaxID")
+        orig_tid = int(orig_tid) if orig_tid is not None else 1
+        orig_pct = orig_ln.get("taxPercent") or orig_ln.get("fiscalCounterTaxPercent")
+        if orig_pct is None:
+            orig_pct = tax_map.get(orig_tid, 0.0)
+        else:
+            orig_pct = float(orig_pct)
+        credit_tid = credit_ln.get("taxID")
+        credit_tid = int(credit_tid) if credit_tid is not None else 1
+        credit_pct = credit_ln.get("taxPercent")
+        credit_pct = float(credit_pct) if credit_pct is not None else 0.0
+        if credit_tid != orig_tid:
+            raise ValidationError(
+                f"Credit note line {i + 1} tax category (taxID={credit_tid}) must match original invoice line (taxID={orig_tid})."
+            )
+        if abs(credit_pct - orig_pct) > 0.01:
+            raise ValidationError(
+                f"Credit note line {i + 1} tax rate ({credit_pct}%) must match original invoice line ({orig_pct}%)."
+            )
+
+
 def build_creditnote_payload(
     device: FiscalDevice,
     credit_note: dict,
@@ -108,6 +150,7 @@ def build_creditnote_payload(
     reason = (credit_note.get("reason") or "").strip()
     validate_credit_note_preconditions(device, original_invoice, credit_total_pos, reason)
     _validate_credit_note_tax_ids(original_invoice, receipt_lines_in, receipt_taxes_in)
+    _validate_credit_note_tax_matches_original(original_invoice, receipt_lines_in)
 
     receipt_lines_out = []
     for i, ln in enumerate(receipt_lines_in):

@@ -5,10 +5,11 @@ from django.shortcuts import redirect, render
 
 from fiscal.models import FiscalDevice, InvoiceImport, Receipt
 from fiscal.views import get_device_for_request
-from fiscal.services.config_service import get_config_status, get_latest_configs
+from fiscal.services.config_service import get_config_status, get_latest_configs, get_tax_table_from_configs
 from fiscal.services.excel_parser import list_and_rank_sheets, parse_excel, validate_line_math
 from fiscal.services.invoice_import_service import lines_to_receipt_payload, validate_invoice_import
 from fiscal.services.receipt_service import submit_receipt
+from fiscal.utils.invoice_importer import load_invoice_review, InvoiceImportError
 
 
 @staff_member_required
@@ -167,5 +168,104 @@ def invoice_import_success(request, pk):
         qs = qs.filter(tenant=tenant)
     receipt = qs.first()
     return render(request, "fdms/invoice_import/success.html", {"receipt": receipt})
+
+
+def _resolve_tax_id_for_item(tax_rate_str, tax_options):
+    """Match tax_rate from Excel (e.g. '15.5' or 'EXEMPT') to a tax option; return taxID or None."""
+    if not tax_options:
+        return None
+    tax_rate_str = (tax_rate_str or "").strip().upper()
+    if tax_rate_str in ("EXEMPT", "0", "0%", ""):
+        for t in tax_options:
+            pct = t.get("taxPercent") or t.get("fiscalCounterTaxPercent") or 0
+            if pct == 0 or pct is None:
+                return t.get("taxID") or t.get("fiscalCounterTaxID")
+        return tax_options[0].get("taxID") or tax_options[0].get("fiscalCounterTaxID")
+    try:
+        want_pct = float(tax_rate_str.rstrip("%").strip())
+    except (ValueError, TypeError):
+        return tax_options[0].get("taxID") if tax_options else None
+    for t in tax_options:
+        pct = t.get("taxPercent") or t.get("fiscalCounterTaxPercent")
+        if pct is not None and abs(float(pct) - want_pct) < 0.01:
+            return t.get("taxID") or t.get("fiscalCounterTaxID")
+    return tax_options[0].get("taxID") if tax_options else None
+
+
+@staff_member_required
+def import_invoice_review(request):
+    """
+    Upload Excel (sheet "Invoice Review") and populate the New Invoice form for manual review.
+    Does NOT create a receipt or call FDMS. User must click Submit Receipt after review.
+    """
+    device = get_device_for_request(request)
+    if not device:
+        return render(request, "fdms/invoice_import_review.html", {"error": "No registered device."})
+
+    if request.method == "GET":
+        return render(request, "fdms/invoice_import_review.html", {"error": None})
+
+    excel_file = request.FILES.get("excel_file")
+    if not excel_file:
+        return render(request, "fdms/invoice_import_review.html", {"error": "Please select an Excel file."})
+
+    try:
+        data = load_invoice_review(excel_file)
+    except InvoiceImportError as e:
+        return render(request, "fdms/invoice_import_review.html", {"error": str(e)})
+
+    buyer = data.get("buyer") or {}
+    items = data.get("items") or []
+    invoice = {
+        "buyer_name": buyer.get("buyer_name", ""),
+        "buyer_tin": buyer.get("buyer_tin", ""),
+        "buyer_vat": buyer.get("buyer_vat", ""),
+        "buyer_address": buyer.get("buyer_address", ""),
+        "reference": buyer.get("reference", ""),
+        "currency": (buyer.get("currency", "") or "USD").strip().upper() or "USD",
+        "items": items,
+    }
+
+    config_status = get_config_status(device.device_id)
+    configs = get_latest_configs(device.device_id)
+    tax_table = get_tax_table_from_configs(configs)
+    tax_options = []
+    if tax_table:
+        for t in tax_table:
+            tid = t.get("taxID") or t.get("fiscalCounterTaxID")
+            if tid is not None:
+                tax_options.append({
+                    "taxID": tid,
+                    "taxName": t.get("taxName") or t.get("taxCode") or f"Tax {tid}",
+                    "taxCode": t.get("taxCode") or "",
+                    "taxPercent": t.get("taxPercent") or t.get("fiscalCounterTaxPercent") or 0,
+                })
+    if not tax_options:
+        tax_options = [{"taxID": 1, "taxName": "VAT 15%", "taxCode": "VAT", "taxPercent": 15}]
+
+    for item in invoice.get("items") or []:
+        tid = _resolve_tax_id_for_item(item.get("tax_rate"), tax_options)
+        item["tax_id"] = tid
+        for t in tax_options:
+            if (t.get("taxID") or t.get("fiscalCounterTaxID")) == tid:
+                item["tax_percent"] = t.get("taxPercent") or 0
+                item["tax_code"] = t.get("taxCode") or t.get("taxName") or "VAT"
+                break
+        else:
+            item["tax_percent"] = 0
+            item["tax_code"] = "VAT"
+
+    return render(
+        request,
+        "fdms/receipt_new.html",
+        {
+            "config_status": config_status["status"],
+            "config_last_sync": config_status["lastSync"],
+            "can_submit_receipt": config_status["status"] == "OK",
+            "invoice": invoice,
+            "invoice_import": data,
+            "tax_options": tax_options,
+        },
+    )
 
 

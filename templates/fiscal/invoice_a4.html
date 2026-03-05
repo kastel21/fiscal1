@@ -1,0 +1,286 @@
+{% comment %}
+ZIMRA FDMS Section 10 (InvoiceA4) – full compliance.
+Section 11 (QR), Section 13 (Signatures). Mandatory fiscal fields, tax summary, HS codes, signatures.
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>TAX INVOICE – {{ invoice_no|default:receipt_global_no }}</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 15mm;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 10pt;
+      color: #1a1a1a;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 12mm;
+    }
+    h1 {
+      font-size: 16pt;
+      font-weight: 700;
+      text-align: center;
+      margin: 0 0 12px 0;
+      letter-spacing: 0.02em;
+    }
+    .header-row {
+      display: table;
+      width: 100%;
+      margin-bottom: 14px;
+      border: 1px solid #333;
+    }
+    .header-left {
+      display: table-cell;
+      width: 50%;
+      vertical-align: top;
+      padding: 10px 12px;
+      border-right: 1px solid #333;
+    }
+    .header-right {
+      display: table-cell;
+      width: 50%;
+      vertical-align: top;
+      padding: 10px 12px;
+      background: #f8f8f8;
+    }
+    .header-left p,
+    .header-right p {
+      margin: 2px 0;
+      line-height: 1.35;
+    }
+    .header-right p { font-size: 9pt; }
+    .section-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+      font-size: 9pt;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .buyer-section {
+      margin-bottom: 12px;
+      padding: 8px 10px;
+      border: 1px solid #333;
+    }
+    .buyer-section p { margin: 2px 0; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 12px;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 5px 8px;
+      text-align: left;
+    }
+    th {
+      background: #2c2c2c;
+      color: #fff;
+      font-weight: 600;
+      font-size: 9pt;
+    }
+    tbody tr:nth-child(even) { background: #f5f5f5; }
+    .num { text-align: right; }
+    .totals-table {
+      width: 280px;
+      margin-left: auto;
+      margin-bottom: 12px;
+    }
+    .totals-table td { padding: 4px 10px; }
+    .totals-table .grand-total {
+      font-weight: 700;
+      font-size: 11pt;
+      border-top: 2px solid #333;
+    }
+    .payment-section table { max-width: 320px; }
+    .signature-section {
+      margin-top: 14px;
+      padding: 10px;
+      border: 1px solid #333;
+      font-size: 8pt;
+      word-break: break-all;
+    }
+    .signature-section .label { font-weight: 600; }
+    .qr-wrap {
+      position: absolute;
+      bottom: 20mm;
+      right: 12mm;
+      width: 22mm;
+      height: 22mm;
+    }
+    .qr-wrap img {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 8pt;
+      color: #555;
+      padding: 6px 12mm;
+      border-top: 1px solid #ccc;
+    }
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .page { padding: 10mm; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>TAX INVOICE</h1>
+
+    <div class="header-row">
+      <div class="header-left">
+        <div class="section-title">Taxpayer / Branch</div>
+        <p><strong>{{ taxpayer_name|default:"—" }}</strong></p>
+        <p>TIN: {{ taxpayer_tin|default:"—" }}</p>
+        {% if vat_number %}<p>VAT Number: {{ vat_number }}</p>{% endif %}
+        <p>Branch: {{ branch_name|default:"—" }}</p>
+        <p>{{ branch_address|default:"" }}</p>
+        <p>Device Serial: {{ device_serial|default:"—" }}</p>
+        <p>Device ID: {{ device_id|default:"—" }}</p>
+      </div>
+      <div class="header-right">
+        <div class="section-title">Fiscal block (FDMS Section 10)</div>
+        <p>Receipt ID: {{ receipt_id|default:"—" }}</p>
+        <p>Fiscal Day No: {{ fiscal_day_no|default:"—" }}</p>
+        <p>Receipt Counter: {{ receipt_counter|default:"—" }}</p>
+        <p>Receipt Global No: {{ receipt_global_no|default:"—" }}</p>
+        <p>Invoice No: {{ invoice_no|default:"—" }}</p>
+        <p>Receipt Type: {{ receipt_type|default:"—" }}</p>
+        <p>Receipt Date: {{ receipt_date|default:"—" }}</p>
+        <p>Currency: {{ receipt_currency|default:"—" }}</p>
+        <p>Operation ID: {{ operation_id|default:"—" }}</p>
+        <p>Server Date: {{ server_date|default:"—" }}</p>
+      </div>
+    </div>
+
+    {% if buyer %}
+    <div class="buyer-section">
+      <div class="section-title">Buyer</div>
+      {% if buyer.name %}<p><strong>{{ buyer.name }}</strong></p>{% endif %}
+      {% if buyer.tin %}<p>TIN: {{ buyer.tin }}</p>{% endif %}
+      {% if buyer.vat %}<p>VAT Number: {{ buyer.vat }}</p>{% endif %}
+      {% if buyer.address %}<p>{{ buyer.address }}</p>{% endif %}
+    </div>
+    {% endif %}
+
+    <div class="section-title">Line items</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Line #</th>
+          <th>HS Code</th>
+          <th>Description</th>
+          <th class="num">Quantity</th>
+          <th class="num">Unit Price</th>
+          <th class="num">Line Total</th>
+          <th class="num">Tax %</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for line in line_items %}
+        <tr>
+          <td>{{ line.line_no }}</td>
+          <td>{{ line.hs_code|default:"—" }}</td>
+          <td>{{ line.description|truncatewords:15 }}</td>
+          <td class="num">{{ line.quantity }}</td>
+          <td class="num">{{ line.unit_price|floatformat:2 }}</td>
+          <td class="num">{{ line.line_total|floatformat:2 }}</td>
+          <td class="num">{{ line.tax_percent|default:"—" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">No line items.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="section-title">Tax summary</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Tax Code</th>
+          <th class="num">Tax %</th>
+          <th class="num">Taxable Amount</th>
+          <th class="num">Tax Amount</th>
+          <th class="num">Sales (with tax)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in tax_summary %}
+        <tr>
+          <td>{{ row.tax_code|default:"—" }}</td>
+          <td class="num">{{ row.tax_percent|default:"—" }}</td>
+          <td class="num">{{ row.taxable_amount|floatformat:2 }}</td>
+          <td class="num">{{ row.tax_amount|floatformat:2 }}</td>
+          <td class="num">{{ row.sales_with_tax|floatformat:2 }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No tax rows.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="section-title">Totals</div>
+    <table class="totals-table">
+      <tr><td>Subtotal</td><td class="num">{{ subtotal|floatformat:2 }} {{ receipt_currency }}</td></tr>
+      <tr><td>Total VAT</td><td class="num">{{ total_vat|floatformat:2 }} {{ receipt_currency }}</td></tr>
+      <tr><td class="grand-total">Grand Total</td><td class="num grand-total">{{ grand_total|floatformat:2 }} {{ receipt_currency }}</td></tr>
+    </table>
+
+    <div class="section-title">Payment</div>
+    <div class="payment-section">
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th class="num">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for payment in payment_rows %}
+          <tr>
+            <td>{{ payment.method|default:"—" }}</td>
+            <td class="num">{{ payment.amount|floatformat:2 }} {{ receipt_currency }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% if change_amount is not None and change_amount != 0 %}
+      <p><strong>Change:</strong> {{ change_amount|floatformat:2 }} {{ receipt_currency }}</p>
+      {% endif %}
+    </div>
+
+    <div class="signature-section">
+      <div class="section-title">Signatures (Section 13)</div>
+      <p><span class="label">Device signature (hash):</span> {{ device_signature_hash|default:"—" }}</p>
+      <p><span class="label">FDMS signature:</span> {{ fdms_signature|default:"—" }}</p>
+    </div>
+
+    {% if qr_image_base64 %}
+    <div class="qr-wrap">
+      <img src="data:image/png;base64,{{ qr_image_base64 }}" alt="ZIMRA QR" />
+    </div>
+    {% endif %}
+  </div>
+  <div class="footer">
+    This invoice was fiscalised through the Fiscal Data Management System (FDMS). Zimbabwe Revenue Authority (ZIMRA)
+  </div>
+</body>
+</html>

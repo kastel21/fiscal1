@@ -1,5 +1,6 @@
-"""Utility functions for fiscal app. Redaction for logs and UI."""
+"""Utility functions for fiscal app. Redaction for logs and UI; invoice helpers."""
 
+import base64
 import json
 import re
 
@@ -90,3 +91,19 @@ def redact_for_ui(s: str, max_length: int = 200) -> str:
 def safe_json_dumps(obj, indent: int = 2) -> str:
     """JSON dump with sensitive data masked."""
     return json.dumps(mask_sensitive_data(obj), indent=indent, default=str)
+
+
+def get_logo_base64(company):
+    """
+    Return company logo as base64 string for embedding in invoice PDF (WeasyPrint).
+    Returns None if company is None, has no logo, or file cannot be read.
+    """
+    if not company:
+        return None
+    if not getattr(company, "logo", None) or not company.logo:
+        return None
+    try:
+        with company.logo.open("rb") as image_file:
+            return base64.b64encode(image_file.read()).decode("utf-8")
+    except (OSError, ValueError):
+        return None

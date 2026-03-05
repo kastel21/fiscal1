@@ -34,8 +34,8 @@
             <div>
                 <label class="block text-sm font-medium text-slate-600 mb-1">Currency</label>
                 <select id="currency" class="w-full border border-slate-300 rounded px-3 py-2">
-                    <option value="ZWG">ZWG</option>
-                    <option value="USD">USD</option>
+                    <option value="ZWG" {% if invoice and invoice.currency == 'ZWG' %}selected{% endif %}>ZWG</option>
+                    <option value="USD" {% if not invoice or invoice.currency == 'USD' %}selected{% endif %}>USD</option>
                 </select>
             </div>
             <div>
@@ -48,9 +48,11 @@
     <div class="bg-white rounded-lg shadow p-4">
         <h2 class="font-semibold text-slate-800 mb-3">Customer & Invoice Details</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div><label class="block text-sm font-medium text-slate-600 mb-1">Customer Name</label><input type="text" id="customer-name" placeholder="Customer name" class="w-full border border-slate-300 rounded px-3 py-2" /></div>
-            <div><label class="block text-sm font-medium text-slate-600 mb-1">TIN</label><input type="text" id="customer-tin" placeholder="Tax ID" class="w-full border border-slate-300 rounded px-3 py-2" /></div>
-            <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-600 mb-1">Address</label><input type="text" id="customer-address" placeholder="Customer address" class="w-full border border-slate-300 rounded px-3 py-2" /></div>
+            <div><label class="block text-sm font-medium text-slate-600 mb-1">Customer Name</label><input type="text" id="customer-name" placeholder="Customer name" class="w-full border border-slate-300 rounded px-3 py-2" value="{% if invoice %}{{ invoice.buyer_name|default:'' }}{% endif %}" /></div>
+            <div><label class="block text-sm font-medium text-slate-600 mb-1">TIN</label><input type="text" id="customer-tin" placeholder="Tax ID" class="w-full border border-slate-300 rounded px-3 py-2" value="{% if invoice %}{{ invoice.buyer_tin|default:'' }}{% endif %}" /></div>
+            <div><label class="block text-sm font-medium text-slate-600 mb-1">VAT No</label><input type="text" id="customer-vat-number" placeholder="VAT number" class="w-full border border-slate-300 rounded px-3 py-2" value="{% if invoice %}{{ invoice.buyer_vat|default:'' }}{% endif %}" /></div>
+            <div><label class="block text-sm font-medium text-slate-600 mb-1">Invoice Reference</label><input type="text" id="invoice-reference" placeholder="Reference" class="w-full border border-slate-300 rounded px-3 py-2" value="{% if invoice %}{{ invoice.reference|default:'' }}{% endif %}" /></div>
+            <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-600 mb-1">Address</label><textarea id="customer-address" placeholder="Customer address" rows="2" class="w-full border border-slate-300 rounded px-3 py-2">{% if invoice %}{{ invoice.buyer_address|default:'' }}{% endif %}</textarea></div>
             <div><label class="block text-sm font-medium text-slate-600 mb-1">Phone</label><input type="text" id="customer-phone" placeholder="Phone number" class="w-full border border-slate-300 rounded px-3 py-2" /></div>
             <div><label class="block text-sm font-medium text-slate-600 mb-1">Email</label><input type="email" id="customer-email" placeholder="Email address" class="w-full border border-slate-300 rounded px-3 py-2" /></div>
             <div class="md:col-span-2"><label class="block text-sm font-medium text-slate-600 mb-1">Notes</label><textarea id="notes" placeholder="Notes (optional)" rows="2" class="w-full border border-slate-300 rounded px-3 py-2"></textarea></div>
@@ -62,6 +64,19 @@
         <table class="w-full text-sm">
             <thead><tr class="border-b"><th class="text-left py-2">Item Name</th><th class="text-left py-2">Qty</th><th class="text-left py-2">Unit Price</th><th class="text-left py-2">Tax</th><th class="text-left py-2">HS Code</th><th class="text-left py-2">Total</th><th></th></tr></thead>
             <tbody id="items-tbody">
+                {% if invoice and invoice.items %}
+                {% for item in invoice.items %}
+                <tr class="item-row border-b" data-tax-percent="{{ item.tax_percent|default:0 }}" data-tax-code="{{ item.tax_code|default:'VAT' }}">
+                    <td><input type="text" class="item-name border rounded px-2 py-1 w-full" placeholder="Item description" value="{{ item.description|default:'' }}" /></td>
+                    <td><input type="number" min="0" step="0.01" class="item-qty border rounded px-2 py-1 w-20" value="{{ item.quantity|default:1 }}" /></td>
+                    <td><input type="number" min="0" step="0.01" class="item-price border rounded px-2 py-1 w-24" value="{{ item.unit_price|default:0 }}" /></td>
+                    <td><select class="item-tax-id border rounded px-2 py-1 w-full min-w-[90px]"><option value="">Select tax</option>{% for t in tax_options %}<option value="{{ t.taxID }}" {% if item.tax_id == t.taxID %}selected{% endif %}>{{ t.taxName|default:t.taxCode }}</option>{% endfor %}</select></td>
+                    <td><input type="text" class="item-hs-code border rounded px-2 py-1 w-20" placeholder="000000" value="{{ item.code|default:'' }}" /></td>
+                    <td class="item-total">0.00</td>
+                    <td><button type="button" class="item-remove text-red-500">X</button></td>
+                </tr>
+                {% endfor %}
+                {% else %}
                 <tr class="item-row border-b" data-tax-percent="0" data-tax-code="VAT">
                     <td><input type="text" class="item-name border rounded px-2 py-1 w-full" placeholder="Item description" /></td>
                     <td><input type="number" min="0" step="0.01" class="item-qty border rounded px-2 py-1 w-20" value="1" /></td>
@@ -71,6 +86,7 @@
                     <td class="item-total">0.00</td>
                     <td><button type="button" class="item-remove text-red-500">X</button></td>
                 </tr>
+                {% endif %}
             </tbody>
         </table>
         <button type="button" id="add-item" class="mt-3 bg-blue-600 text-white px-3 py-1 rounded text-sm">Add Item</button>
@@ -98,10 +114,15 @@
     </button>
 </form>
 
+{% if tax_options %}{{ tax_options|json_script:"tax-options-prefill" }}{% endif %}
 <script>
 (function() {
     var devices = [], taxes = [];
     var csrf = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var prefillEl = document.getElementById('tax-options-prefill');
+    if (prefillEl && prefillEl.textContent) {
+        try { taxes = JSON.parse(prefillEl.textContent); } catch(e) {}
+    }
 
     document.getElementById('date-display').value = new Date().toISOString().slice(0, 10);
 
@@ -113,12 +134,22 @@
                 return '<option value="' + d.device_id + '">Device #' + d.device_id + ' (' + (d.fiscal_day_status || '—') + ')</option>';
             }).join('');
             devSel.addEventListener('change', function() { fetchTaxes(devSel.value); });
+            var openDevice = devices.filter(function(d) { return (d.fiscal_day_status || '').toLowerCase() === 'fiscaldayopened'; })[0];
+            if (openDevice) {
+                devSel.value = String(openDevice.device_id);
+            }
             fetchTaxes(devSel.value);
         }).catch(function() {});
     }
 
     function fetchTaxes(deviceId) {
-        if (!deviceId) { taxes = []; renderTaxOptions(); return; }
+        if (!deviceId) {
+            if (taxes.length === 0 && prefillEl && prefillEl.textContent) {
+                try { taxes = JSON.parse(prefillEl.textContent); } catch(e) {}
+            }
+            renderTaxOptions();
+            return;
+        }
         fetch('/api/config/taxes/?device_id=' + deviceId + '&source=invoice', { credentials: 'same-origin' }).then(function(r) { return r.json(); }).then(function(d) {
             taxes = d.taxes || [];
             renderTaxOptions();
@@ -320,10 +351,11 @@
             currency: document.getElementById('currency').value,
             customer_name: document.getElementById('customer-name').value.trim(),
             customer_tin: document.getElementById('customer-tin').value.trim(),
+            customer_vat_number: (document.getElementById('customer-vat-number') && document.getElementById('customer-vat-number').value) ? document.getElementById('customer-vat-number').value.trim() : '',
             customer_address: document.getElementById('customer-address').value.trim(),
             customer_phone: document.getElementById('customer-phone').value.trim(),
             customer_email: document.getElementById('customer-email').value.trim(),
-            invoice_reference: '',
+            invoice_reference: (document.getElementById('invoice-reference') && document.getElementById('invoice-reference').value) ? document.getElementById('invoice-reference').value.trim() : '',
             notes: document.getElementById('notes').value.trim(),
             items: items,
             payments: payments.map(function(p) { return { method: p.method, amount: parseFloat(p.amount) || 0 }; })

@@ -402,3 +402,4 @@ ERROR 2026-02-14 05:20:06,711 GetStatus failed for device 32678: Unauthorized
 ERROR 2026-02-14 05:20:13,969 GetStatus failed for device 32678: Unauthorized
 ERROR 2026-02-14 05:20:24,403 GetStatus failed for device 32678: Unauthorized
 ERROR 2026-02-14 05:20:53,427 GetStatus failed for device 32678: Unauthorized
+ERROR 2026-03-03 09:30:42,250 GetStatus failed for device 31285: Unauthorized

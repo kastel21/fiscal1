@@ -317,30 +317,165 @@ def fdms_receipts(request):
 
 @staff_member_required
 def fdms_receipt_invoice(request, pk):
-    """FDMS-compliant invoice layout for print. No forbidden content. Tenant-scoped when request.tenant is set."""
+    """Tax Invoice, Credit Note or Debit Note layout for print. PDF download uses the exact same template and context."""
+    from fiscal.services.fiscal_invoice_context import get_receipt_print_template_and_context
+
     tenant = getattr(request, "tenant", None)
     qs = Receipt.objects.filter(pk=pk)
     if tenant is not None:
         qs = qs.filter(tenant=tenant)
     receipt = get_object_or_404(qs, pk=pk)
-    ctx = build_invoice_context(receipt)
-    return render(request, "fdms/receipt_invoice.html", ctx)
+    template_name, ctx = get_receipt_print_template_and_context(receipt)
+    return render(request, template_name, ctx)
 
 
 @staff_member_required
 def fdms_receipt_invoice_pdf(request, pk):
-    """PDF of FDMS-compliant invoice. Same layout as print preview. Tenant-scoped when request.tenant is set."""
-    from django.http import HttpResponse
+    """Tax Invoice PDF using current template (invoices/fiscal_invoice_a4.html). Always generated on download. Tenant-scoped when request.tenant is set."""
+    from django.http import HttpResponse, HttpResponseServerError
+    from django.core.exceptions import ValidationError
     tenant = getattr(request, "tenant", None)
     qs = Receipt.objects.filter(pk=pk)
     if tenant is not None:
         qs = qs.filter(tenant=tenant)
     receipt = get_object_or_404(qs, pk=pk)
-    from fiscal.export_utils import render_invoice_pdf
-    pdf_bytes = render_invoice_pdf(build_invoice_context(receipt))
+    try:
+        from fiscal.services.pdf_generator import generate_fiscal_invoice_pdf_from_template
+        pdf_bytes = generate_fiscal_invoice_pdf_from_template(receipt)
+    except ValidationError as e:
+        return HttpResponseServerError(
+            f"PDF generation failed: {e}. Ensure WeasyPrint is installed (pip install weasyprint).",
+            content_type="text/plain",
+        )
     resp = HttpResponse(pdf_bytes, content_type="application/pdf")
-    doc_type = "Credit-Note" if receipt.receipt_type == "CreditNote" else "Invoice"
-    resp["Content-Disposition"] = f'attachment; filename="FDMS-{doc_type}-{receipt.receipt_global_no}.pdf"'
+    doc_type = "Credit-Note" if receipt.receipt_type == "CreditNote" else "Debit-Note" if receipt.receipt_type == "DebitNote" else "Invoice"
+    resp["Content-Disposition"] = f'attachment; filename="FDMS-{doc_type}-{receipt.fdms_receipt_id or receipt.receipt_global_no}.pdf"'
+    return resp
+
+
+@staff_member_required
+def fdms_receipt_invoice_html_pdf(request, pk):
+    """
+    Download PDF generated from the exact same rendered HTML template/context as the print view.
+    This endpoint intentionally bypasses legacy PDF helper functions.
+    """
+    from django.http import HttpResponse, HttpResponseServerError
+    from django.core.exceptions import ValidationError
+    from django.template.loader import render_to_string
+    from fiscal.services.fiscal_invoice_context import get_receipt_print_template_and_context
+    from fiscal.services.pdf_generator import _html_to_pdf
+
+    tenant = getattr(request, "tenant", None)
+    qs = Receipt.objects.filter(pk=pk)
+    if tenant is not None:
+        qs = qs.filter(tenant=tenant)
+    receipt = get_object_or_404(qs, pk=pk)
+
+    try:
+        template_name, ctx = get_receipt_print_template_and_context(receipt)
+        html = render_to_string(template_name, ctx)
+        pdf_bytes = _html_to_pdf(html)
+    except ValidationError as e:
+        return HttpResponseServerError(
+            f"PDF generation failed: {e}. Ensure WeasyPrint or xhtml2pdf is installed.",
+            content_type="text/plain",
+        )
+    except Exception as e:
+        return HttpResponseServerError(f"PDF generation failed: {e}", content_type="text/plain")
+
+    resp = HttpResponse(pdf_bytes, content_type="application/pdf")
+    doc_type = "Credit-Note" if receipt.receipt_type == "CreditNote" else "Debit-Note" if receipt.receipt_type == "DebitNote" else "Invoice"
+    resp["Content-Disposition"] = f'attachment; filename="FDMS-HTML-{doc_type}-{receipt.fdms_receipt_id or receipt.receipt_global_no}.pdf"'
+    return resp
+
+
+@staff_member_required
+def fdms_receipt_debit_note_html_pdf(request, pk):
+    """
+    Download Debit Note PDF from the exact rendered debit-note HTML view/template.
+    """
+    from django.http import HttpResponse, HttpResponseServerError, HttpResponseBadRequest
+    from django.core.exceptions import ValidationError
+    from django.template.loader import render_to_string
+    from fiscal.services.fiscal_invoice_context import get_receipt_print_template_and_context
+    from fiscal.services.pdf_generator import _html_to_pdf
+
+    tenant = getattr(request, "tenant", None)
+    qs = Receipt.objects.filter(pk=pk)
+    if tenant is not None:
+        qs = qs.filter(tenant=tenant)
+    receipt = get_object_or_404(qs, pk=pk)
+
+    if receipt.receipt_type != "DebitNote":
+        return HttpResponseBadRequest("This endpoint is only for Debit Note PDFs.", content_type="text/plain")
+
+    try:
+        template_name, ctx = get_receipt_print_template_and_context(receipt)
+        html = render_to_string(template_name, ctx)
+        pdf_bytes = _html_to_pdf(html)
+    except ValidationError as e:
+        return HttpResponseServerError(
+            f"PDF generation failed: {e}. Ensure WeasyPrint or xhtml2pdf is installed.",
+            content_type="text/plain",
+        )
+    except Exception as e:
+        return HttpResponseServerError(f"PDF generation failed: {e}", content_type="text/plain")
+
+    resp = HttpResponse(pdf_bytes, content_type="application/pdf")
+    resp["Content-Disposition"] = (
+        f'attachment; filename="FDMS-HTML-Debit-Note-{receipt.fdms_receipt_id or receipt.receipt_global_no}.pdf"'
+    )
+    return resp
+
+
+@staff_member_required
+def fdms_receipt_invoice_a4_pdf(request, pk):
+    """
+    Download Tax Invoice A4 PDF (same template as main download). Always generated from current template.
+    Tenant-scoped when request.tenant is set.
+    """
+    from django.http import HttpResponse, HttpResponseServerError
+    from django.core.exceptions import ValidationError
+    tenant = getattr(request, "tenant", None)
+    qs = Receipt.objects.filter(pk=pk)
+    if tenant is not None:
+        qs = qs.filter(tenant=tenant)
+    receipt = get_object_or_404(qs, pk=pk)
+    try:
+        from fiscal.services.pdf_generator import generate_fiscal_invoice_pdf_from_template
+        pdf_bytes = generate_fiscal_invoice_pdf_from_template(receipt)
+    except ValidationError as e:
+        return HttpResponseServerError(
+            f"PDF generation failed: {e}. Ensure WeasyPrint is installed (pip install weasyprint).",
+            content_type="text/plain",
+        )
+    resp = HttpResponse(pdf_bytes, content_type="application/pdf")
+    resp["Content-Disposition"] = f'attachment; filename="InvoiceA4-{receipt.fdms_receipt_id or receipt.receipt_global_no}.pdf"'
+    return resp
+
+
+@staff_member_required
+def fdms_receipt_fiscal_invoice_a4_pdf(request, pk):
+    """
+    Section 10 compliant A4 Tax Invoice PDF (invoices/fiscal_invoice_a4.html).
+    Validates fiscal_signature, receipt_global_no, fiscal_invoice_number, totals before generating.
+    Does NOT generate PDF if validation fails (returns 400).
+    """
+    from django.http import HttpResponse, HttpResponseBadRequest
+    from django.core.exceptions import ValidationError
+    tenant = getattr(request, "tenant", None)
+    qs = Receipt.objects.filter(pk=pk)
+    if tenant is not None:
+        qs = qs.filter(tenant=tenant)
+    receipt = get_object_or_404(qs, pk=pk)
+    try:
+        from fiscal.services.pdf_generator import generate_fiscal_invoice_a4_pdf_section10
+        pdf_bytes = generate_fiscal_invoice_a4_pdf_section10(receipt)
+    except ValidationError as e:
+        return HttpResponseBadRequest(f"Validation error: {e}", content_type="text/plain")
+    resp = HttpResponse(pdf_bytes, content_type="application/pdf")
+    fn = getattr(receipt, "fiscal_invoice_number", None) or receipt.invoice_no or receipt.receipt_global_no
+    resp["Content-Disposition"] = f'attachment; filename="Fiscal-Invoice-A4-{fn}.pdf"'
     return resp
 
 
@@ -480,12 +615,13 @@ def fdms_tax_mapping_form(request, pk=None):
 
 @staff_member_required
 def fdms_settings(request):
-    """Settings page - QuickBooks and other integrations."""
+    """Settings page - QuickBooks, company logo, and other integrations."""
     from django.conf import settings as django_settings
-    from fiscal.models import QuickBooksConnection
+    from fiscal.models import Company, QuickBooksConnection
 
     qb_connection = QuickBooksConnection.objects.filter(is_active=True).first()
     qb_credentials_configured = bool(getattr(django_settings, "QB_CLIENT_ID", "") or "")
+    company = Company.objects.first()
     return render(
         request,
         "fdms/settings.html",
@@ -493,8 +629,57 @@ def fdms_settings(request):
             "qb_connection": qb_connection,
             "qb_connected": qb_connection is not None,
             "qb_credentials_configured": qb_credentials_configured,
+            "company": company,
         },
     )
+
+
+@staff_member_required
+@require_http_methods(["POST"])
+def fdms_settings_company_logo(request):
+    """Upload company logo (appears on tax invoices). Creates company if none exists."""
+    from django.contrib import messages
+    from django.shortcuts import redirect
+    from fiscal.models import Company
+
+    company = Company.objects.first()
+    if not company:
+        company = Company(
+            name="",
+            tin="",
+            address="",
+            phone="",
+            email="",
+        )
+        company.save()
+    logo_file = request.FILES.get("logo")
+    if not logo_file:
+        messages.warning(request, "No file selected. Please choose an image to upload.")
+        return redirect("fdms_settings")
+    if not logo_file.content_type or not logo_file.content_type.startswith("image/"):
+        messages.warning(request, "Please upload an image file (e.g. PNG, JPEG).")
+        return redirect("fdms_settings")
+    company.logo = logo_file
+    company.save(update_fields=["logo"])
+    messages.success(request, "Company logo updated. It will appear on tax invoices.")
+    return redirect("fdms_settings")
+
+
+@staff_member_required
+@require_http_methods(["POST"])
+def fdms_settings_company_logo_remove(request):
+    """Remove company logo."""
+    from django.contrib import messages
+    from django.shortcuts import redirect
+    from fiscal.models import Company
+
+    company = Company.objects.first()
+    if company and company.logo:
+        company.logo.delete(save=False)
+        company.logo = None
+        company.save(update_fields=["logo"])
+        messages.success(request, "Company logo removed.")
+    return redirect("fdms_settings")
 
 
 @staff_member_required

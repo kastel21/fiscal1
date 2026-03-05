@@ -81,14 +81,7 @@
         </h2>
       </div>
       <div class="section-body">
-        <p class="small text-muted mb-3">Add new line items or enter an additional charge amount. Amounts are tax inclusive. VAT is calculated automatically.</p>
-        <div id="vat-breakdown" class="mb-3 d-none">
-          <div class="cn-summary-grid small">
-            <div class="cn-summary-item"><span class="cn-summary-label">Net</span><span id="disp-net" class="cn-summary-value">0.00</span></div>
-            <div class="cn-summary-item"><span class="cn-summary-label">VAT</span><span id="disp-vat" class="cn-summary-value">0.00</span></div>
-            <div class="cn-summary-item"><span class="cn-summary-label">Total</span><span id="disp-total-vat" class="cn-summary-value fw-bold">0.00</span></div>
-          </div>
-        </div>
+        <p class="small text-muted mb-3">Add new line items or enter an additional charge amount. Amounts are tax exclusive. VAT is calculated automatically from the original invoice tax rate.</p>
         <div class="table-responsive">
           <table class="table cn-form-table">
             <thead>
@@ -109,7 +102,7 @@
         </div>
         <button type="button" id="add-debit-line" class="btn-add-line">+ Add line</button>
         <div class="totals-row">
-          <span class="text-muted">Total: <span id="calc-total" class="fw-bold text-success">0.00</span></span>
+          <span class="text-muted">Total (incl. VAT from original invoice): <span id="calc-total" class="fw-bold text-success">0.00</span></span>
         </div>
       </div>
     </div>
@@ -166,7 +159,7 @@
     document.getElementById('disp-customer').textContent = inv.customer || '-';
     document.getElementById('disp-currency').textContent = inv.currency || '-';
     document.getElementById('disp-remaining-balance').textContent = (inv.remaining_balance != null ? inv.currency + ' ' + Number(inv.remaining_balance).toFixed(2) : '-');
-    updateVatBreakdown();
+    updateDebitLineData();
   }
 
   function addDebitRow() {
@@ -185,40 +178,20 @@
 
   function updateDebitLineData() {
     var data = [];
-    var total = 0;
+    var captured = 0;
     tbody.querySelectorAll('tr').forEach(function(tr) {
       var desc = (tr.querySelector('.debit-desc') && tr.querySelector('.debit-desc').value) || '';
       var amt = parseFloat(tr.querySelector('.debit-amount') && tr.querySelector('.debit-amount').value) || 0;
       if (amt <= 0) return;
       data.push({ description: desc || 'Additional charge', amount: amt });
-      total += amt;
+      captured += amt;
     });
     lineDataEl.value = JSON.stringify(data);
-    document.getElementById('calc-total').textContent = total.toFixed(2);
-    updateVatBreakdown();
-  }
-
-  function updateVatBreakdown() {
-    var total = parseFloat(document.getElementById('calc-total').textContent) || 0;
     var inv = selectedInvoice;
-    var vatEl = document.getElementById('vat-breakdown');
-    if (!inv || total <= 0) {
-      vatEl.classList.add('d-none');
-      return;
-    }
-    var pct = Number(inv.tax_percent) || 0;
-    vatEl.classList.remove('d-none');
-    var net, vat;
-    if (pct > 0) {
-      net = Math.round((total * 100 / (100 + pct)) * 100) / 100;
-      vat = Math.round((total - net) * 100) / 100;
-    } else {
-      net = total;
-      vat = 0;
-    }
-    document.getElementById('disp-net').textContent = (inv.currency || '') + ' ' + net.toFixed(2);
-    document.getElementById('disp-vat').textContent = (inv.currency || '') + ' ' + vat.toFixed(2);
-    document.getElementById('disp-total-vat').textContent = (inv.currency || '') + ' ' + total.toFixed(2);
+    var pct = inv ? (Number(inv.tax_percent) || 0) : 0;
+    var totalWithTax = pct > 0 ? Math.round((captured * (1 + pct / 100)) * 100) / 100 : captured;
+    var disp = inv && inv.currency ? (inv.currency + ' ' + totalWithTax.toFixed(2)) : totalWithTax.toFixed(2);
+    document.getElementById('calc-total').textContent = disp;
   }
 
   document.getElementById('add-debit-line').addEventListener('click', addDebitRow);
@@ -238,8 +211,10 @@
       alert('Please select an original invoice.');
       return false;
     }
-    var total = parseFloat(document.getElementById('calc-total').textContent) || 0;
-    if (total <= 0) {
+    var data = [];
+    try { data = JSON.parse(lineDataEl.value || '[]'); } catch (e) {}
+    var captured = data.reduce(function(sum, row) { return sum + (parseFloat(row.amount) || 0); }, 0);
+    if (captured <= 0) {
       alert('Debit amount must be greater than zero.');
       return false;
     }

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Fiscal Debit Note</title>
+
+<style>
+/* A4 page */
+@page {
+    size: A4;
+    margin: 12mm;
+}
+
+.no-print { display: block; }
+.actions-bar {
+    width: 210mm;
+    margin: 0 auto 8px;
+    display: flex;
+    justify-content: flex-end;
+}
+.download-btn {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid #1f4ed8;
+    border-radius: 4px;
+    background: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+}
+.download-btn:hover {
+    background: #1d4ed8;
+}
+.page-break { page-break-after: always; }
+.page-break-before { page-break-before: always; }
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #000;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #e0e0e0;
+    padding: 16px 0;
+}
+
+.invoice-container {
+    width: 210mm;
+    margin: auto;
+    padding: 12mm;
+    min-height: 297mm;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+/* STEP 1 — Header: title left, QR/verification right */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    page-break-inside: avoid;
+}
+.header .title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+.header .verify {
+    text-align: right;
+    font-size: 10px;
+}
+.header .qr {
+    margin-bottom: 6px;
+}
+.header .qr img {
+    width: 90px;
+    display: block;
+}
+
+/* STEP 2 — Seller / Buyer: 2 column grid */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 20px;
+    page-break-inside: avoid;
+}
+.grid-2 strong {
+    display: block;
+    margin-bottom: 2px;
+}
+
+/* STEP 3 — Metadata: 4 column grid */
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 15px;
+    page-break-inside: avoid;
+    font-size: 11px;
+}
+.grid-4 .meta-item {
+    min-width: 0;
+}
+.grid-4 .meta-item.col-span-2 {
+    grid-column: span 2;
+}
+
+/* STEP 4 — Item table: fixed column widths, border-collapse, right-align numeric */
+table.items {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 15px;
+    page-break-inside: auto;
+}
+table.items thead {
+    display: table-header-group;
+}
+table.items th,
+table.items td {
+    border: 1px solid #000;
+    padding: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+table.items th {
+    background: #eee;
+}
+table.items tbody tr {
+    page-break-inside: avoid;
+}
+table.items th:nth-child(1),
+table.items td:nth-child(1) { width: 10%; }
+table.items th:nth-child(2),
+table.items td:nth-child(2) { width: 35%; }
+table.items th:nth-child(3),
+table.items td:nth-child(3) { width: 10%; }
+table.items th:nth-child(4),
+table.items td:nth-child(4) { width: 15%; }
+table.items th:nth-child(5),
+table.items td:nth-child(5) { width: 10%; }
+table.items th:nth-child(6),
+table.items td:nth-child(6) { width: 10%; }
+table.items th:nth-child(7),
+table.items td:nth-child(7) { width: 10%; }
+.right,
+table.items .num {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* STEP 5 — Totals: right-aligned under numeric columns */
+.totals {
+    width: 40%;
+    margin-left: auto;
+    margin-top: 10px;
+    border-collapse: collapse;
+    page-break-inside: avoid;
+}
+.totals td {
+    padding: 5px;
+}
+.totals td:last-child {
+    text-align: right;
+    white-space: nowrap;
+}
+
+@media print {
+    body {
+        background: #fff;
+        padding: 0;
+        display: block;
+    }
+    .invoice-container {
+        width: 100%;
+        min-height: auto;
+        margin: 0;
+        box-shadow: none;
+        padding: 0;
+    }
+    .no-print {
+        display: none !important;
+    }
+    .page-break { page-break-after: always; }
+    .page-break-before { page-break-before: always; }
+}
+</style>
+
+</head>
+<body>
+
+<div class="actions-bar no-print">
+    <a class="download-btn" href="debit-note/html-pdf/">Download PDF</a>
+</div>
+
+<div class="invoice-container">
+
+<!-- STEP 1 — Header: title left, QR + verification right -->
+<header class="header">
+    <div class="title">
+        FISCAL DEBIT NOTE ({{ debit_note.currency|default:"USD" }})
+    </div>
+    <div class="verify">
+        {% if debit_note.qr_code_base64 %}
+        <div class="qr">
+            <img src="data:image/png;base64,{{ debit_note.qr_code_base64 }}" alt="QR">
+        </div>
+        {% endif %}
+        <strong>Verification Code</strong><br>
+        {{ debit_note.verification_code|default:"N/A" }}<br>
+        You can verify this receipt manually at<br>
+        https://fdms.zimra.co.zw
+    </div>
+</header>
+
+<!-- STEP 2 — Seller / Buyer -->
+<section class="grid-2">
+    <div>
+        <strong>SELLER</strong>
+        {{ company.name }}<br>
+        TIN: {{ company.tin }}<br>
+        VAT No: {{ company.vat_number }}<br>
+        {{ company.address }}
+    </div>
+    <div>
+        <strong>BUYER</strong>
+        {{ debit_note.buyer_name }}<br>
+        TIN: {{ debit_note.buyer_tin|default:"—" }}<br>
+        VAT No: {{ debit_note.buyer_vat|default:"—" }}
+    </div>
+</section>
+
+<!-- STEP 3 — Metadata (8 fields in 4-column grid) -->
+<section class="grid-4">
+    <div class="meta-item"><strong>Debit No:</strong> {{ debit_note.fiscal_debit_number }}</div>
+    <div class="meta-item"><strong>Fiscal Day No:</strong> {{ debit_note.fiscal_day_no }}</div>
+    <div class="meta-item"><strong>Device Serial No:</strong> {{ debit_note.device_serial|default:debit_note.device_id }}</div>
+    <div class="meta-item"><strong>Fiscal Device ID:</strong> {{ debit_note.device_id }}</div>
+    <div class="meta-item"><strong>Date:</strong> {{ debit_note.fiscalisation_datetime }}</div>
+    <div class="meta-item"><strong>Seller Invoice:</strong> {{ debit_note.receipt_number }}</div>
+    <div class="meta-item"><strong>Original Invoice:</strong> {{ debit_note.original_invoice_number }}</div>
+    <div class="meta-item"><strong>Original Receipt Global No:</strong> {{ debit_note.original_receipt_global_no }}</div>
+</section>
+
+<section class="grid-4">
+    <div class="meta-item col-span-2"><strong>Customer Ref No:</strong> {{ debit_note.customer_ref|default:"—" }}</div>
+    <div class="meta-item"><strong>Ref:</strong> {{ debit_note.reference|default:"—" }}</div>
+    <div class="meta-item col-span-2"><strong>Reason for Debit:</strong> {{ debit_note.reason }}</div>
+</section>
+
+<!-- STEP 4 — Line items table (fixed column widths, numeric right-aligned) -->
+<table class="items">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th class="num">Qty</th>
+            <th class="num">Unit Price (Incl. VAT)</th>
+            <th class="num">VAT %</th>
+            <th class="num">VAT</th>
+            <th class="num">Line Total (Incl. VAT)</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in debit_note_items %}
+        <tr>
+            <td>{{ item.code|default:"" }}</td>
+            <td>{{ item.description }}</td>
+            <td class="num">{{ item.quantity|floatformat:2 }}</td>
+            <td class="num">{{ item.unit_price|floatformat:2 }}</td>
+            <td class="num">{% if item.tax_rate is not None %}{{ item.tax_rate }}%{% else %}Exempt{% endif %}</td>
+            <td class="num">{{ item.tax_amount|floatformat:2 }}</td>
+            <td class="num">{{ item.line_total|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- STEP 5 — Totals (right-aligned) -->
+<table class="totals">
+    <tr>
+        <td><strong>Total (excl. VAT)</strong></td>
+        <td class="right">{{ debit_note.subtotal|floatformat:2 }}</td>
+    </tr>
+    <tr>
+        <td><strong>VAT</strong></td>
+        <td class="right">{{ debit_note.total_tax|floatformat:2 }}</td>
+    </tr>
+    <tr>
+        <td><strong>Debit Total</strong></td>
+        <td class="right"><strong>{{ debit_note.total|floatformat:2 }}</strong></td>
+    </tr>
+</table>
+
+</div>
+
+</body>
+</html>

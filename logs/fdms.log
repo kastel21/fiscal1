@@ -11235,3 +11235,1565 @@ INFO 2026-02-26 20:19:32,322 FDMS Headers: {'DeviceModelName': 'Server', 'Device
 INFO 2026-02-26 20:19:34,045 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
 INFO 2026-02-26 20:19:41,537 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
 INFO 2026-02-26 20:19:45,143 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 09:30:30,339 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:30:31,614 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 09:30:32,927 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:30:34,421 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 09:30:37,843 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:30:38,343 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 09:30:41,659 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:30:42,248 FDMS call logged: GET /Device/v1/31285/GetStatus -> 401
+ERROR 2026-03-03 09:30:42,250 GetStatus failed for device 31285: Unauthorized
+INFO 2026-03-03 09:30:42,267 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:30:42,869 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 09:30:56,514 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:30:56,996 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-03 09:30:57,007 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:30:57,453 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 09:31:00,169 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:31:00,632 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-03 09:31:00,643 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:31:01,123 FDMS call logged: GET /Device/v1/32327/GetConfig -> 200
+INFO 2026-03-03 09:31:01,140 GetConfig OK for device 32327
+INFO 2026-03-03 09:31:01,240 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:31:01,793 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-03 09:31:01,801 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:31:02,167 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 09:31:19,673 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:31:20,322 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-03 09:31:20,401 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:31:21,052 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 09:31:29,783 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 09:31:30,328 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:02:58,618 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:02:59,289 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:06:02,338 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:06:02,904 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:06:06,980 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:06:07,532 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:39:11,441 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:39:12,926 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:39:37,091 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:39:37,617 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:39:39,881 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:39:40,423 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:39:42,410 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:39:43,004 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:41:22,770 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:41:23,445 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:41:28,224 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:41:28,749 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:41:31,101 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:41:31,579 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 10:47:57,510 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 10:47:58,388 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:05:19,106 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:05:19,879 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:05:22,848 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:05:23,420 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:05:37,848 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:05:38,356 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:05:56,799 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:05:57,320 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:06:01,945 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:06:02,391 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:10:28,377 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:10:29,484 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:12:25,034 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:12:25,847 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-03 11:12:25,928 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:12:26,765 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:12:31,002 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:12:31,743 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:12:31,781 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:12:32,661 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:12:58,739 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:12:59,219 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:12:59,240 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:12:59,781 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:13:02,387 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:13:03,067 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:13:03,079 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:13:03,785 FDMS call logged: POST /Device/v1/32702/OpenDay -> 200
+INFO 2026-03-03 11:13:03,835 OpenDay OK for device 32702: fiscal day #8
+INFO 2026-03-03 11:13:03,836 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:13:04,603 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:13:04,750 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:13:05,521 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:13:05,537 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:13:06,249 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:13:08,904 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:13:09,719 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:14:42,977 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:14:43,772 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:14:43,793 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:14:44,545 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:14:47,051 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:14:47,705 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:14:47,712 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:14:48,252 FDMS call logged: GET /Device/v1/32702/GetConfig -> 200
+INFO 2026-03-03 11:14:48,263 GetConfig OK for device 32702
+INFO 2026-03-03 11:14:48,348 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:14:49,046 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:14:49,060 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:14:49,573 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:14:55,402 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:14:55,914 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:15:37,782 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:15:38,351 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:32:41,256 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:32:41,989 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:32:49,436 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:32:50,756 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 11:33:09,572 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 11:33:10,945 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:07:21,963 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:07:22,747 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:07:46,491 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:07:47,088 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:11:05,932 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:11:06,890 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:11:32,075 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:11:33,013 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:11:33,054 [SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=FISCALINVOICE receiptGlobalNo=49: [REDACTED]
+INFO 2026-03-03 12:11:33,096 [SubmitReceipt] REQUEST POST /Device/v1/32702/SubmitReceipt receiptType=FISCALINVOICE receiptGlobalNo=49
+{
+  "receipt": {
+    "deviceID": 32702,
+    "receiptType": "FISCALINVOICE",
+    "receiptCurrency": "USD",
+    "receiptGlobalNo": 49,
+    "receiptCounter": 1,
+    "invoiceNo": "INV-2026-109",
+    "receiptDate": "2026-03-03T12:11:33",
+    "receiptTotal": 2.31,
+    "receiptLinesTaxInclusive": false,
+    "receiptLines": [
+      {
+        "receiptLineType": "Sale",
+        "receiptLineName": "water",
+        "receiptLineQuantity": 1.00,
+        "receiptLinePrice": 2.00,
+        "receiptLineTotal": 2.00,
+        "receiptLineHSCode": "1122",
+        "taxID": 517,
+        "receiptLineNo": 1,
+        "taxCode": "517",
+        "taxPercent": 15.5
+      }
+    ],
+    "receiptTaxes": [
+      {
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5,
+        "taxAmount": 0.31,
+        "salesAmountWithTax": 2.31
+      }
+    ],
+    "receiptPayments": [
+      {
+        "moneyTypeCode": "Cash",
+        "paymentAmount": 2.31
+      }
+    ],
+    "receiptDeviceSignature": {
+      "hash": "[REDACTED]",
+      "signature": "[REDACTED]"
+    }
+  }
+}
+INFO 2026-03-03 12:11:33,096 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:11:34,185 FDMS call logged: POST /Device/v1/32702/SubmitReceipt -> 200
+INFO 2026-03-03 12:11:34,189 [SubmitReceipt] RESPONSE status=200 receiptType=FISCALINVOICE receiptGlobalNo=49
+{
+  "receiptID": 10697380,
+  "serverDate": "2026-03-03T12:11:33",
+  "receiptServerSignature": {
+    "certificateThumbprint": "[REDACTED]",
+    "hash": "[REDACTED]",
+    "signature": "[REDACTED]"
+  },
+  "validationErrors": [],
+  "operationID": "0HNJJFH7B91SS:00000001"
+}
+INFO 2026-03-03 12:11:34,248 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:11:35,359 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:11:35,388 SubmitReceipt OK: device=32702 receiptGlobalNo=49 receiptID=10697380
+WARNING 2026-03-03 12:11:35,783 InvoiceA4 PDF generation failed for receipt 49: ['WeasyPrint is required for ZIMRA InvoiceA4 PDF. Install: pip install weasyprint']
+WARNING 2026-03-03 12:11:40,235 Emit metrics.updated failed: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+INFO 2026-03-03 12:11:45,016 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:11:45,769 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:11:53,047 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:11:54,014 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:12:17,197 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:12:18,266 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:14:01,474 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:14:02,554 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:14:13,515 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:14:14,343 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:14:17,598 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:14:18,459 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:16:21,961 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:16:56,569 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+WARNING 2026-03-03 12:18:09,184 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x296d40491d0>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 1.0s.
+WARNING 2026-03-03 12:18:43,765 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x296d4049590>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 1.0s.
+WARNING 2026-03-03 12:19:36,312 FDMS request failed (attempt 2/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 2.0s.
+WARNING 2026-03-03 12:19:45,047 FDMS request failed (attempt 2/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 2.0s.
+INFO 2026-03-03 12:19:47,968 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:19:51,084 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:21:00,212 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:21:00,915 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:22:54,842 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:22:55,552 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:22:59,313 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:22:59,960 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:23:05,155 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:23:05,704 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:32:53,083 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:32:53,686 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:32:58,257 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:32:59,253 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:35:57,156 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:35:57,830 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:36:29,064 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:36:29,653 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:36:44,282 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:36:44,945 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:37:54,000 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:37:54,759 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:41:38,440 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:41:39,003 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:41:44,914 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:41:45,433 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:43:38,633 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:43:39,464 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:45:00,113 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:45:00,671 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:45:06,595 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:45:07,111 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:45:07,148 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:45:07,805 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:45:08,558 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:45:09,050 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:45:11,544 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:45:12,083 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:47:32,801 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:47:33,813 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 12:51:38,300 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 12:51:38,899 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:17:31,420 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:17:32,228 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:17:35,160 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 13:17:38,053 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 13:32:27,539 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:32:28,158 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:32:32,654 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:32:33,251 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:32:36,725 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:32:37,310 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:35:20,154 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:35:20,755 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:35:28,374 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:35:28,866 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:36:18,736 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:36:19,212 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:36:33,840 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:36:34,538 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:37:17,791 [SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=FISCALINVOICE receiptGlobalNo=50: [REDACTED]
+INFO 2026-03-03 13:37:17,841 [SubmitReceipt] REQUEST POST /Device/v1/32702/SubmitReceipt receiptType=FISCALINVOICE receiptGlobalNo=50
+{
+  "receipt": {
+    "deviceID": 32702,
+    "receiptType": "FISCALINVOICE",
+    "receiptCurrency": "ZWG",
+    "receiptGlobalNo": 50,
+    "receiptCounter": 2,
+    "invoiceNo": "INV-2026-110",
+    "receiptDate": "2026-03-03T13:37:17",
+    "receiptTotal": 10.93,
+    "receiptLinesTaxInclusive": false,
+    "receiptLines": [
+      {
+        "receiptLineType": "Sale",
+        "receiptLineName": "tea",
+        "receiptLineQuantity": 2.00,
+        "receiptLinePrice": 3.00,
+        "receiptLineTotal": 6.00,
+        "receiptLineHSCode": "1122",
+        "taxID": 517,
+        "receiptLineNo": 1,
+        "taxCode": "517",
+        "taxPercent": 15.5
+      },
+      {
+        "receiptLineType": "Sale",
+        "receiptLineName": "bread",
+        "receiptLineQuantity": 1.00,
+        "receiptLinePrice": 1.00,
+        "receiptLineTotal": 1.00,
+        "receiptLineHSCode": "11223344",
+        "taxID": 1,
+        "receiptLineNo": 2,
+        "taxCode": "1"
+      },
+      {
+        "receiptLineType": "Sale",
+        "receiptLineName": "salt",
+        "receiptLineQuantity": 1.00,
+        "receiptLinePrice": 3.00,
+        "receiptLineTotal": 3.00,
+        "receiptLineHSCode": "11223344",
+        "taxID": 2,
+        "receiptLineNo": 3,
+        "taxCode": "2",
+        "taxPercent": 0.0
+      }
+    ],
+    "receiptTaxes": [
+      {
+        "taxID": 1,
+        "taxCode": "1",
+        "taxAmount": 0.00,
+        "salesAmountWithTax": 1.00
+      },
+      {
+        "taxID": 2,
+        "taxCode": "2",
+        "taxPercent": 0.0,
+        "taxAmount": 0.00,
+        "salesAmountWithTax": 3.00
+      },
+      {
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5,
+        "taxAmount": 0.93,
+        "salesAmountWithTax": 6.93
+      }
+    ],
+    "receiptPayments": [
+      {
+        "moneyTypeCode": "Cash",
+        "paymentAmount": 10.93
+      }
+    ],
+    "receiptDeviceSignature": {
+      "hash": "[REDACTED]",
+      "signature": "[REDACTED]"
+    },
+    "previousReceiptHash": "LTF48eoNG7Xrl8x9AwpJcIIxrgWc2/begTIkFOcImk0="
+  }
+}
+INFO 2026-03-03 13:37:17,842 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:37:18,454 FDMS call logged: POST /Device/v1/32702/SubmitReceipt -> 200
+INFO 2026-03-03 13:37:18,456 [SubmitReceipt] RESPONSE status=200 receiptType=FISCALINVOICE receiptGlobalNo=50
+{
+  "receiptID": 10697559,
+  "serverDate": "2026-03-03T13:37:18",
+  "receiptServerSignature": {
+    "certificateThumbprint": "[REDACTED]",
+    "hash": "[REDACTED]",
+    "signature": "[REDACTED]"
+  },
+  "validationErrors": [],
+  "operationID": "0HNJJFH7B9933:00000001"
+}
+INFO 2026-03-03 13:37:18,496 SubmitReceipt OK: device=32702 receiptGlobalNo=50 receiptID=10697559
+INFO 2026-03-03 13:37:18,668 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 13:37:18,865 InvoiceA4 PDF saved for receipt 50: 10697559.pdf
+WARNING 2026-03-03 13:37:23,170 Emit metrics.updated failed: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+INFO 2026-03-03 13:37:30,996 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:37:31,514 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:37:33,665 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:37:34,144 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:37:36,190 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:37:36,732 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:37:47,597 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:37:48,214 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:37:55,228 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:37:55,705 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:38:05,729 [CreditNote Submit] _do_submit_receipt entered
+INFO 2026-03-03 13:38:05,750 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:38:06,225 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:55:04,590 [CreditNote Submit] _do_submit_receipt entered
+INFO 2026-03-03 13:55:04,617 [SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=CreditNote receiptGlobalNo=51: [REDACTED]
+INFO 2026-03-03 13:55:04,656 [SubmitReceipt] REQUEST POST /Device/v1/32702/SubmitReceipt receiptType=CreditNote receiptGlobalNo=51
+{
+  "receipt": {
+    "deviceID": 32702,
+    "receiptType": "CREDITNOTE",
+    "receiptCurrency": "ZWG",
+    "receiptGlobalNo": 51,
+    "receiptCounter": 3,
+    "invoiceNo": "CN-2026-37",
+    "receiptDate": "2026-03-03T13:55:04",
+    "receiptTotal": -10.0,
+    "receiptLinesTaxInclusive": true,
+    "receiptLines": [
+      {
+        "receiptLineNo": 1,
+        "receiptLineQuantity": 1.00,
+        "receiptLineTotal": -0.91,
+        "receiptLinePrice": -0.91,
+        "receiptLineName": "Credit allocation (1)",
+        "receiptLineHSCode": "11220000",
+        "receiptLineType": "Sale",
+        "taxID": 1,
+        "taxCode": "1"
+      },
+      {
+        "receiptLineNo": 2,
+        "receiptLineQuantity": 1.00,
+        "receiptLineTotal": -2.74,
+        "receiptLinePrice": -2.74,
+        "receiptLineName": "Credit allocation (2)",
+        "receiptLineHSCode": "11223344",
+        "receiptLineType": "Sale",
+        "taxID": 2,
+        "taxCode": "2",
+        "taxPercent": 0.0
+      },
+      {
+        "receiptLineNo": 3,
+        "receiptLineQuantity": 1.00,
+        "receiptLineTotal": -6.35,
+        "receiptLinePrice": -6.35,
+        "receiptLineName": "Credit allocation (517)",
+        "receiptLineHSCode": "0000",
+        "receiptLineType": "Sale",
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5
+      }
+    ],
+    "receiptTaxes": [
+      {
+        "taxID": 1,
+        "taxCode": "1",
+        "taxAmount": 0.00,
+        "salesAmountWithTax": -0.91
+      },
+      {
+        "taxID": 2,
+        "taxCode": "2",
+        "taxPercent": 0.0,
+        "taxAmount": 0.00,
+        "salesAmountWithTax": -2.74
+      },
+      {
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5,
+        "taxAmount": -0.85,
+        "salesAmountWithTax": -6.35
+      }
+    ],
+    "receiptPayments": [
+      {
+        "moneyTypeCode": "Cash",
+        "paymentAmount": -10.0
+      }
+    ],
+    "receiptDeviceSignature": {
+      "hash": "[REDACTED]",
+      "signature": "[REDACTED]"
+    },
+    "previousReceiptHash": "GS5C+SD1+JM3XGpUWYG9/2JHgJwZ0IrteCZJCC50ZUg=",
+    "creditDebitNote": {
+      "deviceID": 32702,
+      "receiptGlobalNo": 50,
+      "fiscalDayNo": 8,
+      "receiptID": 10697559
+    },
+    "receiptNotes": "Returned goods"
+  }
+}
+INFO 2026-03-03 13:55:04,657 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:55:05,453 FDMS call logged: POST /Device/v1/32702/SubmitReceipt -> 200
+INFO 2026-03-03 13:55:05,454 [SubmitReceipt] RESPONSE status=200 receiptType=CreditNote receiptGlobalNo=51
+{
+  "receiptID": 10697564,
+  "serverDate": "2026-03-03T13:55:05",
+  "receiptServerSignature": {
+    "certificateThumbprint": "[REDACTED]",
+    "hash": "[REDACTED]",
+    "signature": "[REDACTED]"
+  },
+  "validationErrors": [],
+  "operationID": "0HNJJFH7B9AFS:00000001"
+}
+INFO 2026-03-03 13:55:05,492 SubmitReceipt OK: device=32702 receiptGlobalNo=51 receiptID=10697564
+WARNING 2026-03-03 13:55:05,543 InvoiceA4 PDF generation failed for receipt 51: ['Totals must reconcile with receiptTotal: subtotal + tax = -10.85, receiptTotal = -10.00.']
+INFO 2026-03-03 13:55:05,817 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:55:06,359 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:55:13,941 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:55:14,459 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:55:21,332 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:55:21,938 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 13:55:21,960 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 13:55:22,478 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:07:32,938 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:07:33,886 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:07:33,909 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:07:34,617 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:07:36,409 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:07:37,178 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:07:37,250 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:07:37,788 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:07:39,215 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:07:39,981 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:07:40,010 CloseDay signature — algo: ECC, canonical: '3270282026-03-03SALEBYTAXUSD15.50231SALEBYTAXZWG100SALEBYTAXZWG0.00300SALEBYTAXZWG15.50693SALETAXBYTAXUSD15.5031SALETAXBYTAXZWG15.5093CREDITNOTEBYTAXZWG-91CREDITNOTEBYTAXZWG0.00-274CREDITNOTEBYTAXZWG15.50-635CREDITNOTETAXBYTAXZWG15.50-85BALANCEBYMONEYTYPEUSDCASH231BALANCEBYMONEYTYPEZWGCASH93', hash: /BMoCyqVXi7ZFH4g/1WIP1q7QoYCOCobvgyX8tlEsMw=
+INFO 2026-03-03 14:07:40,010 CloseDay canonical string: 3270282026-03-03SALEBYTAXUSD15.50231SALEBYTAXZWG100SALEBYTAXZWG0.00300SALEBYTAXZWG15.50693SALETAXBYTAXUSD15.5031SALETAXBYTAXZWG15.5093CREDITNOTEBYTAXZWG-91CREDITNOTEBYTAXZWG0.00-274CREDITNOTEBYTAXZWG15.50-635CREDITNOTETAXBYTAXZWG15.50-85BALANCEBYMONEYTYPEUSDCASH231BALANCEBYMONEYTYPEZWGCASH93
+INFO 2026-03-03 14:07:40,010 CloseDay signature hash: /BMoCyqVXi7ZFH4g/1WIP1q7QoYCOCobvgyX8tlEsMw=
+INFO 2026-03-03 14:07:40,011 CloseDay request:
+{
+  "deviceID": 32702,
+  "fiscalDayNo": 8,
+  "receiptCounter": 3,
+  "fiscalDayCounters": [
+    {
+      "fiscalCounterType": "SaleByTax",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": 2.31,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "SaleByTax",
+      "fiscalCounterCurrency": "ZWG",
+      "fiscalCounterTaxID": 1,
+      "fiscalCounterValue": 1.0
+    },
+    {
+      "fiscalCounterType": "SaleByTax",
+      "fiscalCounterCurrency": "ZWG",
+      "fiscalCounterTaxID": 2,
+      "fiscalCounterValue": 3.0,
+      "fiscalCounterTaxPercent": 0.0
+    },
+    {
+      "fiscalCounterType": "SaleByTax",
+      "fiscalCounterCurrency": "ZWG",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": 6.93,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "SaleTaxByTax",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": 0.31,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "SaleTaxByTax",
+      "fiscalCounterCurrency": "ZWG",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": 0.93,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "CreditNoteByTax",
+      "fiscalCounterCurrency": "ZWG",
+      "fiscalCounterTaxID": 1,
+      "fiscalCounterValue": -0.91
+    },
+    {
+      "fiscalCounterType": "CreditNoteByTax",
+      "fiscalCounterCurrency": "ZWG",
+      "fiscalCounterTaxID": 2,
+      "fiscalCounterValue": -2.74,
+      "fiscalCounterTaxPercent": 0.0
+    },
+    {
+      "fiscalCounterType": "CreditNoteByTax",
+      "fiscalCounterCurrency": "ZWG",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": -6.35,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "CreditNoteTaxByTax",
+      "fiscalCounterCurrency": "ZWG",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": -0.85,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "BalanceByMoneyType",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterMoneyType": "CASH",
+      "fiscalCounterValue": 2.31
+    },
+    {
+      "fiscalCounterType": "BalanceByMoneyType",
+      "fiscalCounterCurrency": "ZWG",
+      "fiscalCounterMoneyType": "CASH",
+      "fiscalCounterValue": 0.93
+    }
+  ],
+  "fiscalDayDeviceSignature": {
+    "hash": "/BMoCyqVXi7ZFH4g/1WIP1q7QoYCOCobvgyX8tlEsMw=",
+    "signature": "MEUCIQCPMHq7UA4eB5y6x/JQ7WUdEiUJDyl1kMQx28MmW7WADgIgLrUE9PtusRxvmnB3QVf7XBmaKWKcO4Kv3deksDzP+nM="
+  }
+}
+INFO 2026-03-03 14:07:40,011 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:07:40,735 FDMS call logged: POST /Device/v1/32702/CloseDay -> 200
+INFO 2026-03-03 14:07:40,736 CloseDay response:
+{
+  "operationID": "0HNJJFH7B9BH5:00000001"
+}
+INFO 2026-03-03 14:07:40,738 CloseDay initiated for device 32702
+INFO 2026-03-03 14:07:40,857 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:07:41,337 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:07:41,388 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:07:42,008 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:26:20,169 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:26:20,723 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:26:20,787 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:26:21,238 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:26:24,346 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:26:24,911 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:41:15,728 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:41:16,425 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:41:20,587 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:41:21,563 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:45:15,905 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 14:45:17,441 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 14:45:17,927 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 14:47:03,150 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 14:47:07,551 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 14:47:08,235 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 14:48:02,972 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:48:03,772 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:48:07,405 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-03 14:48:08,056 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-03 14:48:10,310 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 14:48:12,970 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-03 14:48:13,872 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 09:48:00,285 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 09:48:00,993 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 09:48:01,068 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 09:48:01,534 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 09:48:06,382 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 09:48:07,249 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 09:48:10,612 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 09:48:11,678 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 09:48:14,651 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 09:48:15,464 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 09:51:07,477 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 09:51:08,235 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 09:51:14,839 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 09:51:19,252 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 09:54:26,188 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 09:54:27,743 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 09:55:35,653 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 09:55:37,269 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:01:45,926 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 10:01:46,549 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 10:01:51,683 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:01:53,157 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:20:45,689 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 10:20:46,226 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 10:20:48,401 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:21:02,435 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 10:21:03,067 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 10:25:09,270 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:25:18,821 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 10:25:19,366 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 10:25:20,793 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:26:29,319 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:27:33,400 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:27:38,534 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 10:27:39,127 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 10:27:40,536 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:30:06,646 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:30:13,315 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 10:30:13,958 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 10:30:15,099 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 10:30:15,601 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 10:30:47,691 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:33:09,824 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 10:33:10,425 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 10:33:12,042 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 10:33:15,330 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:13:05,567 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:13:07,758 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:15:08,473 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:15:09,289 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:21:50,409 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:21:50,992 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:21:52,818 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:21:53,344 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:21:55,067 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:21:56,762 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:24:23,152 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:24:23,916 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:26:10,302 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:26:10,885 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:26:13,377 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:26:16,969 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:31:46,330 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:31:46,816 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:31:52,947 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:31:56,216 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:37:09,701 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:37:10,311 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:37:12,788 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:37:16,226 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:40:23,347 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:40:25,393 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:41:45,235 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:41:45,908 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:41:47,402 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:41:49,404 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:43:02,276 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:43:02,945 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:43:04,526 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:43:06,367 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:45:00,422 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:45:01,913 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:45:10,453 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:45:11,060 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:45:12,284 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:45:13,749 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:46:48,731 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:46:49,227 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:47:01,901 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:47:03,294 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:49:05,515 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:49:06,181 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:49:07,813 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:49:09,030 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:53:42,047 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:53:42,796 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:53:45,270 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:53:45,802 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:53:47,635 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:53:50,487 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:57:27,673 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 11:57:28,309 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 11:57:32,851 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 11:57:35,898 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:03:11,927 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 12:03:12,606 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 12:03:14,027 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:03:17,178 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:03:47,274 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 12:03:47,748 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 12:03:51,832 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 12:03:52,369 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 12:03:53,951 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:03:55,700 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:15:46,666 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 12:15:47,406 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 12:15:49,935 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:15:52,776 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:20:51,007 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:20:52,544 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:23:29,990 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 12:23:30,519 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 12:23:31,984 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:23:33,379 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:25:00,873 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 12:25:01,384 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 12:25:03,380 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:25:04,836 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:25:27,604 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 12:25:28,168 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 12:25:30,136 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 12:25:30,673 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 12:25:32,693 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:25:34,455 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:29:26,870 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 12:29:27,648 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 12:29:29,364 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 12:29:31,000 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 13:15:56,253 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:15:56,936 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:16:03,502 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:16:04,136 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:16:06,815 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:16:07,556 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:16:19,942 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:16:20,780 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:19:55,277 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:19:55,922 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:32:36,184 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:32:36,686 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:32:37,939 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:32:38,495 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:32:48,056 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:32:48,760 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:40:50,022 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:40:50,859 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:40:50,943 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:40:51,741 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:40:53,108 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:40:53,725 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:40:53,734 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:40:54,342 FDMS call logged: POST /Device/v1/32702/OpenDay -> 200
+INFO 2026-03-04 13:40:54,379 OpenDay OK for device 32702: fiscal day #9
+INFO 2026-03-04 13:40:54,379 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:40:54,928 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:40:55,046 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:40:55,592 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:40:55,612 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:40:56,214 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:00,073 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:00,655 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:03,792 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:04,353 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:04,376 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:04,917 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:07,533 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:08,314 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:08,320 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:09,100 FDMS call logged: GET /Device/v1/32702/GetConfig -> 200
+INFO 2026-03-04 13:41:09,110 GetConfig OK for device 32702
+INFO 2026-03-04 13:41:09,298 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:10,037 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:10,084 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:10,951 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:13,269 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:14,105 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:50,227 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:50,837 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:50,878 [SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=FISCALINVOICE receiptGlobalNo=52: [REDACTED]
+INFO 2026-03-04 13:41:50,923 [SubmitReceipt] REQUEST POST /Device/v1/32702/SubmitReceipt receiptType=FISCALINVOICE receiptGlobalNo=52
+{
+  "receipt": {
+    "deviceID": 32702,
+    "receiptType": "FISCALINVOICE",
+    "receiptCurrency": "USD",
+    "receiptGlobalNo": 52,
+    "receiptCounter": 1,
+    "invoiceNo": "INV-2026-111",
+    "receiptDate": "2026-03-04T13:41:50",
+    "receiptTotal": 11.55,
+    "receiptLinesTaxInclusive": false,
+    "receiptLines": [
+      {
+        "receiptLineType": "Sale",
+        "receiptLineName": "tea",
+        "receiptLineQuantity": 2.00,
+        "receiptLinePrice": 5.00,
+        "receiptLineTotal": 10.00,
+        "receiptLineHSCode": "1122",
+        "taxID": 517,
+        "receiptLineNo": 1,
+        "taxCode": "517",
+        "taxPercent": 15.5
+      }
+    ],
+    "receiptTaxes": [
+      {
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5,
+        "taxAmount": 1.55,
+        "salesAmountWithTax": 11.55
+      }
+    ],
+    "receiptPayments": [
+      {
+        "moneyTypeCode": "Cash",
+        "paymentAmount": 11.55
+      }
+    ],
+    "receiptDeviceSignature": {
+      "hash": "[REDACTED]",
+      "signature": "[REDACTED]"
+    }
+  }
+}
+INFO 2026-03-04 13:41:50,923 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:51,784 FDMS call logged: POST /Device/v1/32702/SubmitReceipt -> 200
+INFO 2026-03-04 13:41:51,786 [SubmitReceipt] RESPONSE status=200 receiptType=FISCALINVOICE receiptGlobalNo=52
+{
+  "receiptID": 10699008,
+  "serverDate": "2026-03-04T13:41:50",
+  "receiptServerSignature": {
+    "certificateThumbprint": "[REDACTED]",
+    "hash": "[REDACTED]",
+    "signature": "[REDACTED]"
+  },
+  "validationErrors": [],
+  "operationID": "0HNJJFH7BCGUU:00000001"
+}
+INFO 2026-03-04 13:41:51,830 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:41:52,485 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:41:52,502 SubmitReceipt OK: device=32702 receiptGlobalNo=52 receiptID=10699008
+INFO 2026-03-04 13:41:52,991 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 13:41:54,756 InvoiceA4 PDF saved for receipt 52: 10699008.pdf
+WARNING 2026-03-04 13:41:59,063 Emit metrics.updated failed: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+INFO 2026-03-04 13:42:01,615 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:42:02,052 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:42:05,292 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:42:05,825 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:42:07,835 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 13:42:08,171 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 13:43:17,360 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:43:17,897 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:43:31,534 [CreditNote Submit] _do_submit_receipt entered
+INFO 2026-03-04 13:43:31,550 [SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=CreditNote receiptGlobalNo=53: [REDACTED]
+INFO 2026-03-04 13:43:31,552 [SubmitReceipt] REQUEST POST /Device/v1/32702/SubmitReceipt receiptType=CreditNote receiptGlobalNo=53
+{
+  "receipt": {
+    "deviceID": 32702,
+    "receiptType": "CREDITNOTE",
+    "receiptCurrency": "USD",
+    "receiptGlobalNo": 53,
+    "receiptCounter": 2,
+    "invoiceNo": "CN-2026-38",
+    "receiptDate": "2026-03-04T13:43:31",
+    "receiptTotal": -10.0,
+    "receiptLinesTaxInclusive": true,
+    "receiptLines": [
+      {
+        "receiptLineNo": 1,
+        "receiptLineQuantity": 2.00,
+        "receiptLineTotal": -10.0,
+        "receiptLinePrice": -5.0,
+        "receiptLineName": "tea",
+        "receiptLineHSCode": "1122",
+        "receiptLineType": "Sale",
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5
+      }
+    ],
+    "receiptTaxes": [
+      {
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5,
+        "taxAmount": -1.34,
+        "salesAmountWithTax": -10.0
+      }
+    ],
+    "receiptPayments": [
+      {
+        "moneyTypeCode": "Cash",
+        "paymentAmount": -10.0
+      }
+    ],
+    "receiptDeviceSignature": {
+      "hash": "[REDACTED]",
+      "signature": "[REDACTED]"
+    },
+    "previousReceiptHash": "OGaRjKFy+aM//fgVGM/vnSLwQYM4l3MpDHQ8ZCyUBsM=",
+    "creditDebitNote": {
+      "deviceID": 32702,
+      "receiptGlobalNo": 52,
+      "fiscalDayNo": 9,
+      "receiptID": 10699008
+    },
+    "receiptNotes": "Returned goods"
+  }
+}
+INFO 2026-03-04 13:43:31,553 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:43:32,222 FDMS call logged: POST /Device/v1/32702/SubmitReceipt -> 200
+INFO 2026-03-04 13:43:32,224 [SubmitReceipt] RESPONSE status=200 receiptType=CreditNote receiptGlobalNo=53
+{
+  "receiptID": 10699010,
+  "serverDate": "2026-03-04T13:43:30",
+  "receiptServerSignature": {
+    "certificateThumbprint": "[REDACTED]",
+    "hash": "[REDACTED]",
+    "signature": "[REDACTED]"
+  },
+  "validationErrors": [],
+  "operationID": "0HNJJFH7BCH3S:00000001"
+}
+INFO 2026-03-04 13:43:32,247 SubmitReceipt OK: device=32702 receiptGlobalNo=53 receiptID=10699010
+WARNING 2026-03-04 13:43:32,261 InvoiceA4 PDF generation failed for receipt 53: ['Totals must reconcile with receiptTotal: subtotal + tax = -11.34, receiptTotal = -10.00.']
+INFO 2026-03-04 13:43:32,385 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:43:32,894 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:43:37,878 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 13:43:38,243 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 13:44:29,043 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:44:29,584 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:44:38,277 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:44:38,901 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:51:39,601 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:51:40,284 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:51:44,059 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:51:44,670 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:51:53,050 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:51:53,646 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:53:09,646 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:53:10,193 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:53:18,321 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:53:18,939 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:55:48,897 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:55:49,545 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 13:55:58,044 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 13:55:58,626 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:04:07,994 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:04:08,516 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:04:17,925 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:04:18,588 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:07:00,804 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:07:01,542 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:07:12,303 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:07:13,163 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:10:21,342 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:10:22,046 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:10:30,767 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:10:31,379 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:11:50,100 [SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=FISCALINVOICE receiptGlobalNo=54: [REDACTED]
+INFO 2026-03-04 14:11:50,140 [SubmitReceipt] REQUEST POST /Device/v1/32702/SubmitReceipt receiptType=FISCALINVOICE receiptGlobalNo=54
+{
+  "receipt": {
+    "deviceID": 32702,
+    "receiptType": "FISCALINVOICE",
+    "receiptCurrency": "USD",
+    "receiptGlobalNo": 54,
+    "receiptCounter": 3,
+    "invoiceNo": "INV-2026-113",
+    "receiptDate": "2026-03-04T14:11:50",
+    "receiptTotal": 1386.00,
+    "receiptLinesTaxInclusive": false,
+    "receiptLines": [
+      {
+        "receiptLineType": "Sale",
+        "receiptLineName": "Mopping Trolley",
+        "receiptLineQuantity": 15.00,
+        "receiptLinePrice": 80.00,
+        "receiptLineTotal": 1200.00,
+        "receiptLineHSCode": "1200",
+        "taxID": 517,
+        "receiptLineNo": 1,
+        "taxCode": "517",
+        "taxPercent": 15.5
+      }
+    ],
+    "receiptTaxes": [
+      {
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5,
+        "taxAmount": 186.00,
+        "salesAmountWithTax": 1386.00
+      }
+    ],
+    "receiptPayments": [
+      {
+        "moneyTypeCode": "Cash",
+        "paymentAmount": 1386.00
+      }
+    ],
+    "receiptDeviceSignature": {
+      "hash": "[REDACTED]",
+      "signature": "[REDACTED]"
+    },
+    "previousReceiptHash": "69kea1VLT/TOgtH5TOzdfV8+V9sSYOfdVvikBwWBbmU="
+  }
+}
+INFO 2026-03-04 14:11:50,140 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:11:51,087 FDMS call logged: POST /Device/v1/32702/SubmitReceipt -> 200
+INFO 2026-03-04 14:11:51,088 [SubmitReceipt] RESPONSE status=200 receiptType=FISCALINVOICE receiptGlobalNo=54
+{
+  "receiptID": 10699039,
+  "serverDate": "2026-03-04T14:11:49",
+  "receiptServerSignature": {
+    "certificateThumbprint": "[REDACTED]",
+    "hash": "[REDACTED]",
+    "signature": "[REDACTED]"
+  },
+  "validationErrors": [],
+  "operationID": "0HNJJFH7BCJGQ:00000001"
+}
+INFO 2026-03-04 14:11:51,112 SubmitReceipt OK: device=32702 receiptGlobalNo=54 receiptID=10699039
+INFO 2026-03-04 14:11:51,260 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:11:53,917 InvoiceA4 PDF saved for receipt 54: 10699039.pdf
+WARNING 2026-03-04 14:11:58,261 Emit metrics.updated failed: Error Multiple exceptions: [Errno 10061] Connect call failed ('::1', 6379, 0, 0), [Errno 10061] Connect call failed ('127.0.0.1', 6379) connecting to localhost:6379.
+INFO 2026-03-04 14:12:03,277 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:12:03,957 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:12:06,625 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:12:07,227 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:12:11,055 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:12:11,380 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:14:37,833 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:14:38,468 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:14:40,465 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:14:41,772 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:18:08,067 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:18:09,598 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:19:19,690 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:19:20,485 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:19:21,252 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:19:22,691 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:22:27,033 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:22:28,815 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:22:49,450 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:22:50,262 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:22:51,725 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:22:52,476 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:22:55,190 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:22:55,939 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:22:58,373 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:22:59,043 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:23:23,657 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:23:26,020 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:26:10,047 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:26:12,641 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:27:06,458 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:27:06,738 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:28:01,413 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:28:03,076 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:29:22,797 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:29:23,529 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:29:25,441 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:29:27,291 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:35:57,604 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:35:59,393 WeasyPrint unavailable (No module named 'weasyprint'), using xhtml2pdf fallback
+INFO 2026-03-04 14:47:36,516 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:47:37,044 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:48:18,892 [SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=DebitNote receiptGlobalNo=55: [REDACTED]
+INFO 2026-03-04 14:48:18,902 [SubmitReceipt] REQUEST POST /Device/v1/32702/SubmitReceipt receiptType=DebitNote receiptGlobalNo=55
+{
+  "receipt": {
+    "deviceID": 32702,
+    "receiptType": "DEBITNOTE",
+    "receiptCurrency": "USD",
+    "receiptGlobalNo": 55,
+    "receiptCounter": 4,
+    "invoiceNo": "DB-2026-6",
+    "receiptDate": "2026-03-04T14:48:18",
+    "receiptTotal": 11.55,
+    "receiptLinesTaxInclusive": true,
+    "receiptLines": [
+      {
+        "receiptLineNo": 1,
+        "receiptLineQuantity": 1.00,
+        "receiptLinePrice": 11.55,
+        "receiptLineTotal": 11.55,
+        "receiptLineName": "additional fees",
+        "receiptLineHSCode": "0000",
+        "receiptLineType": "Sale",
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5
+      }
+    ],
+    "receiptTaxes": [
+      {
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5,
+        "taxAmount": 1.55,
+        "salesAmountWithTax": 11.55
+      }
+    ],
+    "receiptPayments": [
+      {
+        "moneyTypeCode": "Cash",
+        "paymentAmount": 11.55
+      }
+    ],
+    "receiptDeviceSignature": {
+      "hash": "[REDACTED]",
+      "signature": "[REDACTED]"
+    },
+    "previousReceiptHash": "+Z6pqk07/mJM2M7Y6UOlGy+JkSh060LTAidDNi+xruE=",
+    "creditDebitNote": {
+      "deviceID": 32702,
+      "receiptGlobalNo": 54,
+      "fiscalDayNo": 9,
+      "receiptID": 10699039
+    },
+    "receiptNotes": "additional fees"
+  }
+}
+INFO 2026-03-04 14:48:18,903 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:48:19,656 FDMS call logged: POST /Device/v1/32702/SubmitReceipt -> 200
+INFO 2026-03-04 14:48:19,657 [SubmitReceipt] RESPONSE status=200 receiptType=DebitNote receiptGlobalNo=55
+{
+  "receiptID": 10699161,
+  "serverDate": "2026-03-04T14:48:18",
+  "receiptServerSignature": {
+    "certificateThumbprint": "[REDACTED]",
+    "hash": "[REDACTED]",
+    "signature": "[REDACTED]"
+  },
+  "validationErrors": [],
+  "operationID": "0HNJJFH7BCMK5:00000001"
+}
+INFO 2026-03-04 14:48:19,679 SubmitReceipt OK: device=32702 receiptGlobalNo=55 receiptID=10699161
+WARNING 2026-03-04 14:48:19,773 InvoiceA4 PDF generation failed for receipt 55: ['Totals must reconcile with receiptTotal: subtotal + tax = 13.10, receiptTotal = 11.55.']
+INFO 2026-03-04 14:48:19,989 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:48:20,729 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:48:26,042 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:48:26,574 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:48:28,293 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:48:28,858 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:48:30,795 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 14:48:32,435 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 14:49:20,627 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:49:21,289 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:53:12,804 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:53:13,310 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 14:55:23,313 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 14:55:23,955 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 15:03:14,064 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 15:03:14,618 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 15:03:30,433 [SubmitReceipt] CANONICAL STRING (signed before submit) receiptType=DebitNote receiptGlobalNo=56: [REDACTED]
+INFO 2026-03-04 15:03:30,435 [SubmitReceipt] REQUEST POST /Device/v1/32702/SubmitReceipt receiptType=DebitNote receiptGlobalNo=56
+{
+  "receipt": {
+    "deviceID": 32702,
+    "receiptType": "DEBITNOTE",
+    "receiptCurrency": "USD",
+    "receiptGlobalNo": 56,
+    "receiptCounter": 5,
+    "invoiceNo": "DB-2026-7",
+    "receiptDate": "2026-03-04T15:03:30",
+    "receiptTotal": 11.55,
+    "receiptLinesTaxInclusive": true,
+    "receiptLines": [
+      {
+        "receiptLineNo": 1,
+        "receiptLineQuantity": 1.00,
+        "receiptLinePrice": 11.55,
+        "receiptLineTotal": 11.55,
+        "receiptLineName": "yyy",
+        "receiptLineHSCode": "0000",
+        "receiptLineType": "Sale",
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5
+      }
+    ],
+    "receiptTaxes": [
+      {
+        "taxID": 517,
+        "taxCode": "517",
+        "taxPercent": 15.5,
+        "taxAmount": 1.55,
+        "salesAmountWithTax": 11.55
+      }
+    ],
+    "receiptPayments": [
+      {
+        "moneyTypeCode": "Cash",
+        "paymentAmount": 11.55
+      }
+    ],
+    "receiptDeviceSignature": {
+      "hash": "[REDACTED]",
+      "signature": "[REDACTED]"
+    },
+    "previousReceiptHash": "TCpcWBdN4OIP/BIWEea8N6FawASUDS767DAtInTiLbU=",
+    "creditDebitNote": {
+      "deviceID": 32702,
+      "receiptGlobalNo": 52,
+      "fiscalDayNo": 9,
+      "receiptID": 10699008
+    },
+    "receiptNotes": "yyy"
+  }
+}
+INFO 2026-03-04 15:03:30,435 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 15:03:31,026 FDMS call logged: POST /Device/v1/32702/SubmitReceipt -> 200
+INFO 2026-03-04 15:03:31,027 [SubmitReceipt] RESPONSE status=200 receiptType=DebitNote receiptGlobalNo=56
+{
+  "receiptID": 10699171,
+  "serverDate": "2026-03-04T15:03:29",
+  "receiptServerSignature": {
+    "certificateThumbprint": "[REDACTED]",
+    "hash": "[REDACTED]",
+    "signature": "[REDACTED]"
+  },
+  "validationErrors": [],
+  "operationID": "0HNJJFH7BCNU0:00000001"
+}
+INFO 2026-03-04 15:03:31,052 SubmitReceipt OK: device=32702 receiptGlobalNo=56 receiptID=10699171
+WARNING 2026-03-04 15:03:31,066 InvoiceA4 PDF generation failed for receipt 56: ['Totals must reconcile with receiptTotal: subtotal + tax = 13.10, receiptTotal = 11.55.']
+INFO 2026-03-04 15:03:31,163 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 15:03:31,718 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 15:03:37,345 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:03:37,757 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:12:39,198 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 15:12:39,946 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 15:12:41,950 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 15:12:42,324 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 15:13:14,485 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 15:13:15,001 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 15:13:16,575 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:13:17,179 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:14:19,182 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:14:19,775 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:17:48,958 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 15:17:49,505 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 15:17:51,979 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:17:52,579 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:22:01,728 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 15:22:02,297 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 15:22:04,478 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:22:04,929 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:24:04,627 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 15:24:05,101 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 15:24:07,907 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:24:09,692 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:25:50,299 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 15:25:51,984 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 16:00:08,879 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 16:00:09,819 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 16:00:22,189 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 16:00:22,461 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 16:00:23,077 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 16:00:24,692 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 16:00:40,892 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 16:00:41,508 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 16:00:44,790 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 16:00:45,720 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 16:00:47,576 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 16:00:48,543 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 16:01:14,621 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 16:01:15,171 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 16:08:50,324 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 16:08:50,860 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 16:08:53,467 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 16:08:55,340 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 16:09:06,408 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 16:09:06,862 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 16:09:08,457 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 16:09:08,973 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 19:53:41,837 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 19:53:42,815 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-04 19:56:53,623 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 19:57:38,899 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+WARNING 2026-03-04 19:58:54,488 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x1ce4bd9a350>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 1.0s.
+WARNING 2026-03-04 19:59:34,752 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x1ce4bd9ad50>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 1.0s.
+INFO 2026-03-04 19:59:57,160 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-04 19:59:57,257 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+WARNING 2026-03-04 20:00:31,667 FDMS request failed (attempt 2/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x1ce4bd98a50>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 2.0s.
+WARNING 2026-03-04 20:01:39,414 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x1ce4bd99310>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 1.0s.
+WARNING 2026-03-04 20:02:40,907 FDMS request failed (attempt 3/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x1ce4bd98190>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 4.0s.
+WARNING 2026-03-04 20:03:29,910 FDMS request failed (attempt 2/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x1ce4bd9afd0>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 2.0s.
+INFO 2026-03-04 20:04:17,095 Offline detected: HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x1ce4bd99f90>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)'))
+WARNING 2026-03-04 20:05:04,919 FDMS request failed (attempt 3/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1032)'))). Retrying in 4.0s.
+INFO 2026-03-04 20:06:02,125 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-04 20:07:13,552 Offline detected: HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ProtocolError('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')))
+WARNING 2026-03-04 20:08:00,157 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x1ce4bd9b9d0>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 1.0s.
+INFO 2026-03-04 20:08:23,833 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+WARNING 2026-03-04 20:09:50,855 FDMS request failed (attempt 2/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by ConnectTimeoutError(<HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443) at 0x1ce4bbb6fd0>, 'Connection to fdmsapitest.zimra.co.zw timed out. (connect timeout=30)')). Retrying in 2.0s.
+WARNING 2026-03-04 20:10:48,035 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self-signed certificate in certificate chain (_ssl.c:1032)'))). Retrying in 1.0s.
+WARNING 2026-03-04 20:11:03,918 FDMS request failed (attempt 3/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 4.0s.
+WARNING 2026-03-04 20:11:05,602 FDMS request failed (attempt 2/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 2.0s.
+WARNING 2026-03-04 20:11:19,613 FDMS request failed (attempt 3/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 4.0s.
+INFO 2026-03-04 20:11:19,990 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+WARNING 2026-03-04 20:11:32,008 FDMS request failed (attempt 1/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 1.0s.
+INFO 2026-03-04 20:11:35,629 Offline detected: HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)"))
+WARNING 2026-03-04 20:11:45,025 FDMS request failed (attempt 2/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 2.0s.
+WARNING 2026-03-04 20:11:59,037 FDMS request failed (attempt 3/4): HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)")). Retrying in 4.0s.
+INFO 2026-03-04 20:12:15,058 Offline detected: HTTPSConnectionPool(host='fdmsapitest.zimra.co.zw', port=443): Max retries exceeded with url: /Device/v1/32702/GetStatus (Caused by NameResolutionError("HTTPSConnection(host='fdmsapitest.zimra.co.zw', port=443): Failed to resolve 'fdmsapitest.zimra.co.zw' ([Errno 11001] getaddrinfo failed)"))
+INFO 2026-03-05 08:51:21,960 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:22,903 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:51:22,974 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:23,652 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:51:30,388 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:30,877 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:51:30,920 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:31,318 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:51:32,923 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:33,288 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:51:33,325 CloseDay signature — algo: ECC, canonical: '3270292026-03-04SALEBYTAXUSD15.50139755SALETAXBYTAXUSD15.5018755CREDITNOTEBYTAXUSD15.50-1000CREDITNOTETAXBYTAXUSD15.50-134DEBITNOTEBYTAXUSD15.502310DEBITNOTETAXBYTAXUSD15.50310BALANCEBYMONEYTYPEUSDCASH141065', hash: 28ZLEsytCbGRXLSHttznMV4VOOcTig8HCsCzxTdaL1s=
+INFO 2026-03-05 08:51:33,325 CloseDay canonical string: 3270292026-03-04SALEBYTAXUSD15.50139755SALETAXBYTAXUSD15.5018755CREDITNOTEBYTAXUSD15.50-1000CREDITNOTETAXBYTAXUSD15.50-134DEBITNOTEBYTAXUSD15.502310DEBITNOTETAXBYTAXUSD15.50310BALANCEBYMONEYTYPEUSDCASH141065
+INFO 2026-03-05 08:51:33,328 CloseDay signature hash: 28ZLEsytCbGRXLSHttznMV4VOOcTig8HCsCzxTdaL1s=
+INFO 2026-03-05 08:51:33,329 CloseDay request:
+{
+  "deviceID": 32702,
+  "fiscalDayNo": 9,
+  "receiptCounter": 5,
+  "fiscalDayCounters": [
+    {
+      "fiscalCounterType": "SaleByTax",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": 1397.55,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "SaleTaxByTax",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": 187.55,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "CreditNoteByTax",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": -10.0,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "CreditNoteTaxByTax",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": -1.34,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "DebitNoteByTax",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": 23.1,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "DebitNoteTaxByTax",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterTaxID": 517,
+      "fiscalCounterValue": 3.1,
+      "fiscalCounterTaxPercent": 15.5
+    },
+    {
+      "fiscalCounterType": "BalanceByMoneyType",
+      "fiscalCounterCurrency": "USD",
+      "fiscalCounterMoneyType": "CASH",
+      "fiscalCounterValue": 1410.65
+    }
+  ],
+  "fiscalDayDeviceSignature": {
+    "hash": "28ZLEsytCbGRXLSHttznMV4VOOcTig8HCsCzxTdaL1s=",
+    "signature": "MEYCIQDEduAqr5H8h4GWHU94FDOzPKdfukiPKtORN95QoUphDgIhANU862t4z5OnBK0aNIMfVa/Ak0Ur9fNyeihJkqj1uWoG"
+  }
+}
+INFO 2026-03-05 08:51:33,329 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:33,715 FDMS call logged: POST /Device/v1/32702/CloseDay -> 200
+INFO 2026-03-05 08:51:33,715 CloseDay response:
+{
+  "operationID": "0HNJJFH7BF670:00000001"
+}
+INFO 2026-03-05 08:51:33,716 CloseDay initiated for device 32702
+INFO 2026-03-05 08:51:33,803 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:34,190 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:51:34,204 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:34,583 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:51:51,789 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:52,406 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:51:52,440 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:53,078 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:51:58,369 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:51:58,787 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:52:01,222 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:52:01,671 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:52:04,417 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:52:04,990 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:52:18,922 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:52:19,416 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:52:22,924 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:52:23,380 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:52:25,169 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:52:25,625 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:52:30,883 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:52:31,330 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:52:33,704 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:52:34,104 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:52:35,590 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:52:36,023 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:53:09,937 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:53:10,601 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:53:12,921 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:53:13,625 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:53:14,906 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:53:15,580 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 08:53:31,977 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 08:53:32,437 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 09:13:40,969 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 09:13:41,660 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 09:13:46,949 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 09:13:47,638 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 09:13:49,426 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 09:13:50,034 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:06:33,231 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:06:35,578 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:12:58,205 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:12:58,697 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:13:01,293 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:13:01,818 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:13:08,749 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:13:09,179 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:13:32,578 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:13:33,047 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:18:55,613 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:18:56,265 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:18:58,569 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:18:59,138 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:21:38,534 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:21:39,019 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:21:44,405 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:21:44,899 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:21:47,550 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:21:48,127 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:23:48,898 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:23:49,492 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:23:51,461 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:23:52,089 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:23:53,638 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:23:55,632 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:26:43,658 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:26:44,227 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:26:45,797 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:26:46,427 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:26:47,713 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:26:49,562 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:29:39,276 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:29:39,888 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:30:12,194 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:30:12,725 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:30:14,584 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:30:15,062 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:30:21,846 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:30:22,489 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:32:47,576 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:32:48,216 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:32:51,114 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:32:51,795 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:32:53,652 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:32:54,289 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:33:05,269 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:33:05,937 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:42:20,566 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:42:21,216 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:42:22,380 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:42:22,965 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:42:26,649 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:42:28,494 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:45:29,436 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:45:29,935 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:45:31,309 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:45:31,757 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:45:37,466 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:45:37,889 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:49:41,961 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:49:42,673 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:52:00,270 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:52:00,712 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:52:02,167 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:52:02,585 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:52:46,492 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:52:46,993 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:55:31,957 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:55:32,620 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:55:35,119 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 10:55:35,616 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 10:55:40,764 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:55:41,262 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:56:49,793 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 10:56:50,390 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 11:01:16,841 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:01:17,297 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:01:18,661 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:01:19,224 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:01:25,768 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 11:01:26,381 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 11:03:19,866 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-05 11:03:20,435 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-05 11:03:22,019 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback
+INFO 2026-03-05 11:03:22,551 WeasyPrint unavailable (cannot load library 'libgobject-2.0-0': error 0x7e.  Additionally, ctypes.util.find_library() did not manage to locate a library called 'libgobject-2.0-0'), using xhtml2pdf fallback

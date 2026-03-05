@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Fiscal Debit Note</title>
+
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .row {
+            width: 100%;
+            clear: both;
+        }
+
+        .left {
+            float: left;
+            width: 60%;
+        }
+
+        .right {
+            float: right;
+            width: 38%;
+            text-align: right;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #f2f2f2;
+            border: 1px solid #000;
+            padding: 6px;
+            font-weight: bold;
+        }
+
+        td {
+            border: 1px solid #000;
+            padding: 6px;
+        }
+
+        .no-border td {
+            border: none;
+            padding: 4px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .qr {
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #000;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .company-logo {
+            max-height: 80px;
+            margin-bottom: 10px;
+            display: block;
+            width: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="title">FISCAL DEBIT NOTE</div>
+
+<!-- Supplier + Debit Meta -->
+<div class="row">
+    <div class="left">
+
+        {% if company.logo_base64 %}
+            <img src="data:image/png;base64,{{ company.logo_base64 }}" alt="" class="company-logo">
+        {% endif %}
+
+        <strong>{{ company.name }}</strong><br>
+        {{ company.address }}<br>
+        VAT No: {{ company.vat_number }}<br>
+        TIN: {{ company.tin }}<br>
+        FDMS Device ID: {{ debit_note.device_id }}<br>
+        {% if company.branch_name %}
+            Branch: {{ company.branch_name }}<br>
+        {% endif %}
+
+    </div>
+
+    <div class="right">
+        <strong>Debit Note No:</strong> {{ debit_note.fiscal_debit_number }}<br>
+        <strong>Receipt No:</strong> {{ debit_note.receipt_number }}<br>
+        <strong>Receipt Global No:</strong> {{ debit_note.receipt_global_no }}<br>
+        <strong>Fiscal Day No:</strong> {{ debit_note.fiscal_day_no }}<br>
+        <strong>Date:</strong> {{ debit_note.fiscalisation_datetime }}<br>
+        <strong>Currency:</strong> {{ debit_note.currency }}<br>
+    </div>
+</div>
+
+<div style="clear: both;"></div>
+
+<!-- Reference Original Invoice -->
+<div class="section">
+    <strong>Reference Invoice:</strong><br>
+    Original Invoice No: {{ debit_note.original_invoice_number }}<br>
+    Original Receipt Global No: {{ debit_note.original_receipt_global_no }}<br>
+    Original Invoice Date: {{ debit_note.original_invoice_date }}<br>
+    <strong>Reason for Debit:</strong><br>
+    {{ debit_note.reason }}
+</div>
+
+<!-- Buyer -->
+{% if debit_note.buyer_name %}
+<div class="section">
+    <strong>Bill To:</strong><br>
+    {{ debit_note.buyer_name }}<br>
+    {{ debit_note.buyer_address }}<br>
+    {% if debit_note.buyer_vat %}
+        VAT No: {{ debit_note.buyer_vat }}<br>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- Debited Items -->
+<div class="section">
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Qty Added</th>
+                <th>Unit Price (Incl. VAT)</th>
+                <th>Tax %</th>
+                <th>Tax Amt</th>
+                <th>Line Total (Incl. VAT)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in debit_note_items %}
+            <tr class="dn-item-row"
+                data-qty="{{ item.quantity|floatformat:6 }}"
+                data-unit-price="{{ item.unit_price|floatformat:6 }}"
+                data-tax-rate="{% if item.tax_rate is not None %}{{ item.tax_rate|floatformat:6 }}{% else %}0{% endif %}">
+                <td>{{ item.description }}</td>
+                <td class="text-right">{{ item.quantity }}</td>
+                <td class="text-right dn-unit-price">{{ item.unit_price }}</td>
+                <td class="text-right">{{ item.tax_rate }}%</td>
+                <td class="text-right dn-vat">{{ item.tax_amount }}</td>
+                <td class="text-right dn-line-total">{{ item.unit_price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- VAT Breakdown (only taxes that were used) -->
+{% if vat_breakdown_rows %}
+<div class="section">
+    <table>
+        <thead>
+            <tr>
+                <th>Tax Category</th>
+                <th>Taxable Amount</th>
+                <th>Tax Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in vat_breakdown_rows %}
+            <tr>
+                <td>{{ row.label }}</td>
+                <td class="text-right">{{ row.taxable }}</td>
+                <td class="text-right">{{ row.tax }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<hr>
+
+<!-- Totals -->
+<table class="no-border">
+    <tr>
+        <td class="text-right bold">Total Debit (Excl Tax):</td>
+        <td class="text-right" id="dn-total-exclusive">{{ debit_note.subtotal }}</td>
+    </tr>
+    <tr>
+        <td class="text-right bold">Total Tax:</td>
+        <td class="text-right" id="dn-total-vat">{{ debit_note.total_tax }}</td>
+    </tr>
+    <tr>
+        <td class="text-right bold">Total Debit:</td>
+        <td class="text-right bold" id="dn-grand-total">{{ debit_note.total }}</td>
+    </tr>
+</table>
+
+<!-- QR Code -->
+<div class="qr">
+    {% if debit_note.qr_code_base64 %}
+        <img src="data:image/png;base64,{{ debit_note.qr_code_base64 }}" width="120" alt="">
+    {% endif %}
+</div>
+
+<script>
+(function() {
+    function parseNum(v) {
+        var n = parseFloat(v);
+        return Number.isFinite(n) ? n : 0;
+    }
+    function fmt2(v) {
+        return parseNum(v).toFixed(2);
+    }
+
+    var rows = document.querySelectorAll(".dn-item-row");
+    var totalExclusive = 0;
+    var totalVat = 0;
+    var grandTotal = 0;
+
+    rows.forEach(function(row) {
+        var qty = parseNum(row.getAttribute("data-qty"));
+        var unitIncl = parseNum(row.getAttribute("data-unit-price"));
+        var rate = parseNum(row.getAttribute("data-tax-rate"));
+
+        var lineTotal = qty * unitIncl;
+        var divisor = 1 + (rate / 100);
+        var exclusive = divisor > 0 ? (lineTotal / divisor) : lineTotal;
+        var vat = lineTotal - exclusive;
+
+        var vatCell = row.querySelector(".dn-vat");
+        var lineTotalCell = row.querySelector(".dn-line-total");
+        if (vatCell) vatCell.textContent = fmt2(vat);
+        if (lineTotalCell) lineTotalCell.textContent = fmt2(lineTotal);
+
+        totalExclusive += exclusive;
+        totalVat += vat;
+        grandTotal += lineTotal;
+    });
+
+    var exclEl = document.getElementById("dn-total-exclusive");
+    var vatEl = document.getElementById("dn-total-vat");
+    var grandEl = document.getElementById("dn-grand-total");
+    if (exclEl) exclEl.textContent = fmt2(totalExclusive);
+    if (vatEl) vatEl.textContent = fmt2(totalVat);
+    if (grandEl) grandEl.textContent = fmt2(grandTotal);
+})();
+</script>
+
+</body>
+</html>

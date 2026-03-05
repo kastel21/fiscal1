@@ -24,7 +24,12 @@ def invoice_create_api(request):
         validated = validate_invoice_create(body)
     except ValidationError as e:
         return JsonResponse({"error": e.message, "field": e.field}, status=400)
-    receipt, err = create_invoice(validated)
+    try:
+        receipt, err = create_invoice(validated)
+    except Exception as e:
+        import logging
+        logging.getLogger("invoices").exception("create_invoice failed")
+        return JsonResponse({"error": str(e)}, status=400)
     if err:
         return JsonResponse({"error": err}, status=400)
     emit_metrics_updated()

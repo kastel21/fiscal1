@@ -13,21 +13,29 @@ logger = logging.getLogger("fiscal")
 
 
 def _safe_json(value):
-    """Convert value to JSON-serializable dict, or return as-is for JSONField."""
+    """Convert value to JSON-serializable dict, or return as-is for JSONField. Never raises on HTML body."""
     if value is None:
         return None
     if isinstance(value, dict):
         return value
+    if hasattr(value, "text"):
+        text = (value.text or "").strip()
+        if text.startswith("<"):
+            return {"raw": "(HTML response)", "preview": text[:200]}
+        if hasattr(value, "json") and callable(getattr(value, "json")):
+            try:
+                return value.json()
+            except Exception:
+                pass
+        try:
+            return json.loads(value.text) if value.text else {}
+        except (json.JSONDecodeError, TypeError):
+            return {"raw": str(value.text)[:10000]}
     if hasattr(value, "json") and callable(getattr(value, "json")):
         try:
             return value.json()
         except Exception:
             pass
-    if hasattr(value, "text"):
-        try:
-            return json.loads(value.text) if value.text else {}
-        except (json.JSONDecodeError, TypeError):
-            return {"raw": str(value.text)[:10000]}
     return value
 
 

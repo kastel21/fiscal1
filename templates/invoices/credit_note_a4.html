@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Fiscal Credit Note</title>
+
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .row {
+            width: 100%;
+            clear: both;
+        }
+
+        .left {
+            float: left;
+            width: 60%;
+        }
+
+        .right {
+            float: right;
+            width: 38%;
+            text-align: right;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #f2f2f2;
+            border: 1px solid #000;
+            padding: 6px;
+            font-weight: bold;
+        }
+
+        td {
+            border: 1px solid #000;
+            padding: 6px;
+        }
+
+        .no-border td {
+            border: none;
+            padding: 4px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .qr {
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #000;
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+
+        .company-logo {
+            max-height: 80px;
+            margin-bottom: 10px;
+            display: block;
+            width: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="title">FISCAL CREDIT NOTE</div>
+
+<!-- Supplier + Credit Meta -->
+<div class="row">
+    <div class="left">
+
+        {% if company.logo_base64 %}
+            <img src="data:image/png;base64,{{ company.logo_base64 }}" alt="" class="company-logo">
+        {% endif %}
+
+        <strong>{{ company.name }}</strong><br>
+        {{ company.address }}<br>
+        VAT No: {{ company.vat_number }}<br>
+        TIN: {{ company.tin }}<br>
+        FDMS Device ID: {{ credit_note.device_id }}<br>
+        {% if company.branch_name %}
+            Branch: {{ company.branch_name }}<br>
+        {% endif %}
+
+    </div>
+
+    <div class="right">
+        <strong>Credit Note No:</strong> {{ credit_note.fiscal_credit_number }}<br>
+        <strong>Receipt No:</strong> {{ credit_note.receipt_number }}<br>
+        <strong>Receipt Global No:</strong> {{ credit_note.receipt_global_no }}<br>
+        <strong>Fiscal Day No:</strong> {{ credit_note.fiscal_day_no }}<br>
+        <strong>Date:</strong> {{ credit_note.fiscalisation_datetime }}<br>
+        <strong>Currency:</strong> {{ credit_note.currency }}<br>
+    </div>
+</div>
+
+<div style="clear: both;"></div>
+
+<!-- Reference Original Invoice -->
+<div class="section">
+    <strong>Reference Invoice:</strong><br>
+    Original Invoice No: {{ credit_note.original_invoice_number }}<br>
+    Original Receipt Global No: {{ credit_note.original_receipt_global_no }}<br>
+    Original Invoice Date: {{ credit_note.original_invoice_date }}<br>
+    <strong>Reason for Credit:</strong><br>
+    {{ credit_note.reason }}
+</div>
+
+<!-- Buyer -->
+{% if credit_note.buyer_name %}
+<div class="section">
+    <strong>Bill To:</strong><br>
+    {{ credit_note.buyer_name }}<br>
+    {{ credit_note.buyer_address }}<br>
+    {% if credit_note.buyer_vat %}
+        VAT No: {{ credit_note.buyer_vat }}<br>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- Credited Items -->
+<div class="section">
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Qty Credited</th>
+                <th>Unit Price</th>
+                <th>Tax %</th>
+                <th>Tax Amt</th>
+                <th>Line Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in credit_note_items %}
+            <tr>
+                <td>{{ item.description }}</td>
+                <td class="text-right">{{ item.quantity }}</td>
+                <td class="text-right">{{ item.unit_price }}</td>
+                <td class="text-right">{{ item.tax_rate }}%</td>
+                <td class="text-right">-{{ item.tax_amount }}</td>
+                <td class="text-right">-{{ item.line_total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- VAT Breakdown (only taxes that were used) -->
+{% if vat_breakdown_rows %}
+<div class="section">
+    <table>
+        <thead>
+            <tr>
+                <th>Tax Category</th>
+                <th>Taxable Amount</th>
+                <th>Tax Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in vat_breakdown_rows %}
+            <tr>
+                <td>{{ row.label }}</td>
+                <td class="text-right">-{{ row.taxable }}</td>
+                <td class="text-right">{% if row.tax != "0.00" %}-{% endif %}{{ row.tax }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<hr>
+
+<!-- Totals -->
+<table class="no-border">
+    <tr>
+        <td class="text-right bold">Total Credit (Excl Tax):</td>
+        <td class="text-right">-{{ credit_note.subtotal }}</td>
+    </tr>
+    <tr>
+        <td class="text-right bold">Total Tax Credit:</td>
+        <td class="text-right">-{{ credit_note.total_tax }}</td>
+    </tr>
+    <tr>
+        <td class="text-right bold">Total Credit:</td>
+        <td class="text-right bold">-{{ credit_note.total }}</td>
+    </tr>
+</table>
+
+<!-- QR Code -->
+<div class="qr">
+    {% if credit_note.qr_code_base64 %}
+        <img src="data:image/png;base64,{{ credit_note.qr_code_base64 }}" width="120" alt="">
+    {% endif %}
+</div>
+
+</body>
+</html>

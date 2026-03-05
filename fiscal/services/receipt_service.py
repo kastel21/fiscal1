@@ -518,6 +518,35 @@ def _ensure_configs_fresh(device: FiscalDevice) -> str | None:
     return None
 
 
+def _parse_response_json(response) -> dict | None:
+    """Parse response body as JSON. Returns dict or None if body is HTML or invalid JSON."""
+    try:
+        text = getattr(response, "text", None)
+        if text is None and getattr(response, "content", None) is not None:
+            text = response.content.decode("utf-8", errors="replace")
+        if not text or not text.strip():
+            return {}
+        stripped = text.strip()
+        if stripped.startswith("<"):
+            return None
+        return json.loads(text)
+    except (json.JSONDecodeError, TypeError, UnicodeDecodeError):
+        return None
+
+
+def _response_text_preview(response, max_len: int = 500) -> str:
+    """Safe preview of response text for error messages (no full HTML in logs)."""
+    try:
+        text = getattr(response, "text", None) or ""
+        if not text:
+            return ""
+        if text.strip().startswith("<"):
+            return "(HTML response, check FDMS URL/proxy)"
+        return (text.strip()[:max_len] + "…") if len(text) > max_len else text.strip()
+    except Exception:
+        return ""
+
+
 def _do_submit_receipt(
     device: FiscalDevice,
     fiscal_day_no: int,
@@ -726,19 +755,45 @@ def _do_submit_receipt(
         default_tax_id = next((t.get("taxID") for t in taxes_enriched if t.get("taxID") is not None), 1)
         strict_tax = False
 
+    # For credit notes: fetch original invoice so exempt/zero-rated lines can use its 8-digit HS code (FDMS requirement)
+    applicable_taxes = get_tax_table_from_configs(configs) if configs else []
+    exempt_tax_ids = get_exempt_tax_ids(applicable_taxes) if applicable_taxes else set()
+    original_receipt = None
+    if receipt_type == "CreditNote" and original_receipt_global_no is not None:
+        original_receipt = Receipt.objects.filter(
+            device=device, receipt_global_no=original_receipt_global_no
+        ).first()
+
     if use_preallocated_credit_taxes and receipt_type == "CreditNote":
         lines_for_payload = []
         for i, ln in enumerate(receipt_lines):
             total_val = Decimal(str(ln.get("receiptLineTotal") or ln.get("lineAmount") or 0))
             qty = Decimal(str(ln.get("receiptLineQuantity") or ln.get("quantity") or 1))
             unit_price = total_val / qty if qty else Decimal("0")
+            hs = str(ln.get("receiptLineHSCode") or ln.get("hs_code") or "0000").strip()[:8]
+            # Exempt/zero-rated lines must have 8-digit HS: use original invoice line HS when available
+            if original_receipt and original_receipt.receipt_lines and i < len(original_receipt.receipt_lines):
+                tid = ln.get("taxID", 1)
+                pct = ln.get("taxPercent")
+                is_exempt_zero = tid is not None and (
+                    int(tid) in exempt_tax_ids or (pct is not None and float(pct) == 0)
+                )
+                if is_exempt_zero:
+                    orig_ln = original_receipt.receipt_lines[i]
+                    orig_hs = str(orig_ln.get("receiptLineHSCode") or orig_ln.get("hs_code") or "").strip()
+                    orig_digits = "".join(c for c in orig_hs if c.isdigit())
+                    if len(orig_digits) == 8:
+                        hs = orig_hs
+                    elif len(orig_digits) == 4:
+                        # Original has 4-digit; pad to 8 so FDMS accepts exempt/zero-rated line
+                        hs = orig_digits + "0000"
             lines_for_payload.append({
                 "receiptLineNo": i + 1,
                 "receiptLineQuantity": float(qty),
                 "receiptLineTotal": to_cents(total_val),
                 "receiptLinePrice": to_cents(unit_price),
                 "receiptLineName": str(ln.get("receiptLineName") or "Credit")[:200],
-                "receiptLineHSCode": str(ln.get("receiptLineHSCode") or ln.get("hs_code") or "0000")[:8],
+                "receiptLineHSCode": hs[:8],
                 "receiptLineType": ln.get("receiptLineType") or "Sale",
                 "taxID": ln.get("taxID", 1),
                 "taxCode": str(ln.get("taxCode") or "1")[:TAX_CODE_MAX_LENGTH],
@@ -795,34 +850,33 @@ def _do_submit_receipt(
         return None, err
 
     # Strict tax mapping: validate tax combination and HS code before submit (when FDMS config available)
-    applicable_taxes = get_tax_table_from_configs(configs) if configs else []
-    exempt_tax_ids = get_exempt_tax_ids(applicable_taxes) if applicable_taxes else set()
+    # applicable_taxes and exempt_tax_ids already set above for credit-note HS handling
     # Credit note: for exempt/zero-rated lines with 4-digit HS, use original invoice HS code (must be 8 digits)
-    if receipt_type == "CreditNote" and original_receipt_global_no is not None:
-        original_receipt = Receipt.objects.filter(
-            device=device, receipt_global_no=original_receipt_global_no
-        ).first()
-        if original_receipt and original_receipt.receipt_lines:
-            original_lines = original_receipt.receipt_lines
-            for i, ln in enumerate(lines_for_payload):
-                if i >= len(original_lines):
-                    break
-                tid = ln.get("taxID")
-                pct = ln.get("taxPercent")
-                is_exempt_zero = tid is not None and (
-                    int(tid) in exempt_tax_ids or (pct is not None and float(pct) == 0)
-                )
-                if not is_exempt_zero:
-                    continue
-                hs = str(ln.get("receiptLineHSCode") or ln.get("hs_code") or "").strip()
-                digits = "".join(c for c in hs if c.isdigit())
-                if len(digits) != 8 and len(digits) == 4:
-                    orig_ln = original_lines[i]
-                    orig_hs = str(orig_ln.get("receiptLineHSCode") or orig_ln.get("hs_code") or "").strip()
-                    orig_digits = "".join(c for c in orig_hs if c.isdigit())
-                    if len(orig_digits) == 8:
-                        ln["receiptLineHSCode"] = orig_hs
-                        ln["hs_code"] = orig_hs
+    if receipt_type == "CreditNote" and original_receipt and original_receipt.receipt_lines:
+        original_lines = original_receipt.receipt_lines
+        for i, ln in enumerate(lines_for_payload):
+            if i >= len(original_lines):
+                break
+            tid = ln.get("taxID")
+            pct = ln.get("taxPercent")
+            is_exempt_zero = tid is not None and (
+                int(tid) in exempt_tax_ids or (pct is not None and float(pct) == 0)
+            )
+            if not is_exempt_zero:
+                continue
+            hs = str(ln.get("receiptLineHSCode") or ln.get("hs_code") or "").strip()
+            digits = "".join(c for c in hs if c.isdigit())
+            if len(digits) != 8 and len(digits) == 4:
+                orig_ln = original_lines[i]
+                orig_hs = str(orig_ln.get("receiptLineHSCode") or orig_ln.get("hs_code") or "").strip()
+                orig_digits = "".join(c for c in orig_hs if c.isdigit())
+                if len(orig_digits) == 8:
+                    ln["receiptLineHSCode"] = orig_hs
+                    ln["hs_code"] = orig_hs
+                elif len(orig_digits) == 4:
+                    # Original has 4-digit; pad to 8 so FDMS accepts exempt/zero-rated line
+                    ln["receiptLineHSCode"] = orig_digits + "0000"
+                    ln["hs_code"] = orig_digits + "0000"
     if applicable_taxes:
         try:
             for t in taxes_for_canonical:
@@ -953,10 +1007,7 @@ def _do_submit_receipt(
     service = FDMSDeviceService()
     try:
         response = service.device_request("POST", path, body=body, device=device)
-        try:
-            resp_body = response.json() if response.content else {}
-        except Exception:
-            resp_body = {}
+        resp_body = _parse_response_json(response)
         if isinstance(resp_body, dict):
             resp_log = json.dumps(mask_sensitive_fields(resp_body), indent=2, default=str)
         else:
@@ -977,23 +1028,39 @@ def _do_submit_receipt(
                 device=device,
                 receipt_global_no=receipt_global_no,
                 status_code=response.status_code,
-                response_body=resp_body if isinstance(resp_body, dict) else {"text": response.text},
+                response_body=resp_body if isinstance(resp_body, dict) else {"text": _response_text_preview(response)},
                 fiscal_day_no=fiscal_day_no,
                 receipt=None,
             )
         except Exception as e:
             logger.warning("Store submission response failed: %s", e)
-        try:
-            err_body = response.json()
-            detail = err_body.get("detail", err_body.get("title", response.text))
-        except Exception:
-            detail = response.text or f"HTTP {response.status_code}"
+        err_body = resp_body if isinstance(resp_body, dict) else {}
+        detail = err_body.get("detail", err_body.get("title")) or _response_text_preview(response) or f"HTTP {response.status_code}"
         return None, detail
 
     _progress(80, "Verifying")
-    data = response.json()
+    data = resp_body if isinstance(resp_body, dict) else None
+    if data is None:
+        return None, (
+            "FDMS returned non-JSON (e.g. HTML error page). "
+            "Check FDMS URL, proxy, and network. Response: " + _response_text_preview(response)
+        )
     server_sig = data.get("receiptServerSignature") or {}
     fdms_receipt_id = data.get("receiptID")
+    operation_id = (data.get("operationID") or data.get("operationId") or "").strip()[:120]
+    server_date_parsed = None
+    for key in ("serverDate", "server_date"):
+        raw = data.get(key) or (server_sig.get(key) if isinstance(server_sig, dict) else None)
+        if raw:
+            try:
+                s = str(raw).strip().replace("Z", "+00:00")
+                server_date_parsed = datetime.fromisoformat(s)
+            except Exception:
+                try:
+                    server_date_parsed = datetime.strptime(str(raw)[:19], "%Y-%m-%dT%H:%M:%S")
+                except Exception:
+                    pass
+            break
 
     lines_for_storage = [
         {
@@ -1039,9 +1106,20 @@ def _do_submit_receipt(
         "receipt_server_signature": server_sig,
         "fdms_receipt_id": fdms_receipt_id,
         "customer_snapshot": customer_snapshot or {},
+        "operation_id": operation_id,
+        "server_date": server_date_parsed,
     }
+    tenant_id = getattr(device, "tenant_id", None)
+    if tenant_id is None:
+        from tenants.utils import get_default_tenant
+        default_tenant = get_default_tenant()
+        if default_tenant is not None:
+            tenant_id = default_tenant.pk
+    if tenant_id is not None:
+        defaults["tenant_id"] = tenant_id
     if is_invoice:
         defaults["original_total"] = receipt_total_dec
+        defaults["document_type"] = "INVOICE"
 
     with transaction.atomic():
         device = FiscalDevice.objects.select_for_update().get(pk=device.pk)
@@ -1057,6 +1135,13 @@ def _do_submit_receipt(
             )
         device.last_receipt_global_no = receipt_global_no
         device.save(update_fields=["last_receipt_global_no"])
+        # ZIMRA Section 10: map FDMS response to fiscal_invoice_number, receipt_number,
+        # fiscal_signature, verification_code, VAT breakdown, buyer (before marking final)
+        try:
+            from fiscal.services.fdms_response_mapper import apply_fdms_response_to_receipt
+            apply_fdms_response_to_receipt(receipt_obj, data)
+        except Exception as e:
+            logger.warning("FDMS response mapper failed for receipt %s: %s", receipt_global_no, e)
 
     if first_receipt:
         try:
@@ -1086,4 +1171,17 @@ def _do_submit_receipt(
         attach_qr_to_receipt(receipt_obj)
     except Exception as e:
         logger.warning("QR attach failed for receipt %s: %s", receipt_global_no, e)
+
+    # ZIMRA InvoiceA4 PDF: save to media/fiscal_invoices/{receiptID}.pdf (Section 10/11/13)
+    try:
+        from django.core.files.base import ContentFile
+        from fiscal.services.pdf_generator import generate_fiscal_invoice_pdf
+        receipt_obj.refresh_from_db()
+        pdf_bytes = generate_fiscal_invoice_pdf(receipt_obj)
+        filename = f"{receipt_obj.fdms_receipt_id or receipt_global_no}.pdf"
+        receipt_obj.pdf_file.save(filename, ContentFile(pdf_bytes), save=True)
+        logger.info("InvoiceA4 PDF saved for receipt %s: %s", receipt_global_no, filename)
+    except Exception as e:
+        logger.warning("InvoiceA4 PDF generation failed for receipt %s: %s", receipt_global_no, e)
+
     return receipt_obj, None

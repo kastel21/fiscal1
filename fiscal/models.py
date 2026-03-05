@@ -23,6 +23,7 @@ class Company(models.Model):
     phone = models.CharField(max_length=50)
     email = models.EmailField()
     currency_default = models.CharField(max_length=3, default="ZWG")
+    logo = models.ImageField(upload_to="company_logos/", blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -219,6 +220,15 @@ class Receipt(models.Model):
     receipt_server_signature = models.JSONField(null=True, blank=True)
     fdms_receipt_id = models.BigIntegerField(null=True, blank=True)
     qr_code_value = models.TextField(blank=True)
+    # FDMS SubmitReceipt response fields (Section 10 InvoiceA4 / audit)
+    operation_id = models.CharField(max_length=120, blank=True)
+    server_date = models.DateTimeField(null=True, blank=True)
+    pdf_file = models.FileField(
+        upload_to="fiscal_invoices/",
+        null=True,
+        blank=True,
+        help_text="ZIMRA-compliant InvoiceA4 PDF (Section 10/11/13). Path: media/fiscal_invoices/{receipt_id}.pdf",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     document_type = models.CharField(
@@ -252,6 +262,23 @@ class Receipt(models.Model):
     total_debited = models.DecimalField(
         max_digits=14, decimal_places=2, default=Decimal("0")
     )
+
+    # ZIMRA Section 10 compliant A4 Tax Invoice – FDMS response mapping & VAT breakdown
+    fiscal_invoice_number = models.CharField(max_length=80, blank=True, db_index=True)
+    receipt_number = models.CharField(max_length=80, blank=True)
+    fiscal_signature = models.TextField(blank=True, help_text="FDMS fiscal signature (device/signer).")
+    verification_code = models.CharField(max_length=80, blank=True)
+    # VAT breakdown by rate (Decimal, 2 dp) – populated by VAT engine after fiscalisation
+    subtotal_15 = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    tax_15 = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    subtotal_0 = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    subtotal_exempt = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    total_tax = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
+    # Buyer (Section 10) – explicit fields for validation and display
+    buyer_name = models.CharField(max_length=255, blank=True)
+    buyer_vat = models.CharField(max_length=50, blank=True)
+    buyer_tin = models.CharField(max_length=50, blank=True)
+    buyer_address = models.TextField(blank=True)
 
     class Meta:
         verbose_name = "Receipt"
@@ -355,6 +382,45 @@ class Receipt(models.Model):
                 raise ValidationError(
                     {"original_invoice": "Invoice must not reference an original invoice."}
                 )
+
+    # Protected fields: cannot change after fiscalisation (audit trail via FiscalEditAttempt)
+    _FISCALISED_PROTECTED_FIELDS = (
+        "receipt_lines", "receipt_taxes", "receipt_payments", "receipt_total",
+        "receipt_hash", "receipt_signature_hash", "receipt_signature_sig",
+        "receipt_server_signature", "canonical_string", "fiscal_day_no",
+        "receipt_global_no", "invoice_no", "customer_snapshot",
+    )
+
+    def save(self, *args, **kwargs):
+        if self.pk and self.fdms_receipt_id:
+            try:
+                old = Receipt.objects.get(pk=self.pk)
+            except Receipt.DoesNotExist:
+                pass
+            else:
+                diff = {}
+                for field in self._FISCALISED_PROTECTED_FIELDS:
+                    if not hasattr(self, field) or not hasattr(old, field):
+                        continue
+                    new_val = getattr(self, field)
+                    old_val = getattr(old, field)
+                    if new_val != old_val:
+                        diff[field] = {"old": str(old_val)[:500], "new": str(new_val)[:500]}
+                if diff:
+                    FiscalEditAttempt.objects.create(
+                        receipt=self,
+                        original_snapshot={f: getattr(old, f) for f in self._FISCALISED_PROTECTED_FIELDS if hasattr(old, f)},
+                        attempted_change=diff,
+                        source="API",
+                        actor="",
+                        blocked=True,
+                        diff_summary="; ".join(f"{k} changed" for k in diff),
+                    )
+                    raise ValidationError(
+                        "Cannot edit receipt after fiscalisation. Changes to lines, taxes, payments, "
+                        "total, or signatures are blocked. Audit log created."
+                    )
+        super().save(*args, **kwargs)
 
 
 class CreditNoteImport(models.Model):

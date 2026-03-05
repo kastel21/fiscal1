@@ -280,20 +280,24 @@ def submit_receipt_api(request):
         resp = {"success": True, "status": "queued", "task_id": str(task.id)}
         logger.debug("[submit_receipt_api] RESPONSE (async): %s", json.dumps(resp, indent=2))
         return JsonResponse(resp)
-    receipt_obj, err = submit_receipt(
-        device=device,
-        fiscal_day_no=int(fiscal_day_no),
-        receipt_type=receipt_type,
-        receipt_currency=receipt_currency,
-        invoice_no=invoice_no_submit,
-        receipt_lines=body.get("receipt_lines", []),
-        receipt_taxes=body.get("receipt_taxes", []),
-        receipt_payments=body.get("receipt_payments", []),
-        receipt_total=float(body.get("receipt_total", 0)),
-        receipt_lines_tax_inclusive=body.get("receipt_lines_tax_inclusive", True),
-        original_invoice_no=original_invoice_no if receipt_type == "CreditNote" else "",
-        original_receipt_global_no=original_receipt_global_no if receipt_type == "CreditNote" else None,
-    )
+    try:
+        receipt_obj, err = submit_receipt(
+            device=device,
+            fiscal_day_no=int(fiscal_day_no),
+            receipt_type=receipt_type,
+            receipt_currency=receipt_currency,
+            invoice_no=invoice_no_submit,
+            receipt_lines=body.get("receipt_lines", []),
+            receipt_taxes=body.get("receipt_taxes", []),
+            receipt_payments=body.get("receipt_payments", []),
+            receipt_total=float(body.get("receipt_total", 0)),
+            receipt_lines_tax_inclusive=body.get("receipt_lines_tax_inclusive", True),
+            original_invoice_no=original_invoice_no if receipt_type == "CreditNote" else "",
+            original_receipt_global_no=original_receipt_global_no if receipt_type == "CreditNote" else None,
+        )
+    except Exception as e:
+        logger.exception("submit_receipt_api: submit_receipt failed")
+        return JsonResponse({"success": False, "error": str(e)}, status=400)
     if err:
         resp = {"success": False, "error": redact_for_ui(err)}
         logger.debug("[submit_receipt_api] RESPONSE (error): %s", json.dumps(resp, indent=2))

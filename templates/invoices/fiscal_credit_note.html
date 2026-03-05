@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Fiscal Credit Note</title>
+
+<style>
+/* Print: A4 page */
+@page {
+    size: A4;
+    margin: 12mm;
+}
+
+/* Utility: hide when printing (e.g. buttons) */
+.no-print {
+    display: block;
+}
+
+/* Utility: force page break after element when printing */
+.page-break {
+    page-break-after: always;
+}
+.page-break-before {
+    page-break-before: always;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    color: #000;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #e0e0e0;
+    padding: 16px 0;
+}
+
+/* A4 paper container: fixed size for screen preview and print */
+.invoice-container {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    padding: 12mm;
+    box-sizing: border-box;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+/* 1. Header */
+.invoice-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    width: 100%;
+    page-break-inside: avoid;
+}
+.invoice-header .header-right {
+    text-align: right;
+}
+.invoice-header .qr {
+    margin-bottom: 6px;
+}
+.invoice-header .verify {
+    font-size: 10px;
+}
+
+.title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 8px 0;
+    page-break-after: avoid;
+}
+
+/* 2. Seller/Buyer — 2 column grid */
+.seller-buyer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 24px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+}
+.seller-buyer .block {
+    min-width: 0;
+}
+.seller-buyer .block strong {
+    display: block;
+    margin-bottom: 2px;
+}
+
+/* 3. Metadata — 4 column grid */
+.meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px 16px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+    font-size: 11px;
+}
+.meta-grid .meta-item {
+    min-width: 0;
+    padding: 2px 0;
+}
+.meta-grid .meta-item strong {
+    white-space: nowrap;
+}
+.meta-grid .meta-item.col-span-2 {
+    grid-column: span 2;
+}
+
+/* 4. Line items table — fixed column widths */
+table.items {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: 8px;
+    page-break-inside: auto;
+}
+table.items thead {
+    display: table-header-group;
+}
+table.items tfoot {
+    display: table-footer-group;
+}
+table.items th,
+table.items td {
+    border: 1px solid #000;
+    padding: 4px 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+table.items th {
+    background: #eee;
+}
+table.items tbody tr {
+    page-break-inside: avoid;
+}
+/* Fixed column widths (percentages; sum = 100) */
+table.items th:nth-child(1),
+table.items td:nth-child(1) { width: 8%; }   /* Code */
+table.items th:nth-child(2),
+table.items td:nth-child(2) { width: 32%; }  /* Description */
+table.items th:nth-child(3),
+table.items td:nth-child(3) { width: 7%; }   /* Qty */
+table.items th:nth-child(4),
+table.items td:nth-child(4) { width: 11%; }  /* Unit Price */
+table.items th:nth-child(5),
+table.items td:nth-child(5) { width: 7%; }   /* VAT % */
+table.items th:nth-child(6),
+table.items td:nth-child(6) { width: 11%; }  /* VAT */
+table.items th:nth-child(7),
+table.items td:nth-child(7) { width: 12%; }  /* Line Total */
+.num {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* 5. Totals — right-aligned under line totals */
+.totals-wrap {
+    margin-top: 6px;
+    width: 100%;
+    page-break-inside: avoid;
+}
+.totals-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.totals-table td {
+    padding: 2px 6px;
+    vertical-align: top;
+}
+.totals-table td:first-child {
+    text-align: right;
+}
+.totals-table td:last-child {
+    text-align: right;
+    width: 12%;
+    white-space: nowrap;
+}
+
+/* Print: match A4, hide UI elements, no browser chrome in content area */
+@media print {
+    body {
+        background: #fff;
+        padding: 0;
+        display: block;
+    }
+    .invoice-container {
+        width: 100%;
+        min-height: auto;
+        box-shadow: none;
+        padding: 0;
+    }
+    .no-print {
+        display: none !important;
+    }
+    .page-break {
+        page-break-after: always;
+    }
+    .page-break-before {
+        page-break-before: always;
+    }
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="invoice-container">
+<div class="main-content">
+
+<!-- 1. Header -->
+<div class="invoice-header">
+    <div class="header-right">
+        <div class="qr">
+            {% if credit_note.qr_code_base64 %}
+            <img src="data:image/png;base64,{{ credit_note.qr_code_base64 }}" width="90">
+            {% endif %}
+        </div>
+        <div class="verify">
+            <strong>Verification Code</strong><br>
+            {{ credit_note.verification_code|default:"N/A" }}<br>
+            You can verify this receipt manually at<br>
+            https://fdms.zimra.co.zw
+        </div>
+    </div>
+</div>
+
+<div class="title">
+    FISCAL CREDIT NOTE ({{ credit_note.currency|default:"USD" }})
+</div>
+
+<!-- 2. Seller/Buyer grid -->
+<div class="seller-buyer">
+    <div class="block">
+        <strong>SELLER</strong>
+        {{ company.name }}<br>
+        TIN: {{ company.tin }}<br>
+        VAT No: {{ company.vat_number }}<br>
+        {{ company.address }}
+    </div>
+    <div class="block">
+        <strong>BUYER</strong>
+        {{ credit_note.buyer_name }}<br>
+        TIN: {{ credit_note.buyer_tin|default:"—" }}<br>
+        VAT No: {{ credit_note.buyer_vat|default:"—" }}
+    </div>
+</div>
+
+<!-- 3. Metadata grid -->
+<div class="meta-grid">
+    <div class="meta-item"><strong>Credit No:</strong> {{ credit_note.fiscal_credit_number }}</div>
+    <div class="meta-item"><strong>Fiscal Day No:</strong> {{ credit_note.fiscal_day_no }}</div>
+    <div class="meta-item"><strong>Device Serial No:</strong> {{ credit_note.device_serial|default:credit_note.device_id }}</div>
+    <div class="meta-item"><strong>Fiscal Device ID:</strong> {{ credit_note.device_id }}</div>
+    <div class="meta-item"><strong>Customer Ref No:</strong> {{ credit_note.customer_ref|default:"—" }}</div>
+    <div class="meta-item"><strong>Date:</strong> {{ credit_note.fiscalisation_datetime }}</div>
+    <div class="meta-item"><strong>Seller Invoice:</strong> {{ credit_note.receipt_number }}</div>
+    <div class="meta-item"><strong>Ref:</strong> {{ credit_note.reference|default:"—" }}</div>
+</div>
+
+<!-- Original invoice reference -->
+<div class="meta-grid">
+    <div class="meta-item"><strong>Original Invoice No:</strong> {{ credit_note.original_invoice_number }}</div>
+    <div class="meta-item"><strong>Original Receipt Global No:</strong> {{ credit_note.original_receipt_global_no }}</div>
+    <div class="meta-item col-span-2"><strong>Reason for Credit:</strong> {{ credit_note.reason }}</div>
+</div>
+
+<!-- 4. Line items table -->
+<table class="items">
+    <thead>
+        <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th class="num">Qty</th>
+            <th class="num">Unit Price</th>
+            <th class="num">VAT %</th>
+            <th class="num">VAT</th>
+            <th class="num">Line Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in credit_note_items %}
+        <tr>
+            <td>{{ item.code|default:"" }}</td>
+            <td>{{ item.description }}</td>
+            <td class="num">{{ item.quantity|floatformat:2 }}</td>
+            <td class="num">-{{ item.unit_price|floatformat:2 }}</td>
+            <td class="num">{% if item.tax_rate is not None %}{{ item.tax_rate }}%{% else %}Exempt{% endif %}</td>
+            <td class="num">-{{ item.tax_amount|floatformat:2 }}</td>
+            <td class="num">-{{ item.line_total|floatformat:2 }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- 5. Totals -->
+<div class="totals-wrap">
+    <table class="totals-table">
+        <tr>
+            <td><strong>Total (excl. VAT)</strong></td>
+            <td class="num">{{ credit_note.exclusive_display|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td><strong>VAT</strong></td>
+            <td class="num">{{ credit_note.vat_display|floatformat:2 }}</td>
+        </tr>
+        <tr>
+            <td><strong>Credit Total</strong></td>
+            <td class="num"><strong>{{ credit_note.total_display|floatformat:2 }}</strong></td>
+        </tr>
+    </table>
+</div>
+
+</div>
+
+</div><!-- .invoice-container -->
+
+</body>
+</html>

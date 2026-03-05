@@ -83,10 +83,16 @@ urlpatterns = [
     path("fdms/tax-mappings/add/", views_fdms.fdms_tax_mapping_form, name="fdms_tax_mapping_add"),
     path("fdms/tax-mappings/<int:pk>/edit/", views_fdms.fdms_tax_mapping_form, name="fdms_tax_mapping_edit"),
     path("fdms/settings/", views_fdms.fdms_settings, name="fdms_settings"),
+    path("fdms/settings/company-logo/", views_fdms.fdms_settings_company_logo, name="fdms_settings_company_logo"),
+    path("fdms/settings/company-logo/remove/", views_fdms.fdms_settings_company_logo_remove, name="fdms_settings_company_logo_remove"),
     path("fdms/settings/quickbooks/disconnect/", views_fdms.fdms_settings_qb_disconnect, name="fdms_settings_qb_disconnect"),
     path("fdms/receipts/<int:pk>/", views_fdms.fdms_receipt_detail, name="fdms_receipt_detail"),
     path("fdms/receipts/<int:pk>/invoice/", views_fdms.fdms_receipt_invoice, name="fdms_receipt_invoice"),
+    path("fdms/receipts/<int:pk>/invoice/debit-note/html-pdf/", views_fdms.fdms_receipt_debit_note_html_pdf, name="fdms_receipt_debit_note_html_pdf"),
+    path("fdms/receipts/<int:pk>/invoice/html-pdf/", views_fdms.fdms_receipt_invoice_html_pdf, name="fdms_receipt_invoice_html_pdf"),
     path("fdms/receipts/<int:pk>/invoice/pdf/", views_fdms.fdms_receipt_invoice_pdf, name="fdms_receipt_invoice_pdf"),
+    path("fdms/receipts/<int:pk>/invoice-a4/pdf/", views_fdms.fdms_receipt_invoice_a4_pdf, name="fdms_receipt_invoice_a4_pdf"),
+    path("fdms/receipts/<int:pk>/fiscal-invoice-a4/pdf/", views_fdms.fdms_receipt_fiscal_invoice_a4_pdf, name="fdms_receipt_fiscal_invoice_a4_pdf"),
     path("fdms/logs/", views_fdms.fdms_logs_tailwind, name="fdms_logs_tailwind"),
     path("fdms/audit/", views_fdms.fdms_audit, name="fdms_audit"),
     path("fdms/quickbooks-invoices/", views_fdms.fdms_qb_invoices, name="fdms_qb_invoices"),
@@ -99,4 +105,6 @@ urlpatterns = [
     path("fdms/invoice-import/", views_invoice_import.invoice_import_step1, name="fdms_invoice_import_step1"),
     path("fdms/invoice-import/preview/", views_invoice_import.invoice_import_preview, name="fdms_invoice_import_preview"),
     path("fdms/invoice-import/success/<int:pk>/", views_invoice_import.invoice_import_success, name="fdms_invoice_import_success"),
+    # Invoice Review import: upload Excel -> populate New Invoice form only (no FDMS submit)
+    path("fdms/invoice-import-review/", views_invoice_import.import_invoice_review, name="fdms_invoice_import_review"),
 ]
