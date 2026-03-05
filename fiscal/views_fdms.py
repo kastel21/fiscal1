@@ -3,18 +3,20 @@
 import json
 from datetime import date
 
+from django.contrib import messages
 from django.db.models import Max
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.http import require_http_methods
 
-from fiscal.forms import DeviceRegistrationForm
+from fiscal.forms import DeviceRegistrationForm, SequenceAdjustmentForm
 from fiscal.models import FDMSApiLog, FiscalDay, FiscalDevice, Receipt
 from fiscal.services.audit_integrity import run_full_audit
 from fiscal.services.config_service import get_config_status, get_latest_configs
 from fiscal.services.fiscal_day_totals import get_fiscal_day_totals
 from fiscal.services.invoice_layout_service import build_invoice_context
+from fiscal.services.invoice_number import adjust_document_sequence
 from fiscal.services.device_api import DeviceApiService
 from fiscal.services.device_registration import DeviceRegistrationService
 from fiscal.services.receipt_service import re_sync_device_from_get_status
@@ -611,6 +613,53 @@ def fdms_tax_mapping_form(request, pk=None):
     if not request.user.is_staff:
         return redirect("fdms_dashboard")
     return render(request, "fdms/tax_mapping_form.html", {"mapping_id": pk or ""})
+
+
+@staff_member_required
+@require_http_methods(["GET", "POST"])
+def fdms_sequence_adjustment(request):
+    """Admin-only sequence adjustment form for manual number resync/skip."""
+    if not request.user.is_staff:
+        return redirect("fdms_dashboard")
+
+    result = None
+    form = SequenceAdjustmentForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        document_type = form.cleaned_data["document_type"]
+        year = form.cleaned_data["year"]
+        mode = form.cleaned_data["mode"]
+        value = form.cleaned_data["value"]
+        reason = form.cleaned_data["reason"]
+        kwargs = {"set_next": value} if mode == "set_next" else {"skip_by": value}
+        try:
+            result = adjust_document_sequence(
+                document_type=document_type,
+                year=year,
+                reason=reason,
+                user=request.user,
+                **kwargs,
+            )
+            messages.success(
+                request,
+                f"Sequence updated. Next number: {result['next_number_preview']}",
+            )
+            form = SequenceAdjustmentForm(initial={
+                "document_type": document_type,
+                "year": year,
+                "mode": mode,
+                "value": value,
+            })
+        except Exception as e:
+            messages.error(request, str(e))
+
+    return render(
+        request,
+        "fdms/sequence_adjustment.html",
+        {
+            "form": form,
+            "result": result,
+        },
+    )
 
 
 @staff_member_required

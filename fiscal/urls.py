@@ -82,6 +82,7 @@ urlpatterns = [
     path("fdms/tax-mappings/", views_fdms.fdms_tax_mappings, name="fdms_tax_mappings"),
     path("fdms/tax-mappings/add/", views_fdms.fdms_tax_mapping_form, name="fdms_tax_mapping_add"),
     path("fdms/tax-mappings/<int:pk>/edit/", views_fdms.fdms_tax_mapping_form, name="fdms_tax_mapping_edit"),
+    path("fdms/sequences/adjust/", views_fdms.fdms_sequence_adjustment, name="fdms_sequence_adjustment"),
     path("fdms/settings/", views_fdms.fdms_settings, name="fdms_settings"),
     path("fdms/settings/company-logo/", views_fdms.fdms_settings_company_logo, name="fdms_settings_company_logo"),
     path("fdms/settings/company-logo/remove/", views_fdms.fdms_settings_company_logo_remove, name="fdms_settings_company_logo_remove"),

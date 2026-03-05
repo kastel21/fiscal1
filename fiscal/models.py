@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
@@ -132,6 +133,55 @@ class DocumentSequence(models.Model):
 
     def __str__(self):
         return f"{self.document_type}-{self.year}-{self.last_number}"
+
+
+class DocumentSequenceAdjustment(models.Model):
+    """Audit trail for manual sequence adjustments."""
+
+    MODES = (
+        ("set_next", "Set Next"),
+        ("skip_by", "Skip By"),
+    )
+    DOCUMENT_TYPES = (
+        ("INVOICE", "Invoice"),
+        ("CREDIT_NOTE", "Credit Note"),
+        ("DEBIT_NOTE", "Debit Note"),
+    )
+
+    tenant = models.ForeignKey(
+        "tenants.Tenant",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        db_index=True,
+        related_name="documentsequenceadjustment_records",
+    )
+    document_type = models.CharField(max_length=20, choices=DOCUMENT_TYPES, db_index=True)
+    year = models.IntegerField(db_index=True)
+    mode = models.CharField(max_length=20, choices=MODES)
+    value = models.IntegerField()
+    old_last_number = models.IntegerField()
+    new_last_number = models.IntegerField()
+    reason = models.TextField()
+    changed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="sequence_adjustments",
+    )
+    changed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Document Sequence Adjustment"
+        verbose_name_plural = "Document Sequence Adjustments"
+        ordering = ["-changed_at"]
+
+    def __str__(self):
+        return (
+            f"{self.document_type} {self.year} "
+            f"{self.old_last_number}->{self.new_last_number}"
+        )
 
 
 class FiscalDay(models.Model):

@@ -1,0 +1,63 @@
+{% extends "fdms/base.html" %}
+
+{% block content %}
+<div class="flex items-center gap-4 mb-6">
+  <h1 class="text-2xl font-bold text-slate-800">Adjust Document Sequence</h1>
+</div>
+
+<div class="bg-white rounded-lg shadow p-6 max-w-2xl">
+  <p class="text-sm text-slate-600 mb-4">
+    Use this page to safely set the next number or skip ahead when sequence data is out of sync.
+  </p>
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    <div>
+      <label class="block text-sm font-medium text-slate-700 mb-1">Document Type</label>
+      {{ form.document_type }}
+      {% if form.document_type.errors %}<p class="text-sm text-red-600 mt-1">{{ form.document_type.errors|join:", " }}</p>{% endif %}
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Year</label>
+        {{ form.year }}
+        {% if form.year.errors %}<p class="text-sm text-red-600 mt-1">{{ form.year.errors|join:", " }}</p>{% endif %}
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Mode</label>
+        {{ form.mode }}
+        {% if form.mode.errors %}<p class="text-sm text-red-600 mt-1">{{ form.mode.errors|join:", " }}</p>{% endif %}
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-1">Value</label>
+        {{ form.value }}
+        <p class="text-xs text-slate-500 mt-1">{{ form.value.help_text }}</p>
+        {% if form.value.errors %}<p class="text-sm text-red-600 mt-1">{{ form.value.errors|join:", " }}</p>{% endif %}
+      </div>
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-700 mb-1">Reason</label>
+      {{ form.reason }}
+      {% if form.reason.errors %}<p class="text-sm text-red-600 mt-1">{{ form.reason.errors|join:", " }}</p>{% endif %}
+    </div>
+    <div class="pt-2">
+      <button type="submit" class="px-5 py-2 rounded bg-indigo-600 text-white hover:bg-indigo-700">
+        Apply Sequence Update
+      </button>
+    </div>
+  </form>
+</div>
+
+{% if result %}
+<div class="bg-emerald-50 border border-emerald-200 rounded-lg p-5 mt-6 max-w-2xl">
+  <h2 class="text-lg font-semibold text-emerald-800 mb-2">Update Applied</h2>
+  <div class="text-sm text-emerald-900 space-y-1">
+    <p><strong>Document:</strong> {{ result.document_type }}</p>
+    <p><strong>Year:</strong> {{ result.year }}</p>
+    <p><strong>Mode:</strong> {{ result.mode }}</p>
+    <p><strong>Old last number:</strong> {{ result.old_last_number }}</p>
+    <p><strong>New last number:</strong> {{ result.new_last_number }}</p>
+    <p><strong>Next number preview:</strong> {{ result.next_number_preview }}</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

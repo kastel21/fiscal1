@@ -2,11 +2,16 @@
 Invoice number generation: INV-yyyy-N, CN-yyyy-N, DB-yyyy-N with auto-increment per year.
 """
 
+from django.core.exceptions import ValidationError
 from django.db import transaction
 from django.db.utils import IntegrityError
 from django.utils import timezone
 
-from fiscal.models import DocumentSequence, InvoiceSequence
+from fiscal.models import (
+    DocumentSequence,
+    DocumentSequenceAdjustment,
+    InvoiceSequence,
+)
 
 _PREFIX_BY_TYPE = {
     "INVOICE": "INV",
@@ -15,6 +20,7 @@ _PREFIX_BY_TYPE = {
 }
 
 _MAX_SEQUENCE_RETRIES = 5
+_ALLOWED_DOCUMENT_TYPES = {"INVOICE", "CREDIT_NOTE", "DEBIT_NOTE"}
 
 
 def get_next_invoice_no() -> str:
@@ -81,3 +87,98 @@ def generate_document_number(document_type: str, sequence: int) -> str:
     year = timezone.now().year
     prefix = _PREFIX_BY_TYPE.get(document_type, "INV")
     return f"{prefix}-{year}-{sequence}"
+
+
+def adjust_document_sequence(
+    document_type: str,
+    year: int,
+    *,
+    set_next: int | None = None,
+    skip_by: int | None = None,
+    reason: str,
+    user=None,
+) -> dict:
+    """
+    Manually adjust sequence for INVOICE/CREDIT_NOTE/DEBIT_NOTE.
+    Uses row lock + transaction and writes an audit row.
+    """
+    if document_type not in _ALLOWED_DOCUMENT_TYPES:
+        raise ValidationError("Invalid document_type.")
+    if bool(set_next is not None) == bool(skip_by is not None):
+        raise ValidationError("Provide exactly one of set_next or skip_by.")
+    if not isinstance(year, int) or year < 2000 or year > 9999:
+        raise ValidationError("Year must be a valid 4-digit integer.")
+    if not (reason and str(reason).strip()):
+        raise ValidationError("Reason is required.")
+    reason_clean = str(reason).strip()
+
+    if set_next is not None:
+        if int(set_next) <= 0:
+            raise ValidationError("set_next must be greater than zero.")
+        mode = "set_next"
+        value = int(set_next)
+    else:
+        if int(skip_by) <= 0:
+            raise ValidationError("skip_by must be greater than zero.")
+        mode = "skip_by"
+        value = int(skip_by)
+
+    with transaction.atomic():
+        if document_type == "INVOICE":
+            seq = (
+                InvoiceSequence.objects.select_for_update()
+                .filter(year=year)
+                .order_by("id")
+                .first()
+            )
+            if not seq:
+                seq = InvoiceSequence.objects.create(year=year, last_number=0)
+            old_last_number = int(seq.last_number or 0)
+        else:
+            seq = (
+                DocumentSequence.objects.select_for_update()
+                .filter(year=year, document_type=document_type)
+                .order_by("id")
+                .first()
+            )
+            if not seq:
+                seq = DocumentSequence.objects.create(
+                    year=year, document_type=document_type, last_number=0
+                )
+            old_last_number = int(seq.last_number or 0)
+
+        if mode == "set_next":
+            new_last_number = value - 1
+            if new_last_number < old_last_number:
+                raise ValidationError(
+                    "Cannot move sequence backwards without explicit override."
+                )
+        else:
+            new_last_number = old_last_number + value
+
+        seq.last_number = new_last_number
+        seq.save(update_fields=["last_number"])
+
+        next_number_preview = f"{_PREFIX_BY_TYPE[document_type]}-{year}-{new_last_number + 1}"
+
+        DocumentSequenceAdjustment.objects.create(
+            tenant=getattr(seq, "tenant", None),
+            document_type=document_type,
+            year=year,
+            mode=mode,
+            value=value,
+            old_last_number=old_last_number,
+            new_last_number=new_last_number,
+            reason=reason_clean,
+            changed_by=user if getattr(user, "is_authenticated", False) else None,
+        )
+
+    return {
+        "document_type": document_type,
+        "year": year,
+        "mode": mode,
+        "value": value,
+        "old_last_number": old_last_number,
+        "new_last_number": new_last_number,
+        "next_number_preview": next_number_preview,
+    }

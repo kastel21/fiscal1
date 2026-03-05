@@ -75,6 +75,7 @@
                 <a href="{% url 'fdms_device' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Device / Register</a>
                 <a href="{% url 'fdms_products' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Products</a>
                 <a href="{% url 'fdms_tax_mappings' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Tax Mapping</a>
+                <a href="{% url 'fdms_sequence_adjustment' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Sequence Adjust</a>
                 {% if request.user.is_staff %}
                 <a href="{% url 'fdms_invoice_import_step1' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Import Invoice</a>
                 {% endif %}
