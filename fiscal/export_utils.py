@@ -73,13 +73,13 @@ def _pdf_fallback(data: dict, range_key: str) -> bytes:
     return ("\n".join(lines)).encode("utf-8")
 
 
-def render_excel(range_key: str) -> bytes:
-    """Generate Excel workbook. Requires openpyxl."""
+def render_excel(range_key: str, tenant=None) -> bytes:
+    """Generate Excel workbook. Requires openpyxl. When tenant is provided, all data is scoped to that tenant."""
     from openpyxl import Workbook
-    from fiscal.services.dashboard_service import _date_range, get_summary
+    from fiscal.services.dashboard_service import _date_range, get_summary, get_errors
     from fiscal.models import Receipt
 
-    data = get_summary(None, range_key)
+    data = get_summary(None, range_key, tenant=tenant)
     start_dt, end_dt = _date_range(range_key)
     wb = Workbook()
 
@@ -100,20 +100,37 @@ def render_excel(range_key: str) -> bytes:
         ws.append([k, str(v)])
 
     ws2 = wb.create_sheet("Invoices")
-    invoices = Receipt.objects.filter(receipt_type="FiscalInvoice", fdms_receipt_id__isnull=False).exclude(fdms_receipt_id=0).filter(created_at__gte=start_dt, created_at__lte=end_dt).order_by("-created_at")[:500]
+    invoices_qs = Receipt.all_objects.filter(
+        receipt_type="FiscalInvoice",
+        fdms_receipt_id__isnull=False,
+    ).exclude(fdms_receipt_id=0).filter(
+        created_at__gte=start_dt,
+        created_at__lte=end_dt,
+    )
+    if tenant is not None:
+        invoices_qs = invoices_qs.filter(tenant=tenant)
+    invoices = list(invoices_qs.order_by("-created_at")[:500])
     ws2.append(["Device", "FiscalDay", "ReceiptGlobalNo", "InvoiceNo", "Total", "Created"])
     for r in invoices:
         ws2.append([r.device.device_id, r.fiscal_day_no, r.receipt_global_no, r.invoice_no or "", float(r.receipt_total or 0), r.created_at.isoformat() if r.created_at else ""])
 
     ws3 = wb.create_sheet("Credit Notes")
-    cns = Receipt.objects.filter(receipt_type="CreditNote", fdms_receipt_id__isnull=False).exclude(fdms_receipt_id=0).filter(created_at__gte=start_dt, created_at__lte=end_dt).order_by("-created_at")[:500]
+    cns_qs = Receipt.all_objects.filter(
+        receipt_type="CreditNote",
+        fdms_receipt_id__isnull=False,
+    ).exclude(fdms_receipt_id=0).filter(
+        created_at__gte=start_dt,
+        created_at__lte=end_dt,
+    )
+    if tenant is not None:
+        cns_qs = cns_qs.filter(tenant=tenant)
+    cns = list(cns_qs.order_by("-created_at")[:500])
     ws3.append(["Device", "FiscalDay", "ReceiptGlobalNo", "InvoiceNo", "Total", "OriginalInvoice", "Created"])
     for r in cns:
         ws3.append([r.device.device_id, r.fiscal_day_no, r.receipt_global_no, r.invoice_no or "", float(r.receipt_total or 0), r.original_invoice_no or "", r.created_at.isoformat() if r.created_at else ""])
 
-    from fiscal.services.dashboard_service import get_errors
     ws4 = wb.create_sheet("Errors")
-    errors = get_errors(None, range_key)
+    errors = get_errors(None, range_key, tenant=tenant)
     ws4.append(["Endpoint", "Status", "Error", "Created"])
     for e in errors:
         ws4.append([e.get("endpoint", ""), e.get("statusCode"), e.get("error", ""), e.get("createdAt", "")])

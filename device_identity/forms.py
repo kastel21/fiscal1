@@ -53,3 +53,23 @@ class DeviceRegistrationForm(forms.Form):
         if len(value) != 8:
             raise forms.ValidationError("Activation key must be exactly 8 characters.")
         return value
+
+
+class OnboardingRegisterForm(forms.Form):
+    """Step 3: Activation key only (device already created in step 2)."""
+
+    activation_key = forms.CharField(
+        label="Activation Key",
+        max_length=8,
+        min_length=8,
+        help_text="8-symbol activation key from ZIMRA (case insensitive).",
+        widget=forms.TextInput(
+            attrs={"class": "form-input w-full", "placeholder": "e.g. 12AXC178", "maxlength": 8}
+        ),
+    )
+
+    def clean_activation_key(self):
+        value = self.cleaned_data.get("activation_key", "").strip()
+        if len(value) != 8:
+            raise forms.ValidationError("Activation key must be exactly 8 characters.")
+        return value

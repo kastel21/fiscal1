@@ -4,7 +4,6 @@ Calls existing fiscal logic; does not implement new fiscal rules.
 """
 
 import logging
-from django.conf import settings
 
 from fiscal.models import Receipt
 from fiscal.services.qb_service import fetch_invoice_from_qb
@@ -27,7 +26,23 @@ def fiscalise_receipt(receipt_id: int) -> None:
     if getattr(receipt, "fiscal_status", None) and receipt.fiscal_status != "PENDING":
         return
 
-    realm_id = getattr(settings, "QB_REALM_ID", "") or ""
+    device = getattr(receipt, "device", None)
+    tenant = device.tenant if device else None
+    if not tenant:
+        receipt.fiscal_status = "FAILED"
+        receipt.save(update_fields=["fiscal_status"])
+        logger.warning("fiscalise_receipt: receipt has no device/tenant")
+        return
+
+    from fiscal.models import QuickBooksConnection
+    conn = QuickBooksConnection.objects.filter(tenant=tenant, is_active=True).first()
+    if not conn:
+        receipt.fiscal_status = "FAILED"
+        receipt.save(update_fields=["fiscal_status"])
+        logger.warning("fiscalise_receipt: no QuickBooks connection for tenant %s", tenant.slug)
+        return
+    realm_id = conn.realm_id
+
     entity_name = "CreditMemo" if (receipt.receipt_type or "").strip().upper() == "CREDITNOTE" else "Invoice"
     payload = fetch_invoice_from_qb(receipt.qb_id, realm_id, entity_name)
     if not payload:
@@ -44,7 +59,7 @@ def fiscalise_receipt(receipt_id: int) -> None:
         return
 
     from fiscal.services.qb_fiscalisation import fiscalise_qb_invoice
-    qb_inv, err = fiscalise_qb_invoice(receipt.qb_id, payload)
+    qb_inv, err = fiscalise_qb_invoice(receipt.qb_id, payload, tenant=tenant)
     if qb_inv and qb_inv.fiscalised:
         receipt.fiscal_status = "FISCALISED"
         receipt.save(update_fields=["fiscal_status"])

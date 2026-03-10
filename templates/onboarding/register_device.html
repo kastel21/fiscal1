@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Your Device</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="max-w-2xl mx-auto py-10 px-6">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Register Your Device</h1>
+            <p class="text-gray-500 mt-0.5">Add your first fiscal device for {{ tenant.name }}.</p>
+        </div>
+
+        {% if form.errors %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <p class="font-semibold">Please correct the errors below.</p>
+            {% if form.non_field_errors %}
+                <ul class="mt-1 list-disc list-inside">{{ form.non_field_errors }}</ul>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'register_device_page' %}" class="bg-white shadow rounded-lg p-6">
+            {% csrf_token %}
+
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Device Information</h2>
+
+            <label class="block text-sm font-medium text-gray-700">Device ID</label>
+            <input type="number" name="device_id" value="{{ form.device_id.value|default:'' }}" min="1"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">
+            {% if form.device_id.help_text %}<p class="text-xs text-gray-500 mt-1">{{ form.device_id.help_text }}</p>{% endif %}
+            {% if form.device_id.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.device_id.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">Device Serial Number</label>
+            <input type="text" name="device_serial_no" value="{{ form.device_serial_no.value|default:'' }}" maxlength="20"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">Device Model</label>
+            <input type="text" name="device_model" value="{{ form.device_model.value|default:'' }}" maxlength="100"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2" placeholder="e.g. FDMS-Model-1">
+
+            <div class="mt-8 flex justify-end">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg">
+                    Add Device
+                </button>
+            </div>
+        </form>
+        <p class="mt-4 text-sm text-gray-500 text-center">
+            After adding the device you will be taken to Device Registration to complete FDMS registration (activation key, etc.).
+        </p>
+    </div>
+</body>
+</html>

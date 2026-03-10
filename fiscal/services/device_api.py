@@ -10,6 +10,7 @@ from datetime import date, datetime
 from decimal import Decimal
 
 from django.conf import settings
+from django.utils import timezone
 
 from fiscal.models import FiscalDay, FiscalDevice, Receipt
 from fiscal.services.close_day_counter_builder import build_close_day_counters
@@ -178,7 +179,7 @@ class DeviceApiService(FDMSBaseService):
 
         last_no = device.last_fiscal_day_no
         fiscal_day_no = 1 if last_no is None else last_no + 1
-        fiscal_day_opened = datetime.now().isoformat(sep="T", timespec="seconds")
+        fiscal_day_opened = timezone.now().isoformat(sep="T", timespec="seconds")
 
         base_url = getattr(settings, "FDMS_BASE_URL", "").rstrip("/")
         device_id = device.device_id
@@ -232,9 +233,10 @@ class DeviceApiService(FDMSBaseService):
         data = response.json()
         returned_fiscal_day_no = data.get("fiscalDayNo", fiscal_day_no)
 
-        opened_at = datetime.now()
+        opened_at = timezone.now()
         fiscal_day = FiscalDay.objects.create(
             device=device,
+            tenant_id=device.tenant_id,
             fiscal_day_no=returned_fiscal_day_no,
             status="FiscalDayOpened",
             opened_at=opened_at,
@@ -459,7 +461,7 @@ class DeviceApiService(FDMSBaseService):
                     ).first()
                     if fiscal_day:
                         fiscal_day.status = "FiscalDayClosed"
-                        fiscal_day.closed_at = datetime.now()
+                        fiscal_day.closed_at = timezone.now()
                         fiscal_day.save()
                 return status, None
             time.sleep(interval_seconds)

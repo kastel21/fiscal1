@@ -2,7 +2,7 @@
 
 import json
 
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -13,7 +13,7 @@ from fiscal.utils import redact_for_ui
 from .views import _fetch_status_for_dashboard, get_device_for_request
 
 
-@staff_member_required
+@login_required
 def api_devices_list(request):
     """GET /api/devices/ - List registered devices for invoice form. Tenant-scoped when request.tenant is set."""
     tenant = getattr(request, "tenant", None)
@@ -33,7 +33,7 @@ def api_devices_list(request):
     return JsonResponse({"devices": data})
 
 
-@staff_member_required
+@login_required
 def api_fdms_dashboard(request):
     """GET /api/fdms/dashboard/ - JSON for React dashboard."""
     device = get_device_for_request(request)
@@ -67,7 +67,7 @@ def api_fdms_dashboard(request):
     })
 
 
-@staff_member_required
+@login_required
 def api_fdms_receipts(request):
     """GET /api/fdms/receipts/ - JSON list of receipts. Never allow deletion. Tenant-scoped when request.tenant is set."""
     tenant = getattr(request, "tenant", None)
@@ -93,7 +93,7 @@ def api_fdms_receipts(request):
     return JsonResponse({"receipts": receipts})
 
 
-@staff_member_required
+@login_required
 def api_fdms_fiscal(request):
     """GET /api/fdms/fiscal/ - JSON fiscal day status."""
     device = get_device_for_request(request)
@@ -205,8 +205,19 @@ def api_qb_webhook(request):
     QuickBooksEvent.objects.create(event_type=event_type, payload=body)
 
     if invoice_payload and invoice_id:
+        from fiscal.models import QuickBooksConnection
         from fiscal.services.qb_fiscalisation import fiscalise_qb_invoice
-        qb_inv, err = fiscalise_qb_invoice(invoice_id, invoice_payload)
+        tenant = getattr(request, "tenant", None)
+        if not tenant:
+            realm_id = str(body.get("realmId", body.get("realm_id", "")))
+            if realm_id:
+                conn = QuickBooksConnection.objects.filter(realm_id=realm_id, is_active=True).select_related("tenant").first()
+                if conn and conn.tenant_id:
+                    tenant = conn.tenant
+        if tenant:
+            qb_inv, err = fiscalise_qb_invoice(invoice_id, invoice_payload, tenant=tenant)
+        else:
+            qb_inv, err = None, "No tenant (set realmId in payload or request context)."
         if qb_inv and qb_inv.fiscalised:
             return JsonResponse({
                 "status": "ok",
@@ -269,6 +280,7 @@ def api_qb_fiscalise_invoice(request):
     """
     POST /api/integrations/quickbooks/invoice - Fiscalise QB invoice from full JSON.
     Use when adapter fetches invoice from QB and forwards. Idempotent by qb_invoice_id.
+    Tenant from request.tenant or from body realmId (QuickBooksConnection).
     """
     try:
         body = json.loads(request.body or "{}")
@@ -279,8 +291,18 @@ def api_qb_fiscalise_invoice(request):
     if not invoice_id:
         return JsonResponse({"success": False, "error": "Missing invoice Id"}, status=400)
 
+    from fiscal.models import QuickBooksConnection
     from fiscal.services.qb_fiscalisation import fiscalise_qb_invoice
-    qb_inv, err = fiscalise_qb_invoice(invoice_id, body)
+    tenant = getattr(request, "tenant", None)
+    if not tenant:
+        realm_id = str(body.get("realmId", body.get("realm_id", "")))
+        if realm_id:
+            conn = QuickBooksConnection.objects.filter(realm_id=realm_id, is_active=True).select_related("tenant").first()
+            if conn and conn.tenant_id:
+                tenant = conn.tenant
+        if not tenant:
+            return JsonResponse({"success": False, "error": "Tenant required (set tenant or realmId in body)."}, status=400)
+    qb_inv, err = fiscalise_qb_invoice(invoice_id, body, tenant=tenant)
 
     if not qb_inv:
         return JsonResponse({"success": False, "error": redact_for_ui(err or "")}, status=500)
@@ -304,10 +326,14 @@ def api_qb_fiscalise_invoice(request):
     }, status=202)
 
 
-@staff_member_required
+@login_required
 def api_qb_invoices(request):
-    """GET /api/integrations/quickbooks/invoices - List QB invoices for UI."""
-    qs = QuickBooksInvoice.objects.select_related("fiscal_receipt").order_by("-created_at")[:100]
+    """GET /api/integrations/quickbooks/invoices - List QB invoices for UI. Tenant-scoped."""
+    tenant = getattr(request, "tenant", None)
+    qs = QuickBooksInvoice.objects.select_related("fiscal_receipt").order_by("-created_at")
+    if tenant is not None:
+        qs = qs.filter(tenant=tenant)
+    qs = qs[:100]
     invoices = []
     for inv in qs:
         invoices.append({
@@ -323,45 +349,63 @@ def api_qb_invoices(request):
     return JsonResponse({"invoices": invoices})
 
 
-@staff_member_required
+@login_required
 def api_qb_oauth_connect(request):
-    """Redirect to Intuit OAuth authorize URL."""
+    """Redirect to Intuit OAuth authorize URL. Sends tenant slug in state for callback."""
+    from django.shortcuts import redirect
     from fiscal.services.qb_oauth import get_authorize_url
-    url = get_authorize_url(request=request)
+    tenant = getattr(request, "tenant", None)
+    if not tenant:
+        return redirect("select_tenant")
+    state = tenant.slug
+    url = get_authorize_url(state=state, request=request)
     if not url:
         return JsonResponse({"error": "QB_CLIENT_ID not configured"}, status=400)
-    from django.shortcuts import redirect
     return redirect(url)
 
 
-@staff_member_required
+@login_required
 def api_qb_oauth_callback(request):
-    """OAuth callback - exchange code for tokens."""
+    """OAuth callback - exchange code for tokens, store per tenant from state."""
     from django.shortcuts import redirect
+    from tenants.models import Tenant
     from fiscal.services.qb_oauth import exchange_code_for_tokens, get_redirect_uri
     code = request.GET.get("code")
     realm_id = request.GET.get("realmId")
+    tenant_slug = request.GET.get("state")
     if not code or not realm_id:
         return redirect("fdms_qb_invoices")
+    if not tenant_slug:
+        return JsonResponse({"error": "Missing state (tenant)."}, status=400)
+    try:
+        tenant = Tenant.objects.get(slug=tenant_slug, is_active=True)
+    except Tenant.DoesNotExist:
+        return JsonResponse({"error": "Invalid tenant."}, status=400)
+    if tenant.slug != request.GET.get("state"):
+        return JsonResponse({"error": "Tenant mismatch."}, status=400)
     redirect_uri = get_redirect_uri(request)
-    data, err = exchange_code_for_tokens(code, redirect_uri, realm_id)
+    data, err = exchange_code_for_tokens(code, redirect_uri, realm_id, tenant=tenant)
     if err:
         return JsonResponse({"error": redact_for_ui(err)}, status=400)
+    request.session["tenant_slug"] = tenant.slug
     return redirect("fdms_qb_invoices")
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["POST"])
 def api_qb_sync(request):
-    """Trigger sync from QuickBooks - fetch and fiscalise."""
+    """Trigger sync from QuickBooks for current tenant - fetch and fiscalise."""
     from fiscal.services.qb_sync import sync_from_quickbooks
-    result = sync_from_quickbooks(max_per_type=50)
+    tenant = getattr(request, "tenant", None)
+    if not tenant:
+        return JsonResponse({"error": "Select a tenant first."}, status=400)
+    result = sync_from_quickbooks(tenant=tenant, max_per_type=50)
     if "error" in result:
         return JsonResponse({**result, "error": redact_for_ui(result.get("error", ""))}, status=400)
     return JsonResponse(result)
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["POST"])
 def api_qb_retry_fiscalise(request):
     """POST /api/integrations/quickbooks/retry - Retry fiscalisation for pending QB invoice."""
@@ -373,14 +417,17 @@ def api_qb_retry_fiscalise(request):
     if not qb_invoice_id:
         return JsonResponse({"success": False, "error": "Missing qb_invoice_id"}, status=400)
 
-    inv = QuickBooksInvoice.objects.filter(qb_invoice_id=qb_invoice_id).first()
+    tenant = getattr(request, "tenant", None)
+    if not tenant:
+        return JsonResponse({"success": False, "error": "Select a tenant first."}, status=400)
+    inv = QuickBooksInvoice.objects.filter(tenant=tenant, qb_invoice_id=qb_invoice_id).first()
     if not inv:
         return JsonResponse({"success": False, "error": "Invoice not found"}, status=404)
     if inv.fiscalised:
         return JsonResponse({"success": True, "fiscalised": True, "message": "Already fiscalised"})
 
     from fiscal.services.qb_fiscalisation import fiscalise_qb_invoice
-    qb_inv, err = fiscalise_qb_invoice(qb_invoice_id, inv.raw_payload)
+    qb_inv, err = fiscalise_qb_invoice(qb_invoice_id, inv.raw_payload, tenant=tenant)
 
     if qb_inv and qb_inv.fiscalised:
         return JsonResponse({

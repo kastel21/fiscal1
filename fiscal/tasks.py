@@ -4,21 +4,26 @@ Celery tasks for FDMS fiscal engine.
 Tasks: submit_receipt_task, open_day_task, close_day_task, ping_devices_task,
 run_fdms_ping (multi-tenant), ping_single_tenant.
 Each task logs ActivityEvent, AuditEvent, and emits WebSocket events.
+Background tasks use FiscalDevice.all_objects and set_current_tenant(device.tenant)
+so TenantAwareManager filters correctly for the rest of the task.
 """
 
 import logging
 from typing import Any
 
 from celery import shared_task
+from django.core.exceptions import PermissionDenied
 from django.conf import settings
 from django.db import connection
 
 from fiscal.models import FiscalDevice
 from fiscal.services.ping_service import send_ping
+from fiscal.utils import validate_device_for_tenant
 from fiscal.services.activity_audit import log_activity, log_audit
 from fiscal.services.device_api import DeviceApiService
 from fiscal.services.fdms_events import emit_metrics_updated, emit_to_device
 from fiscal.services.receipt_service import submit_receipt
+from tenants.context import clear_current_tenant, set_current_tenant
 
 logger = logging.getLogger("fiscal")
 
@@ -47,154 +52,227 @@ def submit_receipt_task(
     receipt_lines_tax_inclusive: bool = True,
     original_invoice_no: str = "",
     original_receipt_global_no: int | None = None,
+    tenant_id: str | None = None,
 ) -> dict[str, Any]:
     """
     Submit receipt to FDMS via Celery. Emits progress events and logs activity/audit.
     Returns {"success": True, "receipt_global_no": N, "fdms_receipt_id": X} or {"success": False, "error": str}.
     """
+    if not tenant_id:
+        logger.warning("submit_receipt_task: tenant_id is required for multi-tenant tasks")
+        return {"success": False, "error": "tenant_id is required for multi-tenant tasks"}
+
+    from tenants.models import Tenant
     try:
-        device = FiscalDevice.objects.get(device_id=device_id)
+        tenant = Tenant.objects.get(pk=tenant_id)
+    except Tenant.DoesNotExist:
+        logger.warning("submit_receipt_task: tenant_id=%s not found", tenant_id)
+        return {"success": False, "error": "Tenant not found"}
+
+    try:
+        device = FiscalDevice.all_objects.get(device_id=device_id)
     except FiscalDevice.DoesNotExist:
         emit_to_device(device_id, "error", {"message": f"Device {device_id} not found"})
         return {"success": False, "error": "Device not found"}
 
-    def progress_emit(percent: int, stage: str) -> None:
-        _emit_progress(device_id, percent, stage, invoice_no)
-
-    log_activity(device, "receipt_submit_started", f"Submitting receipt {invoice_no}", "info")
-    log_audit(device, "receipt_submit_started", {"invoice_no": invoice_no, "fiscal_day_no": fiscal_day_no})
-
-    receipt_date = None
     try:
-        receipt_obj, err = submit_receipt(
-            device=device,
-            fiscal_day_no=fiscal_day_no,
-            receipt_type=receipt_type,
-            receipt_currency=receipt_currency,
-            invoice_no=invoice_no,
-            receipt_lines=receipt_lines,
-            receipt_taxes=receipt_taxes,
-            receipt_payments=receipt_payments,
-            receipt_total=receipt_total,
-            receipt_lines_tax_inclusive=receipt_lines_tax_inclusive,
-            receipt_date=receipt_date,
-            original_invoice_no=original_invoice_no,
-            original_receipt_global_no=original_receipt_global_no,
-            progress_emit=progress_emit,
-        )
-    except Exception as e:
-        logger.exception("submit_receipt_task failed")
-        emit_to_device(device_id, "error", {"message": str(e)})
-        log_activity(device, "receipt_submit_failed", str(e), "error")
-        log_audit(device, "receipt_submit_failed", {"invoice_no": invoice_no, "error": str(e)})
-        emit_metrics_updated()
+        validate_device_for_tenant(device, tenant)
+    except PermissionDenied as e:
+        logger.warning("submit_receipt_task: device tenant mismatch device_id=%s tenant_id=%s", device_id, tenant_id)
         return {"success": False, "error": str(e)}
 
-    if err:
-        emit_to_device(device_id, "error", {"message": err})
-        log_activity(device, "receipt_submit_failed", err, "error")
-        log_audit(device, "receipt_submit_failed", {"invoice_no": invoice_no, "error": err})
-        emit_metrics_updated()
-        return {"success": False, "error": err}
+    token = None
+    if device.tenant_id:
+        token = set_current_tenant(device.tenant)
+    try:
+        def progress_emit(percent: int, stage: str) -> None:
+            _emit_progress(device_id, percent, stage, invoice_no)
 
-    emit_to_device(
-        device_id,
-        "receipt.completed",
-        {
+        log_activity(device, "receipt_submit_started", f"Submitting receipt {invoice_no}", "info")
+        log_audit(device, "receipt_submit_started", {"invoice_no": invoice_no, "fiscal_day_no": fiscal_day_no})
+
+        receipt_date = None
+        try:
+            receipt_obj, err = submit_receipt(
+                device=device,
+                fiscal_day_no=fiscal_day_no,
+                receipt_type=receipt_type,
+                receipt_currency=receipt_currency,
+                invoice_no=invoice_no,
+                receipt_lines=receipt_lines,
+                receipt_taxes=receipt_taxes,
+                receipt_payments=receipt_payments,
+                receipt_total=receipt_total,
+                receipt_lines_tax_inclusive=receipt_lines_tax_inclusive,
+                receipt_date=receipt_date,
+                original_invoice_no=original_invoice_no,
+                original_receipt_global_no=original_receipt_global_no,
+                progress_emit=progress_emit,
+            )
+        except Exception as e:
+            logger.exception("submit_receipt_task failed")
+            emit_to_device(device_id, "error", {"message": str(e)})
+            log_activity(device, "receipt_submit_failed", str(e), "error")
+            log_audit(device, "receipt_submit_failed", {"invoice_no": invoice_no, "error": str(e)})
+            emit_metrics_updated()
+            return {"success": False, "error": str(e)}
+
+        if err:
+            emit_to_device(device_id, "error", {"message": err})
+            log_activity(device, "receipt_submit_failed", err, "error")
+            log_audit(device, "receipt_submit_failed", {"invoice_no": invoice_no, "error": err})
+            emit_metrics_updated()
+            return {"success": False, "error": err}
+
+        emit_to_device(
+            device_id,
+            "receipt.completed",
+            {
+                "receipt_global_no": receipt_obj.receipt_global_no,
+                "fdms_receipt_id": receipt_obj.fdms_receipt_id,
+                "invoice_no": invoice_no,
+            },
+        )
+        log_activity(
+            device,
+            "receipt_submitted",
+            f"Receipt {invoice_no} fiscalized (global #{receipt_obj.receipt_global_no})",
+            "info",
+        )
+        log_audit(
+            device,
+            "receipt_submitted",
+            {"invoice_no": invoice_no, "receipt_global_no": receipt_obj.receipt_global_no, "fdms_receipt_id": receipt_obj.fdms_receipt_id},
+        )
+        emit_metrics_updated()
+        return {
+            "success": True,
             "receipt_global_no": receipt_obj.receipt_global_no,
             "fdms_receipt_id": receipt_obj.fdms_receipt_id,
-            "invoice_no": invoice_no,
-        },
-    )
-    log_activity(
-        device,
-        "receipt_submitted",
-        f"Receipt {invoice_no} fiscalized (global #{receipt_obj.receipt_global_no})",
-        "info",
-    )
-    log_audit(
-        device,
-        "receipt_submitted",
-        {"invoice_no": invoice_no, "receipt_global_no": receipt_obj.receipt_global_no, "fdms_receipt_id": receipt_obj.fdms_receipt_id},
-    )
-    emit_metrics_updated()
-    return {
-        "success": True,
-        "receipt_global_no": receipt_obj.receipt_global_no,
-        "fdms_receipt_id": receipt_obj.fdms_receipt_id,
-    }
+        }
+    finally:
+        if token is not None:
+            clear_current_tenant(token)
 
 
 @shared_task(bind=True, name="fiscal.open_day_task")
-def open_day_task(self, device_id: int) -> dict[str, Any]:
+def open_day_task(self, device_id: int, tenant_id: str | None = None) -> dict[str, Any]:
     """
     Open fiscal day via Celery. Emits fiscal.opened and logs activity/audit.
     Returns {"success": True, "fiscal_day_no": N} or {"success": False, "error": str}.
     """
+    if not tenant_id:
+        logger.warning("open_day_task: tenant_id is required for multi-tenant tasks")
+        return {"success": False, "error": "tenant_id is required for multi-tenant tasks"}
+
+    from tenants.models import Tenant
     try:
-        device = FiscalDevice.objects.get(device_id=device_id)
+        tenant = Tenant.objects.get(pk=tenant_id)
+    except Tenant.DoesNotExist:
+        logger.warning("open_day_task: tenant_id=%s not found", tenant_id)
+        return {"success": False, "error": "Tenant not found"}
+
+    try:
+        device = FiscalDevice.all_objects.get(device_id=device_id)
     except FiscalDevice.DoesNotExist:
         emit_to_device(device_id, "error", {"message": f"Device {device_id} not found"})
         return {"success": False, "error": "Device not found"}
 
-    log_activity(device, "fiscal_open_started", "Opening fiscal day", "info")
-    log_audit(device, "fiscal_day_open_started", {})
+    try:
+        validate_device_for_tenant(device, tenant)
+    except PermissionDenied as e:
+        logger.warning("open_day_task: device tenant mismatch device_id=%s tenant_id=%s", device_id, tenant_id)
+        return {"success": False, "error": str(e)}
 
-    service = DeviceApiService()
-    fiscal_day, err = service.open_day(device)
+    token = None
+    if device.tenant_id:
+        token = set_current_tenant(device.tenant)
+    try:
+        log_activity(device, "fiscal_open_started", "Opening fiscal day", "info")
+        log_audit(device, "fiscal_day_open_started", {})
 
-    if err:
-        emit_to_device(device_id, "error", {"message": err})
-        log_activity(device, "fiscal_open_failed", err, "error")
-        log_audit(device, "fiscal_day_open_failed", {"error": err})
-        return {"success": False, "error": err}
+        service = DeviceApiService()
+        fiscal_day, err = service.open_day(device)
 
-    emit_to_device(
-        device_id,
-        "fiscal.opened",
-        {"fiscal_day_no": fiscal_day.fiscal_day_no, "status": "FiscalDayOpened"},
-    )
-    log_activity(device, "fiscal_day_opened", f"Fiscal day #{fiscal_day.fiscal_day_no} opened", "info")
-    log_audit(device, "fiscal_day_opened", {"fiscal_day_no": fiscal_day.fiscal_day_no})
-    emit_metrics_updated()
-    return {"success": True, "fiscal_day_no": fiscal_day.fiscal_day_no}
+        if err:
+            emit_to_device(device_id, "error", {"message": err})
+            log_activity(device, "fiscal_open_failed", err, "error")
+            log_audit(device, "fiscal_day_open_failed", {"error": err})
+            return {"success": False, "error": err}
+
+        emit_to_device(
+            device_id,
+            "fiscal.opened",
+            {"fiscal_day_no": fiscal_day.fiscal_day_no, "status": "FiscalDayOpened"},
+        )
+        log_activity(device, "fiscal_day_opened", f"Fiscal day #{fiscal_day.fiscal_day_no} opened", "info")
+        log_audit(device, "fiscal_day_opened", {"fiscal_day_no": fiscal_day.fiscal_day_no})
+        emit_metrics_updated()
+        return {"success": True, "fiscal_day_no": fiscal_day.fiscal_day_no}
+    finally:
+        if token is not None:
+            clear_current_tenant(token)
 
 
 @shared_task(bind=True, name="fiscal.close_day_task")
-def close_day_task(self, device_id: int) -> dict[str, Any]:
+def close_day_task(self, device_id: int, tenant_id: str | None = None) -> dict[str, Any]:
     """
     Close fiscal day via Celery. Emits fiscal.closed and logs activity/audit.
     Returns {"success": True, "operation_id": X} or {"success": False, "error": str}.
     Note: CloseDay initiates async; call poll_until_closed separately or poll via status.
     """
+    if not tenant_id:
+        logger.warning("close_day_task: tenant_id is required for multi-tenant tasks")
+        return {"success": False, "error": "tenant_id is required for multi-tenant tasks"}
+
+    from tenants.models import Tenant
     try:
-        device = FiscalDevice.objects.get(device_id=device_id)
+        tenant = Tenant.objects.get(pk=tenant_id)
+    except Tenant.DoesNotExist:
+        logger.warning("close_day_task: tenant_id=%s not found", tenant_id)
+        return {"success": False, "error": "Tenant not found"}
+
+    try:
+        device = FiscalDevice.all_objects.get(device_id=device_id)
     except FiscalDevice.DoesNotExist:
         emit_to_device(device_id, "error", {"message": f"Device {device_id} not found"})
         return {"success": False, "error": "Device not found"}
 
-    log_activity(device, "fiscal_close_started", "Closing fiscal day", "info")
-    log_audit(device, "fiscal_day_close_started", {})
+    try:
+        validate_device_for_tenant(device, tenant)
+    except PermissionDenied as e:
+        logger.warning("close_day_task: device tenant mismatch device_id=%s tenant_id=%s", device_id, tenant_id)
+        return {"success": False, "error": str(e)}
 
-    service = DeviceApiService()
-    data, err = service.close_day(device)
+    token = None
+    if device.tenant_id:
+        token = set_current_tenant(device.tenant)
+    try:
+        log_activity(device, "fiscal_close_started", "Closing fiscal day", "info")
+        log_audit(device, "fiscal_day_close_started", {})
 
-    if err:
-        emit_to_device(device_id, "error", {"message": err})
-        log_activity(device, "fiscal_close_failed", err, "error")
-        log_audit(device, "fiscal_day_close_failed", {"error": err})
-        return {"success": False, "error": err}
+        service = DeviceApiService()
+        data, err = service.close_day(device)
 
-    operation_id = data.get("operationID", "")
-    emit_to_device(
-        device_id,
-        "fiscal.closed",
-        {"operation_id": operation_id, "status": "FiscalDayCloseInitiated"},
-    )
-    log_activity(device, "fiscal_day_close_initiated", f"Close initiated (op {operation_id})", "info")
-    log_audit(device, "fiscal_day_close_initiated", {"operation_id": operation_id})
-    emit_metrics_updated()
-    return {"success": True, "operation_id": operation_id}
+        if err:
+            emit_to_device(device_id, "error", {"message": err})
+            log_activity(device, "fiscal_close_failed", err, "error")
+            log_audit(device, "fiscal_day_close_failed", {"error": err})
+            return {"success": False, "error": err}
+
+        operation_id = data.get("operationID", "")
+        emit_to_device(
+            device_id,
+            "fiscal.closed",
+            {"operation_id": operation_id, "status": "FiscalDayCloseInitiated"},
+        )
+        log_activity(device, "fiscal_day_close_initiated", f"Close initiated (op {operation_id})", "info")
+        log_audit(device, "fiscal_day_close_initiated", {"operation_id": operation_id})
+        emit_metrics_updated()
+        return {"success": True, "operation_id": operation_id}
+    finally:
+        if token is not None:
+            clear_current_tenant(token)
 
 
 @shared_task(name="fiscal.ping_devices_task")
@@ -203,7 +281,7 @@ def ping_devices_task() -> dict[str, Any]:
     Ping FDMS for each registered device (report device online). Runs automatically every 5 minutes via Celery Beat.
     Returns {"poked": N, "errors": [{device_id, error}, ...]}.
     """
-    devices = list(FiscalDevice.objects.filter(is_registered=True))
+    devices = list(FiscalDevice.all_objects.filter(is_registered=True))
     if not devices:
         return {"poked": 0, "errors": []}
 

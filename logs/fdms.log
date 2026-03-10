@@ -12959,3 +12959,345 @@ INFO 2026-03-05 14:53:33,941 FDMS Headers: {'DeviceModelName': 'Server', 'Device
 INFO 2026-03-05 14:53:34,535 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
 INFO 2026-03-05 14:53:47,424 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
 INFO 2026-03-05 14:53:48,022 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+WARNING 2026-03-09 16:28:10,422 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:28:11,645 WARNING: FDMS running in TEST environment
+INFO 2026-03-09 16:28:25,724 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 16:28:26,577 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-09 16:28:26,963 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 16:28:27,625 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+WARNING 2026-03-09 16:38:47,526 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:39:01,618 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:39:19,744 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:39:33,546 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:39:46,047 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:39:55,225 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:40:50,422 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:41:35,497 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:44:51,867 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:45:10,111 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:45:34,773 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:45:41,760 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:45:55,464 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:46:03,517 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:46:08,592 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:46:30,761 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:46:34,754 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:46:55,841 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:47:36,950 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:47:37,676 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:47:45,444 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:48:31,397 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:50:20,694 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:50:28,143 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:50:39,295 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:50:46,598 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:50:54,284 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:51:51,305 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:52:06,245 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:52:21,960 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:52:38,657 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:52:55,288 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:53:08,617 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:53:15,895 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:53:32,486 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:53:37,568 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:53:48,602 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:54:26,762 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:54:59,468 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:55:48,361 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:57:04,921 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:57:36,689 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:57:40,535 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:57:44,454 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:58:04,567 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:58:19,771 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:58:30,755 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:58:35,758 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:58:44,635 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:58:55,583 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:59:01,052 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:59:06,114 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:59:15,228 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:59:21,965 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:59:26,176 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:59:32,388 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:59:43,828 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 16:59:58,407 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:00:13,190 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:00:37,540 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:01:10,813 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:01:15,256 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:01:57,616 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:02:01,411 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:02:07,563 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:02:59,169 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:03:04,121 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:03:08,091 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:03:16,034 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:04:12,491 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:04:20,426 Device tenant mismatch
+WARNING 2026-03-09 17:04:21,230 Device tenant mismatch
+WARNING 2026-03-09 17:04:21,391 Device tenant mismatch
+WARNING 2026-03-09 17:04:21,392 submit_receipt_task: device tenant mismatch device_id=60002 tenant_id=2b898c55-f456-4fb1-a6eb-75611762408b
+WARNING 2026-03-09 17:04:21,441 Device tenant mismatch
+WARNING 2026-03-09 17:04:21,441 Device tenant mismatch
+WARNING 2026-03-09 17:10:39,270 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:10:44,858 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:10:49,481 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:10:55,225 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:11:00,424 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:11:22,243 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:11:30,892 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:11:36,454 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:11:52,433 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:12:02,581 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:12:09,147 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:12:15,758 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:12:24,498 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:12:34,732 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:12:50,120 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:12:58,620 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:13:16,460 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:13:26,417 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:13:35,513 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:13:44,987 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:14:11,922 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:14:42,915 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:14:55,911 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:15:50,439 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:15:58,796 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:16:12,818 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:16:17,212 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:16:22,854 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:16:32,773 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:17:03,215 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:17:08,729 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:17:13,392 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:17:30,115 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:18:01,286 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:19:45,002 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:19:59,027 Device tenant mismatch
+WARNING 2026-03-09 17:20:00,310 Device tenant mismatch
+WARNING 2026-03-09 17:20:00,519 Device tenant mismatch
+WARNING 2026-03-09 17:20:00,519 submit_receipt_task: device tenant mismatch device_id=60002 tenant_id=b2527ee4-5cc5-4e6c-a00f-6d69cb446d5a
+WARNING 2026-03-09 17:20:00,598 Device tenant mismatch
+WARNING 2026-03-09 17:20:00,599 Device tenant mismatch
+WARNING 2026-03-09 17:21:28,883 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:21:49,787 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:22:33,761 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:22:42,253 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:23:05,894 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:23:13,307 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:23:22,068 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:26:02,539 WARNING: FDMS running in TEST environment
+INFO 2026-03-09 17:26:13,963 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+WARNING 2026-03-09 17:26:14,345 close_day_task: tenant_id is required for multi-tenant tasks
+WARNING 2026-03-09 17:26:14,354 open_day_task: tenant_id is required for multi-tenant tasks
+WARNING 2026-03-09 17:26:14,360 submit_receipt_task: tenant_id is required for multi-tenant tasks
+WARNING 2026-03-09 17:26:46,164 WARNING: FDMS running in TEST environment
+INFO 2026-03-09 17:26:54,884 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:26:54,920 OpenDay OK for device 60001: fiscal day #1
+WARNING 2026-03-09 17:26:55,031 close_day_task: tenant_id is required for multi-tenant tasks
+WARNING 2026-03-09 17:26:55,039 open_day_task: tenant_id is required for multi-tenant tasks
+WARNING 2026-03-09 17:26:55,043 submit_receipt_task: tenant_id is required for multi-tenant tasks
+WARNING 2026-03-09 17:34:25,391 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:34:59,894 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:35:05,650 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:36:36,306 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:37:12,859 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:37:18,324 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:38:15,309 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:38:31,292 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:39:59,268 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:40:08,792 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:40:27,734 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:41:53,688 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:42:47,377 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:42:56,384 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:43:12,595 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:44:07,341 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:45:20,573 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:45:25,568 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:45:30,368 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:46:09,380 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:46:30,418 WARNING: FDMS running in TEST environment
+INFO 2026-03-09 17:46:41,593 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:46:41,805 OpenDay OK for device 60001: fiscal day #1
+WARNING 2026-03-09 17:47:03,722 WARNING: FDMS running in TEST environment
+INFO 2026-03-09 17:47:10,017 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:47:10,037 OpenDay OK for device 60001: fiscal day #1
+WARNING 2026-03-09 17:47:33,548 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:47:41,465 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:47:46,598 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 17:47:49,982 WARNING: FDMS running in TEST environment
+INFO 2026-03-09 17:47:56,192 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:47:56,203 OpenDay OK for device 60001: fiscal day #1
+WARNING 2026-03-09 17:47:56,427 close_day_task: tenant_id is required for multi-tenant tasks
+WARNING 2026-03-09 17:47:56,436 open_day_task: tenant_id is required for multi-tenant tasks
+WARNING 2026-03-09 17:47:56,441 submit_receipt_task: tenant_id is required for multi-tenant tasks
+INFO 2026-03-09 17:49:58,670 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:49:59,399 FDMS call logged: GET /Device/v1/31285/GetStatus -> 401
+ERROR 2026-03-09 17:49:59,401 GetStatus failed for device 31285: Unauthorized
+INFO 2026-03-09 17:49:59,426 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:00,139 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-09 17:50:18,055 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:18,666 FDMS call logged: GET /Device/v1/31285/GetStatus -> 401
+ERROR 2026-03-09 17:50:18,667 GetStatus failed for device 31285: Unauthorized
+WARNING 2026-03-09 17:50:18,668 GetStatus re-sync failed for device 31285: Unauthorized
+INFO 2026-03-09 17:50:18,670 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:19,244 FDMS call logged: GET /Device/v1/31285/GetConfig -> 401
+INFO 2026-03-09 17:50:19,477 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:20,155 FDMS call logged: GET /Device/v1/31285/GetStatus -> 401
+ERROR 2026-03-09 17:50:20,157 GetStatus failed for device 31285: Unauthorized
+INFO 2026-03-09 17:50:20,168 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:20,884 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-09 17:50:28,692 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:29,311 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-09 17:50:29,334 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:29,934 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-09 17:50:35,451 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:36,177 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-09 17:50:36,189 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:36,848 FDMS call logged: GET /Device/v1/32327/GetConfig -> 200
+INFO 2026-03-09 17:50:36,858 GetConfig OK for device 32327
+INFO 2026-03-09 17:50:36,987 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:37,658 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-09 17:50:37,676 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 17:50:38,273 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+WARNING 2026-03-09 18:08:41,884 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 18:08:48,933 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 18:09:04,616 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 18:09:56,729 WARNING: FDMS running in TEST environment
+WARNING 2026-03-09 18:10:39,932 WARNING: FDMS running in TEST environment
+INFO 2026-03-09 18:11:18,821 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 18:11:19,584 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-09 18:11:19,606 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 18:11:20,392 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-09 18:11:36,197 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-09 18:11:36,918 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+WARNING 2026-03-09 18:25:26,110 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:24:09,249 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:24:18,573 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:24:27,373 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:26:30,074 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:29:49,364 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:32:18,319 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:32:27,915 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:32:45,607 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:32:52,280 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:33:00,482 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:34:13,567 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 09:35:32,504 WARNING: FDMS running in TEST environment
+INFO 2026-03-10 09:35:46,056 device_created
+INFO 2026-03-10 09:35:48,548 device_created
+INFO 2026-03-10 09:35:50,943 device_created
+WARNING 2026-03-10 09:36:22,989 WARNING: FDMS running in TEST environment
+INFO 2026-03-10 09:36:29,416 device_created
+INFO 2026-03-10 09:36:31,265 device_created
+INFO 2026-03-10 09:36:32,991 device_created
+WARNING 2026-03-10 10:00:49,823 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:01:05,922 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:01:31,091 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:02:09,411 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:02:43,828 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:03:29,025 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:03:34,444 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:03:39,739 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:03:46,235 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:04:10,467 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:04:15,611 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:04:22,044 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:07:36,357 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:10:38,539 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:11:45,122 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:12:58,641 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:50:00,624 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:50:39,894 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:52:19,480 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:52:40,308 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:54:03,280 WARNING: FDMS running in TEST environment
+INFO 2026-03-10 10:54:17,527 QuickBooks connection updated
+WARNING 2026-03-10 10:56:24,004 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:56:25,925 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:56:36,938 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:56:45,190 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:56:47,142 WARNING: FDMS running in TEST environment
+INFO 2026-03-10 10:56:56,457 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 10:56:57,653 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-10 10:56:57,732 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 10:56:58,840 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-10 10:57:03,067 QuickBooks connection updated
+INFO 2026-03-10 10:57:06,911 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 10:57:07,709 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-10 10:57:18,251 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 10:57:19,269 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+WARNING 2026-03-10 10:57:21,717 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:58:05,288 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 10:58:44,824 WARNING: FDMS running in TEST environment
+INFO 2026-03-10 10:59:17,476 QuickBooks connection updated
+WARNING 2026-03-10 11:14:51,459 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:15:43,733 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:16:03,991 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:23:36,823 WARNING: FDMS running in TEST environment
+INFO 2026-03-10 11:23:52,849 QuickBooks connection updated
+INFO 2026-03-10 11:29:27,246 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 11:29:28,009 FDMS call logged: GET /Device/v1/31285/GetStatus -> 401
+ERROR 2026-03-10 11:29:28,010 GetStatus failed for device 31285: Unauthorized
+INFO 2026-03-10 11:29:28,023 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 11:29:28,672 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-10 11:29:41,822 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 11:29:43,558 FDMS call logged: GET /Device/v1/32327/GetStatus -> 200
+INFO 2026-03-10 11:29:43,578 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 11:29:44,341 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-10 11:29:58,533 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 11:29:59,203 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+WARNING 2026-03-10 11:30:21,897 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:30:23,120 WARNING: FDMS running in TEST environment
+INFO 2026-03-10 11:30:26,483 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 11:30:27,145 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+WARNING 2026-03-10 11:36:00,338 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:36:01,944 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:36:17,688 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:36:19,109 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:36:36,408 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:36:37,827 WARNING: FDMS running in TEST environment
+INFO 2026-03-10 11:36:45,009 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 11:36:45,629 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-10 11:47:32,380 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 11:47:33,262 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+INFO 2026-03-10 11:47:36,345 FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}
+INFO 2026-03-10 11:47:37,076 FDMS call logged: GET /Device/v1/32702/GetStatus -> 200
+WARNING 2026-03-10 11:50:45,915 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:50:53,217 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:51:18,990 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:52:00,559 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:52:23,324 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 11:52:51,497 WARNING: FDMS running in TEST environment
+INFO 2026-03-10 11:53:19,920 device_created
+INFO 2026-03-10 11:53:23,730 device_created
+INFO 2026-03-10 11:53:27,900 device_created
+WARNING 2026-03-10 12:18:07,765 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 12:18:40,955 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 12:22:18,454 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 12:22:24,785 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 12:22:31,328 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 12:41:09,558 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 12:41:17,041 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 12:43:54,778 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:08:30,281 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:08:39,099 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:08:50,865 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:08:57,976 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:09:26,037 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:09:34,008 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:09:40,943 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:10:10,515 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:10:17,936 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:11:01,685 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:11:13,161 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:26:25,878 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:35:58,994 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:36:06,916 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:36:57,104 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:37:06,865 WARNING: FDMS running in TEST environment
+WARNING 2026-03-10 13:41:20,300 WARNING: FDMS running in TEST environment

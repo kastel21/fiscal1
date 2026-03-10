@@ -7,6 +7,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from django.db import transaction
+from django.utils import timezone
 
 from fiscal.models import FiscalDevice, Receipt
 from fiscal.services.receipt_engine import build_receipt_canonical_string, sign_receipt
@@ -65,7 +66,7 @@ def create_and_queue_offline_receipt(
             receipt_lines, receipt_taxes, receipt_payments, receipt_total
         )
 
-    receipt_date = receipt_date or datetime.now()
+    receipt_date = receipt_date or timezone.now()
     receipt_date_str = receipt_date.strftime("%Y-%m-%dT%H:%M:%S")
     receipt_global_no = _next_receipt_global_no(device)
 

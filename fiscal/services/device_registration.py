@@ -114,6 +114,7 @@ class DeviceRegistrationService(FDMSBaseService):
 
     def register_device(
         self,
+        tenant,
         device_id: int,
         activation_key: str,
         device_serial_no: str,
@@ -122,9 +123,10 @@ class DeviceRegistrationService(FDMSBaseService):
     ) -> tuple[FiscalDevice | None, str | None]:
         """
         Register device with FDMS: verify taxpayer, generate key/CSR, call RegisterDevice,
-        store cert and taxpayer profile.
+        store cert and taxpayer profile. Device is associated with the given tenant.
 
         Args:
+            tenant: Tenant to assign the device to (required for multi-tenant).
             device_id: Sold or active device ID.
             activation_key: 8-symbol activation key (case insensitive).
             device_serial_no: Device serial number from manufacturer.
@@ -204,6 +206,7 @@ class DeviceRegistrationService(FDMSBaseService):
             key_to_store = encrypt_private_key(key_to_store)
 
             defaults = {
+                "tenant": tenant,
                 "device_serial_no": device_serial_no,
                 "device_model_name": device_model_name,
                 "device_model_version": device_model_version,
@@ -213,11 +216,14 @@ class DeviceRegistrationService(FDMSBaseService):
                 "certificate_valid_till": None,
                 **taxpayer_defaults,
             }
+            existing = FiscalDevice.objects.filter(device_id=device_id).first()
+            if existing and existing.tenant_id != tenant.id:
+                return None, "This device is already registered to another company. Contact support if you need to transfer it."
             device, created = FiscalDevice.objects.update_or_create(
                 device_id=device_id,
                 defaults=defaults,
             )
-            logger.info("Device %s registered successfully", device_id)
+            logger.info("Device %s registered successfully (tenant=%s)", device_id, tenant.slug)
             return device, None
 
         except requests.RequestException as e:

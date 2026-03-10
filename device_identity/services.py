@@ -8,6 +8,7 @@ from fiscal.services.device_registration import DeviceRegistrationService
 
 
 def register_device(
+    tenant,
     device_id: int,
     activation_key: str,
     device_serial_no: str,
@@ -20,6 +21,7 @@ def register_device(
     """
     service = DeviceRegistrationService()
     return service.register_device(
+        tenant=tenant,
         device_id=device_id,
         activation_key=activation_key.strip(),
         device_serial_no=device_serial_no.strip(),

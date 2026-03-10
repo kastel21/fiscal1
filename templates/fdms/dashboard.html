@@ -1,12 +1,15 @@
 {% extends "fdms/base.html" %}
 
 {% block content %}
-<div class="flex justify-between items-center mb-6">
-    <h1 class="text-2xl font-bold">Dashboard</h1>
+<div class="dashboard-title flex justify-between items-start mb-6">
+    <div>
+        <h1 class="text-2xl font-bold" style="color: #1E3A8A;">{{ SYSTEM_NAME|default:"FiscalFlow" }} Dashboard</h1>
+        <p class="text-sm mt-1" style="color: #6B7280;">Seamless ZIMRA Fiscal Integration</p>
+    </div>
     <div class="flex gap-4 items-center">
-        <a href="{% url 'fdms_credit_note' %}" class="bg-amber-600 text-white px-3 py-1.5 rounded text-sm hover:bg-amber-700">Credit Note</a>
-        <a href="{% url 'api_dashboard_export_pdf' %}?range=today" class="text-indigo-600 hover:underline text-sm">Export PDF</a>
-        <a href="{% url 'api_dashboard_export_excel' %}?range=today" class="text-indigo-600 hover:underline text-sm">Export Excel</a>
+        <a href="{% url 'fdms_credit_note' %}" class="px-3 py-1.5 rounded text-sm text-white font-medium" style="background: #10B981;">Credit Note</a>
+        <a href="{% url 'api_dashboard_export_pdf' %}?range=today" class="text-sm hover:underline" style="color: #3B82F6;">Export PDF</a>
+        <a href="{% url 'api_dashboard_export_excel' %}?range=today" class="text-sm hover:underline" style="color: #3B82F6;">Export Excel</a>
     </div>
 </div>
 

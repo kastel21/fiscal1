@@ -35,7 +35,7 @@ def get_summary(device_id: int | None, range_key: str = "today", tenant=None) ->
     When tenant is provided, device and all queries are scoped to that tenant.
     """
     device = None
-    base_qs = FiscalDevice.objects.filter(is_registered=True)
+    base_qs = FiscalDevice.all_objects.filter(is_registered=True)
     if tenant is not None:
         base_qs = base_qs.filter(tenant=tenant)
     if device_id:
@@ -51,7 +51,7 @@ def get_summary(device_id: int | None, range_key: str = "today", tenant=None) ->
         }
 
     start_dt, end_dt = _date_range(range_key)
-    receipts = Receipt.objects.filter(device=device, created_at__gte=start_dt, created_at__lte=end_dt)
+    receipts = Receipt.all_objects.filter(device=device, created_at__gte=start_dt, created_at__lte=end_dt)
 
     fiscalised = receipts.filter(fdms_receipt_id__isnull=False).exclude(fdms_receipt_id=0)
     draft_receipts = receipts.filter(Q(fdms_receipt_id__isnull=True) | Q(fdms_receipt_id=0))
@@ -67,7 +67,7 @@ def get_summary(device_id: int | None, range_key: str = "today", tenant=None) ->
             amt = t.get("taxAmount") or t.get("fiscalCounterValue") or 0
             vat_total += Decimal(str(amt))
 
-    log_base = FDMSApiLog.objects.filter(created_at__gte=start_dt, created_at__lte=end_dt)
+    log_base = FDMSApiLog.all_objects.filter(created_at__gte=start_dt, created_at__lte=end_dt)
     if tenant is not None:
         log_base = log_base.filter(tenant=tenant)
     submit_failures = log_base.filter(
@@ -91,7 +91,7 @@ def get_summary(device_id: int | None, range_key: str = "today", tenant=None) ->
             cert_status = f"EXPIRING ({days_left} days)"
 
     fdms_ok = device.fiscal_day_status not in (None, "")
-    last_log_qs = FDMSApiLog.objects.order_by("-created_at")
+    last_log_qs = FDMSApiLog.all_objects.order_by("-created_at")
     if tenant is not None:
         last_log_qs = last_log_qs.filter(tenant=tenant)
     last_log = last_log_qs.first()
@@ -145,7 +145,7 @@ def _get_alerts(device: FiscalDevice, cert_status: str, failed_count: int) -> li
 def get_errors(device_id: int | None, range_key: str = "today", tenant=None) -> list:
     """Recent FDMS errors with operationID for linking and retry. Tenant-scoped when tenant is provided."""
     start_dt, end_dt = _date_range(range_key)
-    qs = FDMSApiLog.objects.filter(
+    qs = FDMSApiLog.all_objects.filter(
         created_at__gte=start_dt,
         created_at__lte=end_dt,
     ).filter(Q(status_code__gte=400) | Q(status_code__isnull=True) | Q(error_message__isnull=False))
@@ -171,7 +171,7 @@ def get_errors(device_id: int | None, range_key: str = "today", tenant=None) -> 
 def get_receipts(device_id: int | None, range_key: str = "today", status_filter: str | None = None, tenant=None) -> list:
     """Receipt pipeline list for dashboard. Optional status_filter: draft|fiscalised|failed. Tenant-scoped when tenant is provided."""
     device = None
-    base_qs = FiscalDevice.objects.filter(is_registered=True)
+    base_qs = FiscalDevice.all_objects.filter(is_registered=True)
     if tenant is not None:
         base_qs = base_qs.filter(tenant=tenant)
     if device_id:
@@ -181,7 +181,7 @@ def get_receipts(device_id: int | None, range_key: str = "today", status_filter:
     if not device:
         return []
     start_dt, end_dt = _date_range(range_key)
-    qs = Receipt.objects.filter(device=device, created_at__gte=start_dt, created_at__lte=end_dt)
+    qs = Receipt.all_objects.filter(device=device, created_at__gte=start_dt, created_at__lte=end_dt)
     if status_filter == "draft":
         qs = qs.filter(Q(fdms_receipt_id__isnull=True) | Q(fdms_receipt_id=0))
     elif status_filter == "fiscalised":
@@ -203,12 +203,15 @@ def get_receipts(device_id: int | None, range_key: str = "today", status_filter:
 
 
 def get_quickbooks_stub(tenant=None) -> dict:
-    """QuickBooks integration status for dashboard. When tenant is provided, limits listing (QuickBooksInvoice has no tenant FK; we cap result size)."""
+    """QuickBooks integration status for dashboard. Tenant-scoped: connection and invoices filtered by tenant."""
     from fiscal.models import QuickBooksConnection, QuickBooksInvoice
-    qs = QuickBooksInvoice.objects.order_by("-created_at")[:500]
+    conn = None
+    qs = QuickBooksInvoice.objects.none()
+    if tenant is not None:
+        conn = QuickBooksConnection.objects.filter(tenant=tenant, is_active=True).first()
+        qs = QuickBooksInvoice.objects.filter(tenant=tenant).order_by("-created_at")[:500]
     fiscalised = qs.filter(fiscalised=True).count()
     pending = qs.filter(fiscalised=False).count()
-    conn = QuickBooksConnection.objects.filter(is_active=True).first()
     last_event = None
     try:
         from fiscal.models import QuickBooksEvent

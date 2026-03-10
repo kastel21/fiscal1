@@ -1,6 +1,6 @@
 """Dashboard API views. Read-only, FDMS-confirmed data only."""
 
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 
 from dashboard.services.metrics_service import get_metrics
@@ -41,7 +41,7 @@ def _apply_role_filter(data: dict, role: str) -> dict:
     return data
 
 
-@staff_member_required
+@login_required
 def api_dashboard_metrics(request):
     """GET /api/dashboard/metrics/ - KPI metrics for real-time dashboard."""
     device_id = request.GET.get("device_id")
@@ -53,7 +53,7 @@ def api_dashboard_metrics(request):
     return JsonResponse(data)
 
 
-@staff_member_required
+@login_required
 def api_dashboard_summary(request):
     """GET /api/dashboard/summary?range=today|week|month"""
     range_key = request.GET.get("range", "today")
@@ -71,7 +71,7 @@ def api_dashboard_summary(request):
     return JsonResponse(data)
 
 
-@staff_member_required
+@login_required
 def api_dashboard_receipts(request):
     """GET /api/dashboard/receipts?range=today|week|month&status=draft|fiscalised|failed"""
     range_key = request.GET.get("range", "today")
@@ -90,7 +90,7 @@ def api_dashboard_receipts(request):
     return JsonResponse({"receipts": receipts})
 
 
-@staff_member_required
+@login_required
 def api_dashboard_errors(request):
     """GET /api/dashboard/errors?range=today|week|month"""
     range_key = request.GET.get("range", "today")
@@ -106,7 +106,7 @@ def api_dashboard_errors(request):
     return JsonResponse({"errors": errors})
 
 
-@staff_member_required
+@login_required
 def api_dashboard_quickbooks(request):
     """GET /api/dashboard/quickbooks - stub when no QB integration."""
     tenant = getattr(request, "tenant", None)
@@ -114,7 +114,7 @@ def api_dashboard_quickbooks(request):
     return JsonResponse(data)
 
 
-@staff_member_required
+@login_required
 def api_dashboard_export_pdf(request):
     """GET /api/dashboard/export/pdf?range=today|week|month"""
     range_key = request.GET.get("range", "month")
@@ -129,14 +129,15 @@ def api_dashboard_export_pdf(request):
     return resp
 
 
-@staff_member_required
+@login_required
 def api_dashboard_export_excel(request):
-    """GET /api/dashboard/export/excel?range=today|week|month"""
+    """GET /api/dashboard/export/excel?range=today|week|month. Tenant-scoped when request.tenant is set."""
     range_key = request.GET.get("range", "month")
     if range_key not in ("today", "week", "month"):
         range_key = "month"
+    tenant = getattr(request, "tenant", None)
     from .export_utils import render_excel
-    xlsx_bytes = render_excel(range_key)
+    xlsx_bytes = render_excel(range_key, tenant=tenant)
     resp = HttpResponse(xlsx_bytes, content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
     resp["Content-Disposition"] = 'attachment; filename="fdms-dashboard-%s.xlsx"' % range_key
     return resp

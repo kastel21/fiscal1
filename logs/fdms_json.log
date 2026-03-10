@@ -5691,3 +5691,338 @@
 {"timestamp": "2026-03-05T12:53:34.535Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
 {"timestamp": "2026-03-05T12:53:47.425Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
 {"timestamp": "2026-03-05T12:53:48.023Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-09T14:28:10.423Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:28:11.645Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:28:25.724Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T14:28:26.577Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-09T14:28:26.963Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T14:28:27.625Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-09T14:38:47.526Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:39:01.618Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:39:19.744Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:39:33.546Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:39:46.047Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:39:55.225Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:40:50.422Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:41:35.498Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:44:51.868Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:45:10.111Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:45:34.773Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:45:41.760Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:45:55.464Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:46:03.517Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:46:08.592Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:46:30.761Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:46:34.754Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:46:55.841Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:47:36.950Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:47:37.677Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:47:45.445Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:48:31.397Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:50:20.694Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:50:28.143Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:50:39.295Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:50:46.598Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:50:54.284Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:51:51.305Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:52:06.245Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:52:21.960Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:52:38.657Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:52:55.288Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:53:08.617Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:53:15.895Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:53:32.486Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:53:37.568Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:53:48.602Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:54:26.762Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:54:59.468Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:55:48.361Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:57:04.921Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:57:36.689Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:57:40.535Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:57:44.454Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:58:04.567Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:58:19.771Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:58:30.756Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:58:35.758Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:58:44.635Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:58:55.584Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:59:01.052Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:59:06.114Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:59:15.229Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:59:21.965Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:59:26.176Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:59:32.388Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:59:43.828Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T14:59:58.407Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:00:13.190Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:00:37.540Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:01:10.814Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:01:15.256Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:01:57.616Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:02:01.411Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:02:07.563Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:02:59.169Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:03:04.121Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:03:08.091Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:03:16.034Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:04:12.491Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:04:20.426Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60002}
+{"timestamp": "2026-03-09T15:04:21.230Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60002}
+{"timestamp": "2026-03-09T15:04:21.392Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60002}
+{"timestamp": "2026-03-09T15:04:21.392Z", "level": "WARNING", "logger": "fiscal", "message": "submit_receipt_task: device tenant mismatch device_id=60002 tenant_id=2b898c55-f456-4fb1-a6eb-75611762408b"}
+{"timestamp": "2026-03-09T15:04:21.441Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60002}
+{"timestamp": "2026-03-09T15:04:21.441Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60001}
+{"timestamp": "2026-03-09T15:10:39.270Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:10:44.859Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:10:49.481Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:10:55.225Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:11:00.424Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:11:22.243Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:11:30.893Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:11:36.454Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:11:52.433Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:12:02.581Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:12:09.148Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:12:15.759Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:12:24.498Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:12:34.732Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:12:50.120Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:12:58.620Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:13:16.461Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:13:26.417Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:13:35.513Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:13:44.987Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:14:11.922Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:14:42.915Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:14:55.911Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:15:50.439Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:15:58.796Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:16:12.818Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:16:17.212Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:16:22.854Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:16:32.773Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:17:03.216Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:17:08.729Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:17:13.392Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:17:30.115Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:18:01.286Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:19:45.002Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:19:59.028Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60002}
+{"timestamp": "2026-03-09T15:20:00.310Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60002}
+{"timestamp": "2026-03-09T15:20:00.519Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60002}
+{"timestamp": "2026-03-09T15:20:00.519Z", "level": "WARNING", "logger": "fiscal", "message": "submit_receipt_task: device tenant mismatch device_id=60002 tenant_id=b2527ee4-5cc5-4e6c-a00f-6d69cb446d5a"}
+{"timestamp": "2026-03-09T15:20:00.599Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60002}
+{"timestamp": "2026-03-09T15:20:00.599Z", "level": "WARNING", "logger": "fiscal", "message": "Device tenant mismatch", "device_id": 60001}
+{"timestamp": "2026-03-09T15:21:28.883Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:21:49.788Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:22:33.762Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:22:42.253Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:23:05.894Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:23:13.307Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:23:22.068Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:26:02.540Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:26:13.964Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:26:14.345Z", "level": "WARNING", "logger": "fiscal", "message": "close_day_task: tenant_id is required for multi-tenant tasks"}
+{"timestamp": "2026-03-09T15:26:14.354Z", "level": "WARNING", "logger": "fiscal", "message": "open_day_task: tenant_id is required for multi-tenant tasks"}
+{"timestamp": "2026-03-09T15:26:14.361Z", "level": "WARNING", "logger": "fiscal", "message": "submit_receipt_task: tenant_id is required for multi-tenant tasks"}
+{"timestamp": "2026-03-09T15:26:46.164Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:26:54.884Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:26:54.920Z", "level": "INFO", "logger": "fiscal", "message": "OpenDay OK for device 60001: fiscal day #1"}
+{"timestamp": "2026-03-09T15:26:55.032Z", "level": "WARNING", "logger": "fiscal", "message": "close_day_task: tenant_id is required for multi-tenant tasks"}
+{"timestamp": "2026-03-09T15:26:55.039Z", "level": "WARNING", "logger": "fiscal", "message": "open_day_task: tenant_id is required for multi-tenant tasks"}
+{"timestamp": "2026-03-09T15:26:55.043Z", "level": "WARNING", "logger": "fiscal", "message": "submit_receipt_task: tenant_id is required for multi-tenant tasks"}
+{"timestamp": "2026-03-09T15:34:25.391Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:34:59.894Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:35:05.651Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:36:36.306Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:37:12.859Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:37:18.324Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:38:15.309Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:38:31.292Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:39:59.268Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:40:08.792Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:40:27.734Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:41:53.688Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:42:47.377Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:42:56.384Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:43:12.596Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:44:07.341Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:45:20.573Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:45:25.568Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:45:30.368Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:47:33.548Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:47:41.465Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:47:46.599Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:47:49.983Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T15:47:56.192Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:47:56.203Z", "level": "INFO", "logger": "fiscal", "message": "OpenDay OK for device 60001: fiscal day #1"}
+{"timestamp": "2026-03-09T15:47:56.428Z", "level": "WARNING", "logger": "fiscal", "message": "close_day_task: tenant_id is required for multi-tenant tasks"}
+{"timestamp": "2026-03-09T15:47:56.436Z", "level": "WARNING", "logger": "fiscal", "message": "open_day_task: tenant_id is required for multi-tenant tasks"}
+{"timestamp": "2026-03-09T15:47:56.442Z", "level": "WARNING", "logger": "fiscal", "message": "submit_receipt_task: tenant_id is required for multi-tenant tasks"}
+{"timestamp": "2026-03-09T15:49:58.671Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:49:59.399Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/31285/GetStatus -> 401"}
+{"timestamp": "2026-03-09T15:49:59.401Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
+{"timestamp": "2026-03-09T15:49:59.426Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:00.140Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-09T15:50:18.055Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:18.666Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/31285/GetStatus -> 401"}
+{"timestamp": "2026-03-09T15:50:18.668Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
+{"timestamp": "2026-03-09T15:50:18.668Z", "level": "WARNING", "logger": "fiscal", "message": "GetStatus re-sync failed for device 31285: Unauthorized"}
+{"timestamp": "2026-03-09T15:50:18.670Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:19.245Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/31285/GetConfig -> 401"}
+{"timestamp": "2026-03-09T15:50:19.477Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:20.155Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/31285/GetStatus -> 401"}
+{"timestamp": "2026-03-09T15:50:20.157Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
+{"timestamp": "2026-03-09T15:50:20.168Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:20.884Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-09T15:50:28.692Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:29.312Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32327/GetStatus -> 200"}
+{"timestamp": "2026-03-09T15:50:29.334Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:29.934Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-09T15:50:35.451Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:36.177Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32327/GetStatus -> 200"}
+{"timestamp": "2026-03-09T15:50:36.189Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:36.848Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32327/GetConfig -> 200"}
+{"timestamp": "2026-03-09T15:50:36.858Z", "level": "INFO", "logger": "fiscal", "message": "GetConfig OK for device 32327"}
+{"timestamp": "2026-03-09T15:50:36.987Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:37.658Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32327/GetStatus -> 200"}
+{"timestamp": "2026-03-09T15:50:37.676Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T15:50:38.273Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-09T16:08:41.884Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T16:08:48.933Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T16:09:04.616Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T16:09:56.729Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T16:10:39.932Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-09T16:11:18.821Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T16:11:19.585Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32327/GetStatus -> 200"}
+{"timestamp": "2026-03-09T16:11:19.606Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T16:11:20.392Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-09T16:11:36.198Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-09T16:11:36.919Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-09T16:25:26.110Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:24:09.250Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:24:18.574Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:24:27.373Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:26:30.074Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:29:49.365Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:32:18.319Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:32:27.915Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:32:45.608Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:32:52.280Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:33:00.482Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:34:13.567Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:35:32.504Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:35:46.056Z", "level": "INFO", "logger": "fiscal", "message": "device_created", "device_id": 77001}
+{"timestamp": "2026-03-10T07:35:48.548Z", "level": "INFO", "logger": "fiscal", "message": "device_created", "device_id": 77001}
+{"timestamp": "2026-03-10T07:35:50.943Z", "level": "INFO", "logger": "fiscal", "message": "device_created", "device_id": 77001}
+{"timestamp": "2026-03-10T07:36:22.989Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T07:36:29.416Z", "level": "INFO", "logger": "fiscal", "message": "device_created", "device_id": 77001}
+{"timestamp": "2026-03-10T07:36:31.265Z", "level": "INFO", "logger": "fiscal", "message": "device_created", "device_id": 77001}
+{"timestamp": "2026-03-10T07:36:32.991Z", "level": "INFO", "logger": "fiscal", "message": "device_created", "device_id": 77001}
+{"timestamp": "2026-03-10T08:00:49.823Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:01:05.923Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:01:31.091Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:02:09.411Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:02:43.828Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:03:29.025Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:03:34.444Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:03:39.740Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:03:46.236Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:04:10.468Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:04:15.612Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:04:22.045Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:07:36.357Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:10:38.539Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:11:45.122Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:12:58.642Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:50:00.624Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:50:39.894Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:52:19.480Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:52:40.308Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:54:03.280Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:54:17.527Z", "level": "INFO", "logger": "fiscal", "message": "QuickBooks connection updated"}
+{"timestamp": "2026-03-10T08:56:24.004Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:56:25.925Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:56:36.938Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:56:45.190Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:56:47.142Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:56:56.458Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T08:56:57.653Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32327/GetStatus -> 200"}
+{"timestamp": "2026-03-10T08:56:57.733Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T08:56:58.840Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T08:57:03.067Z", "level": "INFO", "logger": "fiscal", "message": "QuickBooks connection updated"}
+{"timestamp": "2026-03-10T08:57:06.912Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T08:57:07.709Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T08:57:18.251Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T08:57:19.270Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T08:57:21.718Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:58:05.288Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:58:44.825Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T08:59:17.477Z", "level": "INFO", "logger": "fiscal", "message": "QuickBooks connection updated"}
+{"timestamp": "2026-03-10T09:14:51.459Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:15:43.733Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:16:03.991Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:23:36.823Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:23:52.849Z", "level": "INFO", "logger": "fiscal", "message": "QuickBooks connection updated"}
+{"timestamp": "2026-03-10T09:29:27.246Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T09:29:28.009Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/31285/GetStatus -> 401"}
+{"timestamp": "2026-03-10T09:29:28.010Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
+{"timestamp": "2026-03-10T09:29:28.024Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T09:29:28.673Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T09:29:41.823Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T09:29:43.558Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32327/GetStatus -> 200"}
+{"timestamp": "2026-03-10T09:29:43.578Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T09:29:44.341Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T09:29:58.533Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T09:29:59.203Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T09:30:21.897Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:30:23.120Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:30:26.483Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T09:30:27.145Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T09:36:00.338Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:36:01.944Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:36:17.688Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:36:19.109Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:36:36.408Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:36:37.827Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:36:45.009Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T09:36:45.629Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T09:47:32.380Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T09:47:33.262Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T09:47:36.345Z", "level": "INFO", "logger": "fiscal", "message": "FDMS Headers: {'DeviceModelName': 'Server', 'DeviceModelVersion': 'v1', 'Content-Type': 'application/json'}"}
+{"timestamp": "2026-03-10T09:47:37.076Z", "level": "INFO", "logger": "fiscal", "message": "FDMS call logged: GET /Device/v1/32702/GetStatus -> 200"}
+{"timestamp": "2026-03-10T09:50:45.915Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:50:53.217Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:51:18.990Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:52:00.559Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:52:23.325Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:52:51.497Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T09:53:19.921Z", "level": "INFO", "logger": "fiscal", "message": "device_created", "device_id": 77001}
+{"timestamp": "2026-03-10T09:53:23.730Z", "level": "INFO", "logger": "fiscal", "message": "device_created", "device_id": 77001}
+{"timestamp": "2026-03-10T09:53:27.900Z", "level": "INFO", "logger": "fiscal", "message": "device_created", "device_id": 77001}
+{"timestamp": "2026-03-10T10:18:07.765Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T10:18:40.956Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T10:22:18.454Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T10:22:24.785Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T10:22:31.329Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T10:41:09.558Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T10:41:17.041Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T10:43:54.778Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:08:30.282Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:08:39.100Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:08:50.865Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:08:57.976Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:09:26.037Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:09:34.008Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:09:40.943Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:10:10.516Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:10:17.936Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:11:01.685Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:11:13.161Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:26:25.878Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:35:58.994Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:36:06.916Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:36:57.104Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:37:06.866Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}
+{"timestamp": "2026-03-10T11:41:20.300Z", "level": "WARNING", "logger": "fiscal", "message": "WARNING: FDMS running in TEST environment"}

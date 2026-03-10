@@ -1,8 +1,34 @@
-"""Utility functions for fiscal app. Redaction for logs and UI; invoice helpers."""
+"""Utility functions for fiscal app. Redaction for logs and UI; invoice helpers; device-tenant guard."""
 
 import base64
 import json
+import logging
 import re
+
+from django.core.exceptions import PermissionDenied
+
+logger = logging.getLogger("fiscal")
+
+
+def validate_device_for_tenant(device, tenant):
+    """
+    Ensure the fiscal device belongs to the active tenant. Raises PermissionDenied if not.
+    Call after resolving device and tenant (e.g. in views/services). If tenant is None
+    (tenant-exempt path), validation is skipped. If device is None, returns without raising.
+    """
+    if device is None or tenant is None:
+        return True
+    device_tenant_id = getattr(device, "tenant_id", None)
+    tenant_id = getattr(tenant, "id", None)
+    if tenant_id is None:
+        return True
+    if device_tenant_id != tenant_id:
+        logger.warning(
+            "Device tenant mismatch",
+            extra={"device_id": getattr(device, "device_id", device.pk), "tenant": getattr(tenant, "slug", tenant_id)},
+        )
+        raise PermissionDenied("Fiscal device does not belong to the active tenant.")
+    return True
 
 SENSITIVE_KEYS = frozenset({
     "private_key_pem", "activationkey", "certificaterequest",

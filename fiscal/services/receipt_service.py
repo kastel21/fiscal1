@@ -19,6 +19,7 @@ from typing import Callable
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django.utils import timezone
 
 from fiscal.models import FiscalDevice, Receipt
 from fiscal.utils import mask_sensitive_fields, redact_string_for_log
@@ -724,7 +725,7 @@ def _do_submit_receipt(
                 )
 
     _progress(20, "Building canonical")
-    receipt_date = receipt_date or datetime.now()
+    receipt_date = receipt_date or timezone.now()
     receipt_date_str = receipt_date.strftime("%Y-%m-%dT%H:%M:%S")
 
     last_receipt = Receipt.objects.filter(
@@ -1151,8 +1152,8 @@ def _do_submit_receipt(
         defaults["document_type"] = "INVOICE"
 
     with transaction.atomic():
-        device = FiscalDevice.objects.select_for_update().get(pk=device.pk)
-        receipt_obj, created = Receipt.objects.update_or_create(
+        device = FiscalDevice.all_objects.select_for_update().get(pk=device.pk)
+        receipt_obj, created = Receipt.all_objects.update_or_create(
             device=device,
             receipt_global_no=receipt_global_no,
             defaults=defaults,
@@ -1164,6 +1165,12 @@ def _do_submit_receipt(
             )
         device.last_receipt_global_no = receipt_global_no
         device.save(update_fields=["last_receipt_global_no"])
+        # Tenant-level hash chain: update Tenant.previous_hash for fiscal audit
+        if device.tenant_id and (receipt_obj.receipt_hash or "").strip():
+            from tenants.models import Tenant
+            Tenant.objects.filter(pk=device.tenant_id).update(
+                previous_hash=(receipt_obj.receipt_hash or "").strip(),
+            )
         # ZIMRA Section 10: map FDMS response to fiscal_invoice_number, receipt_number,
         # fiscal_signature, verification_code, VAT breakdown, buyer (before marking final)
         try:

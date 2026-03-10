@@ -11,12 +11,25 @@ from fiscal.services.qb_fiscalisation import fiscalise_qb_invoice
 logger = logging.getLogger("fiscal")
 
 
-def sync_from_quickbooks(conn: QuickBooksConnection | None = None, max_per_type: int = 50) -> dict:
+def sync_from_quickbooks(
+    conn: QuickBooksConnection | None = None,
+    tenant=None,
+    max_per_type: int = 50,
+) -> dict:
     """
     Fetch Invoices and SalesReceipts from QB, fiscalise unfiscalised.
+    Tenant-scoped: requires conn or tenant; fiscalisation uses tenant's device.
     Returns { "invoices_fetched", "sales_receipts_fetched", "fiscalised", "skipped", "errors" }.
     """
-    qb = get_quickbooks_client(conn)
+    if conn is None and tenant is not None:
+        conn = QuickBooksConnection.objects.filter(tenant=tenant, is_active=True).first()
+    if conn is None:
+        return {"error": "QuickBooks not connected", "fiscalised": 0, "skipped": 0, "errors": []}
+    tenant = tenant or getattr(conn, "tenant", None)
+    if not tenant:
+        return {"error": "QuickBooks connection has no tenant", "fiscalised": 0, "skipped": 0, "errors": []}
+
+    qb = get_quickbooks_client(conn=conn)
     if not qb:
         return {"error": "QuickBooks not connected", "fiscalised": 0, "skipped": 0, "errors": []}
 
@@ -35,12 +48,12 @@ def sync_from_quickbooks(conn: QuickBooksConnection | None = None, max_per_type:
             continue
         seen_ids.add(inv_id)
 
-        if QuickBooksInvoice.objects.filter(qb_invoice_id=inv_id, fiscalised=True).exists():
+        if QuickBooksInvoice.objects.filter(tenant=tenant, qb_invoice_id=inv_id, fiscalised=True).exists():
             result["skipped"] += 1
             continue
 
         payload = qb_sale_to_invoice_payload(inv)
-        qb_inv, err = fiscalise_qb_invoice(inv_id, payload)
+        qb_inv, err = fiscalise_qb_invoice(inv_id, payload, tenant=tenant)
         if qb_inv and qb_inv.fiscalised:
             result["fiscalised"] += 1
         elif err:

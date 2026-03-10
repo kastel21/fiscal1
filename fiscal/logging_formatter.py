@@ -2,15 +2,19 @@
 
 import json
 import logging
-from datetime import datetime
+from datetime import timezone as dt_tz
+
+from django.utils import timezone as django_tz
 
 
 class JSONFormatter(logging.Formatter):
     """Output log records as single-line JSON for structured logging."""
 
     def format(self, record: logging.LogRecord) -> str:
+        # Use timezone-aware UTC for log timestamp
+        utc_now = django_tz.now().astimezone(dt_tz.utc)
         log_obj = {
-            "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z",
+            "timestamp": utc_now.strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z",
             "level": record.levelname,
             "logger": record.name,
             "message": record.getMessage(),

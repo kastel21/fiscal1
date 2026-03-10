@@ -1,6 +1,6 @@
 """Offline mode views. UI never alters queue contents."""
 
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import redirect
 
@@ -8,7 +8,7 @@ from fiscal.models import FiscalDevice
 from offline.services.batch_submitter import BatchSubmitter
 
 
-@staff_member_required
+@login_required
 def retry_submit(request):
     """Manual retry of queued receipts. Supervised - no auto-mutation."""
     if request.method != "POST":

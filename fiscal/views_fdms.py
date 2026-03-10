@@ -5,7 +5,7 @@ from datetime import date
 
 from django.contrib import messages
 from django.db.models import Max
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from django.views.decorators.http import require_http_methods
@@ -94,8 +94,8 @@ def _fdms_context(device):
     }
 
 
-@staff_member_required
-@staff_member_required
+@login_required
+@login_required
 @require_http_methods(["POST"])
 def fdms_set_device(request):
     """POST: Set selected device for system-wide use. Redirects to ?next= or dashboard."""
@@ -124,9 +124,9 @@ def fdms_re_sync(request):
     return redirect("fdms_dashboard")
 
 
-@staff_member_required
+@login_required
 def fdms_dashboard(request):
-    """FDMS dashboard - Tailwind UI. Device from GET or session (system-wide)."""
+    """FDMS dashboard - Tailwind UI. Any logged-in user can access."""
     device = get_device_for_request(request)
     ctx = _fdms_context(device)
     ctx["device"] = ctx["device"] if device else None  # Pass None so "No registered device" shows
@@ -144,7 +144,7 @@ def fdms_dashboard(request):
     return render(request, "fdms/dashboard.html", ctx)
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["POST"])
 def api_verify_taxpayer(request):
     """POST /api/verify-taxpayer/ - Verify taxpayer info before device registration."""
@@ -178,9 +178,13 @@ def api_verify_taxpayer(request):
     return JsonResponse({"success": True, "taxpayer": data})
 
 
-@staff_member_required
+@login_required
 def fdms_device(request):
-    """Device registration - Tailwind UI."""
+    """Device registration - any logged-in user with a tenant can add and register devices."""
+    tenant = getattr(request, "tenant", None)
+    if not tenant:
+        return redirect("select_tenant")
+
     form = DeviceRegistrationForm()
     success_message = error_message = device_status = None
 
@@ -189,6 +193,7 @@ def fdms_device(request):
         if form.is_valid():
             service = DeviceRegistrationService()
             dev, err = service.register_device(
+                tenant=tenant,
                 device_id=form.cleaned_data["device_id"],
                 activation_key=form.cleaned_data["activation_key"],
                 device_serial_no=form.cleaned_data["device_serial_no"].strip(),
@@ -210,7 +215,7 @@ def fdms_device(request):
     )
 
 
-@staff_member_required
+@login_required
 def fdms_fiscal(request):
     """Fiscal day page - Tailwind UI. Device from GET or session. Tenant-scoped when request.tenant is set."""
     device = get_device_for_request(request)
@@ -246,7 +251,7 @@ def fdms_fiscal(request):
     return render(request, "fdms/fiscal_day.html", ctx)
 
 
-@staff_member_required
+@login_required
 def fdms_open_day_post(request):
     """POST: Open fiscal day, redirect back with message."""
     if request.method != "POST":
@@ -261,7 +266,7 @@ def fdms_open_day_post(request):
     return redirect("fdms_fiscal")
 
 
-@staff_member_required
+@login_required
 def fdms_close_day_post(request):
     """POST: Close fiscal day, redirect back with message."""
     if request.method != "POST":
@@ -279,7 +284,7 @@ def fdms_close_day_post(request):
     return redirect("fdms_fiscal")
 
 
-@staff_member_required
+@login_required
 def fdms_receipts(request):
     """Receipts list - Tailwind UI. Optional ?status=, ?doc_type=, ?device_id=. Tenant-scoped when request.tenant is set."""
     tenant = getattr(request, "tenant", None)
@@ -317,7 +322,7 @@ def fdms_receipts(request):
     )
 
 
-@staff_member_required
+@login_required
 def fdms_receipt_invoice(request, pk):
     """Tax Invoice, Credit Note or Debit Note layout for print. PDF download uses the exact same template and context."""
     from fiscal.services.fiscal_invoice_context import get_receipt_print_template_and_context
@@ -331,7 +336,7 @@ def fdms_receipt_invoice(request, pk):
     return render(request, template_name, ctx)
 
 
-@staff_member_required
+@login_required
 def fdms_receipt_invoice_pdf(request, pk):
     """Tax Invoice PDF using current template (invoices/fiscal_invoice_a4.html). Always generated on download. Tenant-scoped when request.tenant is set."""
     from django.http import HttpResponse, HttpResponseServerError
@@ -355,7 +360,7 @@ def fdms_receipt_invoice_pdf(request, pk):
     return resp
 
 
-@staff_member_required
+@login_required
 def fdms_receipt_invoice_html_pdf(request, pk):
     """
     Download PDF generated from the exact same rendered HTML template/context as the print view.
@@ -391,7 +396,7 @@ def fdms_receipt_invoice_html_pdf(request, pk):
     return resp
 
 
-@staff_member_required
+@login_required
 def fdms_receipt_debit_note_html_pdf(request, pk):
     """
     Download Debit Note PDF from the exact rendered debit-note HTML view/template.
@@ -430,7 +435,7 @@ def fdms_receipt_debit_note_html_pdf(request, pk):
     return resp
 
 
-@staff_member_required
+@login_required
 def fdms_receipt_invoice_a4_pdf(request, pk):
     """
     Download Tax Invoice A4 PDF (same template as main download). Always generated from current template.
@@ -456,7 +461,7 @@ def fdms_receipt_invoice_a4_pdf(request, pk):
     return resp
 
 
-@staff_member_required
+@login_required
 def fdms_receipt_fiscal_invoice_a4_pdf(request, pk):
     """
     Section 10 compliant A4 Tax Invoice PDF (invoices/fiscal_invoice_a4.html).
@@ -481,7 +486,7 @@ def fdms_receipt_fiscal_invoice_a4_pdf(request, pk):
     return resp
 
 
-@staff_member_required
+@login_required
 def fdms_receipt_detail(request, pk):
     """Receipt detail - Tailwind UI. Tenant-scoped when request.tenant is set."""
     tenant = getattr(request, "tenant", None)
@@ -515,7 +520,7 @@ def fdms_receipt_detail(request, pk):
     )
 
 
-@staff_member_required
+@login_required
 def fdms_receipt_new(request):
     """Create invoice / new receipt form - full form with customer, items, payments. Submits via /api/invoices/."""
     device = get_device_for_request(request)
@@ -531,7 +536,7 @@ def fdms_receipt_new(request):
     )
 
 
-@staff_member_required
+@login_required
 def fdms_logs_tailwind(request):
     """FDMS logs - Tailwind UI. Tenant-scoped when request.tenant is set."""
     from datetime import datetime
@@ -574,7 +579,7 @@ def fdms_logs_tailwind(request):
     )
 
 
-@staff_member_required
+@login_required
 def fdms_audit(request):
     """Integrity audit page - Tailwind UI."""
     result = None
@@ -583,7 +588,7 @@ def fdms_audit(request):
     return render(request, "fdms/audit.html", {"result": result})
 
 
-@staff_member_required
+@login_required
 def fdms_products(request):
     """Products list - admin only."""
     if not request.user.is_staff:
@@ -591,7 +596,7 @@ def fdms_products(request):
     return render(request, "fdms/products_list.html", {})
 
 
-@staff_member_required
+@login_required
 def fdms_product_form(request, pk=None):
     """Add or edit product - admin only."""
     if not request.user.is_staff:
@@ -599,7 +604,7 @@ def fdms_product_form(request, pk=None):
     return render(request, "fdms/product_form.html", {"product_id": pk or ""})
 
 
-@staff_member_required
+@login_required
 def fdms_tax_mappings(request):
     """Tax Mappings list - map local tax codes to FDMS taxID."""
     if not request.user.is_staff:
@@ -607,7 +612,7 @@ def fdms_tax_mappings(request):
     return render(request, "fdms/tax_mappings_list.html", {})
 
 
-@staff_member_required
+@login_required
 def fdms_tax_mapping_form(request, pk=None):
     """Add or edit tax mapping."""
     if not request.user.is_staff:
@@ -615,7 +620,7 @@ def fdms_tax_mapping_form(request, pk=None):
     return render(request, "fdms/tax_mapping_form.html", {"mapping_id": pk or ""})
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["GET", "POST"])
 def fdms_sequence_adjustment(request):
     """Admin-only sequence adjustment form for manual number resync/skip."""
@@ -662,15 +667,19 @@ def fdms_sequence_adjustment(request):
     )
 
 
-@staff_member_required
+@login_required
 def fdms_settings(request):
-    """Settings page - QuickBooks, company logo, and other integrations."""
+    """Settings page - QuickBooks, company logo, and other integrations. Tenant-scoped QB connection."""
     from django.conf import settings as django_settings
     from fiscal.models import Company, QuickBooksConnection
 
-    qb_connection = QuickBooksConnection.objects.filter(is_active=True).first()
+    tenant = getattr(request, "tenant", None)
+    qb_connection = (
+        QuickBooksConnection.objects.filter(tenant=tenant, is_active=True).first()
+        if tenant else None
+    )
     qb_credentials_configured = bool(getattr(django_settings, "QB_CLIENT_ID", "") or "")
-    company = Company.objects.first()
+    company = Company.objects.filter(tenant=tenant).first() if tenant else Company.objects.first()
     return render(
         request,
         "fdms/settings.html",
@@ -683,7 +692,7 @@ def fdms_settings(request):
     )
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["POST"])
 def fdms_settings_company_logo(request):
     """Upload company logo (appears on tax invoices). Creates company if none exists."""
@@ -714,7 +723,7 @@ def fdms_settings_company_logo(request):
     return redirect("fdms_settings")
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["POST"])
 def fdms_settings_company_logo_remove(request):
     """Remove company logo."""
@@ -731,13 +740,17 @@ def fdms_settings_company_logo_remove(request):
     return redirect("fdms_settings")
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["POST"])
 def fdms_settings_qb_disconnect(request):
-    """Disconnect QuickBooks (set is_active=False on active connection)."""
+    """Disconnect QuickBooks for current tenant (set is_active=False)."""
     from fiscal.models import QuickBooksConnection
 
-    conn = QuickBooksConnection.objects.filter(is_active=True).first()
+    tenant = getattr(request, "tenant", None)
+    conn = (
+        QuickBooksConnection.objects.filter(tenant=tenant, is_active=True).first()
+        if tenant else None
+    )
     if conn:
         conn.is_active = False
         conn.save(update_fields=["is_active"])
@@ -746,10 +759,14 @@ def fdms_settings_qb_disconnect(request):
     return redirect("fdms_settings")
 
 
-@staff_member_required
+@login_required
 def fdms_qb_invoices(request):
-    """QuickBooks invoices - fiscal status, retry button."""
+    """QuickBooks invoices - fiscal status, retry button. Tenant-scoped."""
     from fiscal.models import QuickBooksInvoice
 
-    invoices = QuickBooksInvoice.objects.select_related("fiscal_receipt").order_by("-created_at")[:100]
+    tenant = getattr(request, "tenant", None)
+    qs = QuickBooksInvoice.objects.select_related("fiscal_receipt").order_by("-created_at")
+    if tenant is not None:
+        qs = qs.filter(tenant=tenant)
+    invoices = list(qs[:100])
     return render(request, "fdms/qb_invoices.html", {"invoices": invoices})

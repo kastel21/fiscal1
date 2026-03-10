@@ -16,17 +16,38 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 from django.shortcuts import redirect
-from django.urls import include, path
+from django.urls import include, path, reverse
 
+admin.site.site_header = "FiscalFlow Administration"
+admin.site.site_title = "FiscalFlow Admin"
+admin.site.index_title = "FiscalFlow Administration"
+
+from device_identity.views import onboarding_register_device
+from fiscal.views_devices import onboarding_device, register_device_page
 from fiscal.views_health import fdms_health
-from tenants.views import select_tenant
+from tenants.views import create_company, select_tenant
+from tenants.views_auth import login_view
+from tenants.views_admin import create_company_with_user, create_tenant_onboarding, tenant_onboarding_wizard
+from tenants.views_onboarding import onboarding_company
 
 urlpatterns = [
+    path("create-company/", create_company, name="create_company"),
+    path("devices/register/", register_device_page, name="register_device_page"),
+    path("onboarding/company/", onboarding_company, name="onboarding_company"),
+    path("onboarding/device/", onboarding_device, name="onboarding_device"),
+    path("onboarding/register-device/", onboarding_register_device, name="onboarding_register_device"),
+    path("admin/create-company/", create_company_with_user, name="create_company_with_user"),
+    path("admin/tenant-onboarding/", create_tenant_onboarding, name="tenant_onboarding"),
+    path("admin/tenant-wizard/", lambda r: redirect(reverse("tenant_wizard", kwargs={"step": 1}))),
+    path("admin/tenant-wizard/<int:step>/", tenant_onboarding_wizard, name="tenant_wizard"),
     path("admin/", admin.site.urls),
     path("select-tenant/", select_tenant, name="select_tenant"),
     path("health/fdms/", fdms_health),
-    path("", lambda r: redirect("fdms_dashboard")),
+    path("login/", login_view, name="login"),
+    path("logout/", auth_views.LogoutView.as_view(next_page="login"), name="logout"),
+    path("", lambda r: redirect("login")),
     path("dashboard/", lambda r: redirect("fdms_dashboard")),
     path("device/", include("device_identity.urls")),
     path("offline/", include("offline.urls")),

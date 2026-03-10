@@ -1,13 +1,18 @@
 """Device identity views. UI only - no crypto in templates."""
 
-from django.contrib.admin.views.decorators import staff_member_required
-from django.shortcuts import redirect, render
+import logging
 
-from .forms import DeviceRegistrationForm
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
+from django.views.decorators.http import require_http_methods
+
+from .forms import DeviceRegistrationForm, OnboardingRegisterForm
 from .services import register_device
 
+logger = logging.getLogger("device_identity")
 
-@staff_member_required
+
+@login_required
 def register_device_view(request):
     """
     Device registration page. Form submit via HTMX for partial update.
@@ -19,21 +24,26 @@ def register_device_view(request):
     device_status = None
     device_id = None
 
+    tenant = getattr(request, "tenant", None)
     if request.method == "POST":
         form = DeviceRegistrationForm(request.POST)
         if form.is_valid():
-            device, err = register_device(
-                device_id=form.cleaned_data["device_id"],
-                activation_key=form.cleaned_data["activation_key"],
-                device_serial_no=form.cleaned_data["device_serial_no"],
-                device_model_name=form.cleaned_data.get("device_model_name") or "Unknown",
-                device_model_version=form.cleaned_data.get("device_model_version") or "v1",
-            )
-            if err:
-                error_message = err
+            if not tenant:
+                error_message = "Please select a company first."
             else:
-                success_message = f"Device {device.device_id} registered successfully."
-                device_id = device.device_id
+                device, err = register_device(
+                    tenant=tenant,
+                    device_id=form.cleaned_data["device_id"],
+                    activation_key=form.cleaned_data["activation_key"],
+                    device_serial_no=form.cleaned_data["device_serial_no"],
+                    device_model_name=form.cleaned_data.get("device_model_name") or "Unknown",
+                    device_model_version=form.cleaned_data.get("device_model_version") or "v1",
+                )
+                if err:
+                    error_message = err
+                else:
+                    success_message = f"Device {device.device_id} registered successfully."
+                    device_id = device.device_id
         else:
             error_message = "Please correct the errors below."
 
@@ -69,3 +79,59 @@ def register_device_view(request):
     if request.headers.get("HX-Request"):
         return render(request, "device_identity/register_device_partial.html", context)
     return render(request, "device_identity/register_device.html", context)
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def onboarding_register_device(request):
+    """
+    Wizard Step 3: Register device with FDMS. Requires onboarding_device_id in session.
+    On success: log device_registered, redirect to dashboard.
+    """
+    device_pk = request.session.get("onboarding_device_id")
+    if not device_pk:
+        return redirect("onboarding_device")
+    from fiscal.models import FiscalDevice
+    try:
+        device = FiscalDevice.all_objects.get(pk=device_pk)
+    except (FiscalDevice.DoesNotExist, ValueError, TypeError):
+        request.session.pop("onboarding_device_id", None)
+        return redirect("onboarding_device")
+
+    form = OnboardingRegisterForm(request.POST or None)
+    error_message = None
+    if request.method == "POST" and form.is_valid():
+        activation_key = form.cleaned_data["activation_key"]
+        tenant = getattr(device, "tenant", None) or getattr(request, "tenant", None)
+        if not tenant:
+            error_message = "No tenant associated with this device. Please select a company first."
+        else:
+            dev, err = register_device(
+                tenant=tenant,
+                device_id=device.device_id,
+                activation_key=activation_key,
+                device_serial_no=device.device_serial_no or "",
+                device_model_name=device.device_model_name or "Unknown",
+                device_model_version=getattr(device, "device_model_version", None) or "v1",
+            )
+            if err:
+                error_message = err
+            else:
+                logger.info(
+                    "device_registered",
+                    extra={"device_id": device.device_id, "user": request.user.username},
+                )
+                request.session.pop("onboarding_device_id", None)
+                return redirect("fdms_dashboard")
+
+    return render(
+        request,
+        "onboarding/onboarding_register_device.html",
+        {
+            "form": form,
+            "device": device,
+            "error_message": error_message,
+            "step": 3,
+            "step_label": "Register",
+        },
+    )

@@ -4,23 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token }}">
-    <title>{% block title %}FDMS Control Panel{% endblock %}</title>
+    <title>{% block title %}{{ SYSTEM_NAME|default:"FiscalFlow" }} Control Panel{% endblock %}</title>
     {% block head %}{% endblock %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        :root {
+            --primary: #1E3A8A;
+            --secondary: #3B82F6;
+            --accent: #10B981;
+            --bg: #F9FAFB;
+            --text: #111827;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+        }
         .form-input, .fdms-form input, .fdms-form select { border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.5rem 0.75rem; }
         .errorlist { color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem; list-style: none; padding-left: 0; }
-        details summary::-webkit-details-marker { display: none; }
-        details summary { list-style: none; }
+        .sidebar-brand {
+            padding: 20px;
+            font-weight: 700;
+            font-size: 18px;
+            color: white;
+        }
+        .sidebar-brand .tagline {
+            font-size: 11px;
+            font-weight: 400;
+            color: rgba(255,255,255,0.8);
+            margin-top: 2px;
+        }
+        .sidebar-section {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.6);
+            padding: 12px 20px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+        .sidebar-nav .nav-link {
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            color: rgba(255,255,255,0.9);
+            font-size: 0.875rem;
+        }
+        .sidebar-nav .nav-link:hover {
+            background-color: rgba(0,0,0,0.15);
+            color: #fff;
+        }
+        .app-brand h1 { font-size: 20px; font-weight: 700; color: var(--primary); }
+        .app-brand .tagline { font-size: 12px; color: #6B7280; }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex">
+<body class="min-h-screen flex">
 
 {% if offline_status %}
 {% if offline_status.is_offline or offline_status.queue_size %}
 <div class="bg-amber-100 border-b border-amber-300 p-3 flex items-center justify-between">
     <span class="text-amber-800">
-        {% if offline_status.is_offline %}FDMS offline.{% endif %}
+        {% if offline_status.is_offline %}FiscalFlow offline.{% endif %}
         {% if offline_status.queue_size > 0 %}Queue: {{ offline_status.queue_size }} receipt(s) pending.{% endif %}
     </span>
     {% if offline_status.queue_size > 0 %}
@@ -32,23 +78,21 @@
 {% endif %}
 {% endif %}
 
-<aside class="w-56 bg-slate-800 text-slate-200 flex flex-col min-h-screen flex-shrink-0">
-    <div class="p-4 border-b border-slate-700 flex items-start justify-between gap-2">
+<aside class="w-56 flex flex-col min-h-screen flex-shrink-0" style="background-color: #1E3A8A;">
+    <div class="sidebar-brand border-b border-white/20 flex items-start justify-between gap-2">
         <div>
-            <span class="font-bold text-lg">FDMS</span>
-            <span class="block text-xs text-slate-400 mt-0.5">Control Panel</span>
+            <h2 class="m-0 font-bold text-lg text-white">{{ SYSTEM_NAME|default:"FiscalFlow" }}</h2>
+            <p class="tagline m-0">{{ SYSTEM_TAGLINE|default:"Seamless ZIMRA Fiscal Integration" }}</p>
         </div>
-        <form method="post" action="{% url 'admin:logout' %}" class="flex-shrink-0">{% csrf_token %}
-            <button type="submit" class="text-xs px-2 py-1 rounded bg-slate-600 hover:bg-slate-500 text-slate-200 transition">Logout</button>
-        </form>
+        <a href="{% url 'logout' %}" class="text-xs px-2 py-1 rounded transition inline-block flex-shrink-0" style="background: rgba(255,255,255,0.2); color: #fff;">Logout</a>
     </div>
     {% if fdms_devices %}
-    <div class="p-4 border-b border-slate-700">
+    <div class="p-4 border-b border-white/20">
         <form method="post" action="{% url 'fdms_set_device' %}" id="fdms-device-form">
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ request.path }}">
-            <label class="block text-xs font-medium text-slate-400 mb-1">Device</label>
-            <select name="device_id" onchange="this.form.submit()" class="w-full bg-slate-700 border border-slate-600 rounded px-2 py-1.5 text-slate-200 text-sm">
+            <label class="block text-xs font-medium mb-1 text-white/80">Device</label>
+            <select name="device_id" onchange="this.form.submit()" class="w-full rounded px-2 py-1.5 text-sm text-white" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.3);">
                 {% for d in fdms_devices %}
                 <option value="{{ d.device_id }}" {% if fdms_selected_device_id == d.device_id %}selected{% endif %}>#{{ d.device_id }}</option>
                 {% endfor %}
@@ -56,38 +100,69 @@
         </form>
     </div>
     {% endif %}
-    <nav class="flex-1 p-4 space-y-1 overflow-y-auto">
-        <a href="{% url 'fdms_dashboard' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Dashboard</a>
-        <a href="{% url 'fdms_fiscal' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Fiscal Day</a>
-        <a href="{% url 'fdms_receipts' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Receipts</a>
-        <a href="{% url 'fdms_receipt_new' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">New Receipt</a>
-        <a href="{% url 'fdms_invoice_import_review' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Import Invoice Review</a>
-        <a href="{% url 'fdms_credit_note' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Credit Note</a>
-        <a href="{% url 'fdms_debit_note_form' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">Debit Note</a>
-        <div class="border-t border-slate-700 my-3"></div>
-        <details class="group" open>
-            <summary class="cursor-pointer px-3 py-2 rounded hover:bg-slate-700 text-slate-200 font-medium flex items-center justify-between [list-style:none]">
-                <span>Settings</span>
-                <span class="group-open:rotate-180 transition-transform">▼</span>
-            </summary>
-            <div class="pl-3 mt-1 space-y-0.5">
-                <a href="{% url 'fdms_settings' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm font-medium">Settings</a>
-                <a href="{% url 'fdms_device' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Device / Register</a>
-                <a href="{% url 'fdms_products' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Products</a>
-                <a href="{% url 'fdms_tax_mappings' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Tax Mapping</a>
-                <a href="{% url 'fdms_sequence_adjustment' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Sequence Adjust</a>
-                {% if request.user.is_staff %}
-                <a href="{% url 'fdms_invoice_import_step1' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Import Invoice</a>
-                {% endif %}
-                <a href="{% url 'fdms_qb_invoices' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">QuickBooks</a>
-                <a href="{% url 'fdms_audit' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Audit</a>
-                <a href="{% url 'fdms_logs_tailwind' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Logs</a>
-            </div>
-        </details>
-        <div class="pt-4 mt-2 border-t border-slate-700 space-y-1">
-            <a href="{% url 'eula' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Legal (EULA)</a>
-            <a href="{% url 'privacy' %}" class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">Privacy</a>
-        </div>
+    <nav class="flex-1 p-4 overflow-y-auto">
+        <ul class="sidebar-nav space-y-0.5 list-none pl-0">
+            <li class="nav-item">
+                <a href="{% url 'fdms_dashboard' %}" class="nav-link">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_fiscal' %}" class="nav-link">Fiscal Day</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_receipts' %}" class="nav-link">Receipts</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_receipt_new' %}" class="nav-link">New Receipt</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_invoice_import_review' %}" class="nav-link">Import Invoice Review</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_credit_note' %}" class="nav-link">Credit Note</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_debit_note_form' %}" class="nav-link">Debit Note</a>
+            </li>
+
+            <li class="sidebar-section">Settings</li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_settings' %}" class="nav-link">Company</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_device' %}" class="nav-link">Device / Register</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_products' %}" class="nav-link">Products</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_tax_mappings' %}" class="nav-link">Tax Mapping</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_sequence_adjustment' %}" class="nav-link">Sequence Adjust</a>
+            </li>
+            {% if request.user.is_staff %}
+            <li class="nav-item">
+                <a href="{% url 'fdms_invoice_import_step1' %}" class="nav-link">Import Invoice</a>
+            </li>
+            {% endif %}
+            <li class="nav-item">
+                <a href="{% url 'fdms_qb_invoices' %}" class="nav-link">QuickBooks</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_audit' %}" class="nav-link">Audit</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'fdms_logs_tailwind' %}" class="nav-link">Logs</a>
+            </li>
+
+            <li class="sidebar-section pt-2 mt-2 border-t border-white/20">Legal</li>
+            <li class="nav-item">
+                <a href="{% url 'eula' %}" class="nav-link">EULA</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'privacy' %}" class="nav-link">Privacy</a>
+            </li>
+        </ul>
     </nav>
 </aside>
 
@@ -110,14 +185,14 @@
         {% endif %}
         {% block content %}{% endblock %}
     </div>
-    <footer class="border-t border-slate-200 mt-8 py-4 px-6 text-center text-sm text-slate-500">
-        <a href="{% url 'terms' %}" class="text-indigo-600 hover:underline">Terms of Service</a>
+    <footer class="border-t border-slate-200 mt-8 py-4 px-6 text-center text-sm" style="color: #6B7280;">
+        <a href="{% url 'terms' %}" style="color: #3B82F6;" class="hover:underline">Terms of Service</a>
         <span class="mx-2">·</span>
-        <a href="{% url 'privacy' %}" class="text-indigo-600 hover:underline">Privacy Policy</a>
+        <a href="{% url 'privacy' %}" style="color: #3B82F6;" class="hover:underline">Privacy Policy</a>
         <span class="mx-2">·</span>
-        <a href="{% url 'dpa' %}" class="text-indigo-600 hover:underline">Data Processing Addendum</a>
+        <a href="{% url 'dpa' %}" style="color: #3B82F6;" class="hover:underline">Data Processing Addendum</a>
         <span class="mx-2">·</span>
-        <a href="{% url 'cookies' %}" class="text-indigo-600 hover:underline">Cookie Policy</a>
+        <a href="{% url 'cookies' %}" style="color: #3B82F6;" class="hover:underline">Cookie Policy</a>
     </footer>
 </main>
 

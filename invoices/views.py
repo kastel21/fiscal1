@@ -2,16 +2,18 @@
 
 import json
 
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
+from fiscal.models import FiscalDevice
 from fiscal.services.fdms_events import emit_metrics_updated
+from fiscal.utils import validate_device_for_tenant
 
 from .serializers import ValidationError, validate_invoice_create
 from .services import create_invoice
 
 
-@staff_member_required
+@login_required
 def invoice_create_api(request):
     """POST /api/invoices/ - Create and submit invoice to FDMS."""
     if request.method != "POST":
@@ -24,6 +26,19 @@ def invoice_create_api(request):
         validated = validate_invoice_create(body)
     except ValidationError as e:
         return JsonResponse({"error": e.message, "field": e.field}, status=400)
+
+    tenant = getattr(request, "tenant", None)
+    if tenant:
+        device = FiscalDevice.objects.filter(
+            tenant=tenant,
+            device_id=validated["device_id"],
+            is_registered=True,
+        ).first()
+        if not device:
+            return JsonResponse({"error": "Device not found or not for this tenant"}, status=403)
+        validate_device_for_tenant(device, tenant)
+        validated["tenant_id"] = str(tenant.id)
+
     try:
         receipt, err = create_invoice(validated)
     except Exception as e:

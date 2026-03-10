@@ -1,6 +1,6 @@
 """Invoice Excel import wizard. Invoice 01 / Laundry Bin / Flyquest spec."""
 
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from fiscal.models import FiscalDevice, InvoiceImport, Receipt
@@ -12,7 +12,7 @@ from fiscal.services.receipt_service import submit_receipt
 from fiscal.utils.invoice_importer import load_invoice_review, InvoiceImportError
 
 
-@staff_member_required
+@login_required
 def invoice_import_step1(request):
     """Step 1: File upload, sheet selection."""
     device = get_device_for_request(request)
@@ -69,7 +69,7 @@ def invoice_import_step1(request):
     })
 
 
-@staff_member_required
+@login_required
 def invoice_import_preview(request):
     """Step 2-3: Preview table + enrichment panel."""
     device = get_device_for_request(request)
@@ -160,7 +160,7 @@ def invoice_import_preview(request):
     })
 
 
-@staff_member_required
+@login_required
 def invoice_import_success(request, pk):
     tenant = getattr(request, "tenant", None)
     qs = Receipt.objects.filter(pk=pk)
@@ -192,7 +192,7 @@ def _resolve_tax_id_for_item(tax_rate_str, tax_options):
     return tax_options[0].get("taxID") if tax_options else None
 
 
-@staff_member_required
+@login_required
 def import_invoice_review(request):
     """
     Upload Excel (sheet "Invoice Review") and populate the New Invoice form for manual review.

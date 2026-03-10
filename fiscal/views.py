@@ -6,13 +6,13 @@ import logging
 from django.conf import settings
 
 logger = logging.getLogger("fiscal")
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
 from fiscal.forms import DeviceRegistrationForm
 from fiscal.models import FDMSApiLog, FiscalDay, FiscalDevice, Receipt
-from fiscal.utils import redact_for_ui, safe_json_dumps
+from fiscal.utils import redact_for_ui, safe_json_dumps, validate_device_for_tenant
 from fiscal.services.device_api import DeviceApiService
 from fiscal.services.device_registration import DeviceRegistrationService
 from fiscal.services.fdms_events import emit_metrics_updated
@@ -24,13 +24,13 @@ SESSION_DEVICE_KEY = "fdms_selected_device_id"
 
 
 def _get_device(device_id=None):
-    """Return first registered device or device by ID. Only for tenant-exempt paths (e.g. admin)."""
+    """Return first registered device or device by ID. Only for tenant-exempt paths (e.g. admin). Uses all_objects (no tenant context)."""
     if device_id is not None:
         try:
-            return FiscalDevice.objects.get(device_id=device_id, is_registered=True)
+            return FiscalDevice.all_objects.get(device_id=device_id, is_registered=True)
         except (FiscalDevice.DoesNotExist, TypeError, ValueError):
             return None
-    return FiscalDevice.objects.filter(is_registered=True).first()
+    return FiscalDevice.all_objects.filter(is_registered=True).first()
 
 
 def get_device_for_request(request):
@@ -59,9 +59,11 @@ def get_device_for_request(request):
                 request.session[SESSION_DEVICE_KEY] = device_id
             elif SESSION_DEVICE_KEY in request.session:
                 del request.session[SESSION_DEVICE_KEY]
+        if device:
+            validate_device_for_tenant(device, tenant)
         return device
 
-    # Tenant-exempt path (e.g. /admin/): legacy behavior.
+    # No tenant (tenant-exempt path e.g. /api/): use all_objects so devices are visible.
     if request.GET.get("device_id") or request.POST.get("device_id"):
         if device_id is not None:
             request.session[SESSION_DEVICE_KEY] = device_id
@@ -83,7 +85,7 @@ def _fetch_status_for_dashboard(device):
         return None, "FDMS Unreachable" if "connection" in err_lower or "timeout" in err_lower else str(e)
 
 
-@staff_member_required
+@login_required
 def dashboard(request):
     """Dashboard: device status, fiscal day info. Auto-refreshes. Device from GET or session. Tenant-scoped when request.tenant is set."""
     device = get_device_for_request(request)
@@ -137,7 +139,7 @@ def dashboard(request):
     return render(request, "fiscal/fiscal_day_control.html", context)
 
 
-@staff_member_required
+@login_required
 def open_day_api(request):
     """POST: Open a new fiscal day. Returns JSON. Device from POST/GET/body or session."""
     if request.method != "POST":
@@ -149,15 +151,18 @@ def open_day_api(request):
             device_id = body.get("device_id")
         except Exception:
             pass
-    device = _get_device(device_id)
+    tenant = getattr(request, "tenant", None)
+    device = get_device_for_request(request) if tenant else _get_device(device_id)
     if not device:
         return JsonResponse(
             {"success": False, "error": "No registered device"},
             status=404,
         )
+    if tenant:
+        validate_device_for_tenant(device, tenant)
     use_async = request.GET.get("async") == "1" or request.headers.get("X-Use-Celery") == "1"
     if use_async:
-        task = fiscal_tasks.open_day_task.delay(device.device_id)
+        task = fiscal_tasks.open_day_task.delay(device.device_id, tenant_id=str(tenant.id) if tenant else None)
         return JsonResponse({
             "success": True,
             "status": "queued",
@@ -177,7 +182,7 @@ def open_day_api(request):
     )
 
 
-@staff_member_required
+@login_required
 def close_day_api(request):
     """POST: Close fiscal day. Returns JSON. Device from POST/GET/body or session."""
     if request.method != "POST":
@@ -189,15 +194,18 @@ def close_day_api(request):
             device_id = body.get("device_id")
         except Exception:
             pass
-    device = _get_device(device_id)
+    tenant = getattr(request, "tenant", None)
+    device = get_device_for_request(request) if tenant else _get_device(device_id)
     if not device:
         return JsonResponse(
             {"success": False, "error": "No registered device"},
             status=404,
         )
+    if tenant:
+        validate_device_for_tenant(device, tenant)
     use_async = request.GET.get("async") == "1" or request.headers.get("X-Use-Celery") == "1"
     if use_async:
-        task = fiscal_tasks.close_day_task.delay(device.device_id)
+        task = fiscal_tasks.close_day_task.delay(device.device_id, tenant_id=str(tenant.id) if tenant else None)
         return JsonResponse({
             "success": True,
             "status": "queued",
@@ -217,7 +225,7 @@ def close_day_api(request):
     )
 
 
-@staff_member_required
+@login_required
 def submit_receipt_api(request):
     """POST: Submit receipt to FDMS. Expects JSON body with receipt data."""
     if request.method != "POST":
@@ -237,11 +245,18 @@ def submit_receipt_api(request):
             device_id = int(device_id)
         except (ValueError, TypeError):
             device_id = None
-    device = _get_device(device_id)
+    tenant = getattr(request, "tenant", None)
+    if tenant:
+        qs = FiscalDevice.objects.filter(tenant=tenant, is_registered=True)
+        device = qs.filter(device_id=device_id).first() if device_id is not None else qs.order_by("device_id").first()
+    else:
+        device = _get_device(device_id)
     if not device:
         resp = {"success": False, "error": "No registered device"}
         logger.debug("[submit_receipt_api] RESPONSE: %s", json.dumps(resp))
         return JsonResponse(resp, status=404)
+    if tenant:
+        validate_device_for_tenant(device, tenant)
 
     receipt_type = body.get("receipt_type", "FiscalInvoice")
     receipt_currency = body.get("receipt_currency", "USD")
@@ -265,6 +280,7 @@ def submit_receipt_api(request):
     if use_async:
         task = fiscal_tasks.submit_receipt_task.delay(
             device_id=device.device_id,
+            tenant_id=str(tenant.id) if tenant else None,
             fiscal_day_no=int(fiscal_day_no),
             receipt_type=receipt_type,
             receipt_currency=receipt_currency,
@@ -313,7 +329,7 @@ def submit_receipt_api(request):
     return JsonResponse(resp)
 
 
-@staff_member_required
+@login_required
 def re_sync_api(request):
     """POST: Re-sync device state from FDMS GetStatus. Returns JSON. Device from POST/GET/body or session."""
     if request.method != "POST":
@@ -330,9 +346,16 @@ def re_sync_api(request):
             device_id = int(device_id)
         except (ValueError, TypeError):
             device_id = None
-    device = _get_device(device_id)
+    tenant = getattr(request, "tenant", None)
+    if tenant:
+        qs = FiscalDevice.objects.filter(tenant=tenant, is_registered=True)
+        device = qs.filter(device_id=device_id).first() if device_id is not None else qs.order_by("device_id").first()
+    else:
+        device = _get_device(device_id)
     if not device:
         return JsonResponse({"success": False, "error": "No registered device"}, status=404)
+    if tenant:
+        validate_device_for_tenant(device, tenant)
     status_data, err = re_sync_device_from_get_status(device)
     if err:
         return JsonResponse({"success": False, "error": err}, status=400)
@@ -347,10 +370,13 @@ def re_sync_api(request):
     })
 
 
-@staff_member_required
+@login_required
 def dashboard_status_api(request):
     """GET /api/dashboard/status/ or /api/fdms/status/ - JSON of getStatus for AJAX polling. Device from GET or session."""
     device = get_device_for_request(request)
+    tenant = getattr(request, "tenant", None)
+    if device and tenant:
+        validate_device_for_tenant(device, tenant)
     if not device:
         return JsonResponse(
             {"registered": False, "error": "No registered device"},
@@ -394,10 +420,13 @@ def dashboard_status_api(request):
     )
 
 
-@staff_member_required
+@login_required
 def api_fdms_status(request):
     """GET /api/fdms/status/ - fetch live getStatus from FDMS. Device from GET or session."""
     device = get_device_for_request(request)
+    tenant = getattr(request, "tenant", None)
+    if device and tenant:
+        validate_device_for_tenant(device, tenant)
     if not device or not device.is_registered:
         return JsonResponse({"error": "FDMS unreachable"}, status=500)
 
@@ -420,7 +449,7 @@ def api_fdms_status(request):
     )
 
 
-@staff_member_required
+@login_required
 def receipt_history(request):
     """Receipt submission history page. Tenant-scoped when request.tenant is set."""
     tenant = getattr(request, "tenant", None)
@@ -449,7 +478,7 @@ def receipt_history(request):
     )
 
 
-@staff_member_required
+@login_required
 def fiscal_day_dashboard(request):
     """Fiscal day state dashboard: devices and fiscal days overview. Tenant-scoped when request.tenant is set."""
     tenant = getattr(request, "tenant", None)
@@ -471,7 +500,7 @@ def fiscal_day_dashboard(request):
     )
 
 
-@staff_member_required
+@login_required
 def fdms_logs(request):
     """FDMS API logs page: last 100 entries, filters, expandable payloads. Tenant-scoped when request.tenant is set."""
     from datetime import datetime
@@ -538,9 +567,10 @@ def fdms_logs(request):
     )
 
 
-@staff_member_required
+@login_required
 def device_register(request):
     """Device registration page: capture Device ID, Activation Key, Serial No."""
+    tenant = getattr(request, "tenant", None)
     form = DeviceRegistrationForm()
     success_message = None
     error_message = None
@@ -550,19 +580,23 @@ def device_register(request):
     if request.method == "POST":
         form = DeviceRegistrationForm(request.POST)
         if form.is_valid():
-            service = DeviceRegistrationService()
-            device, err = service.register_device(
-                device_id=form.cleaned_data["device_id"],
-                activation_key=form.cleaned_data["activation_key"],
-                device_serial_no=form.cleaned_data["device_serial_no"].strip(),
-                device_model_name=form.cleaned_data["device_model_name"].strip(),
-                device_model_version=form.cleaned_data["device_model_version"].strip(),
-            )
-            if err:
-                error_message = err
+            if not tenant:
+                error_message = "Please select a company first."
             else:
-                success_message = f"Device {device.device_id} registered successfully."
-                device_id = device.device_id
+                service = DeviceRegistrationService()
+                device, err = service.register_device(
+                    tenant=tenant,
+                    device_id=form.cleaned_data["device_id"],
+                    activation_key=form.cleaned_data["activation_key"],
+                    device_serial_no=form.cleaned_data["device_serial_no"].strip(),
+                    device_model_name=form.cleaned_data["device_model_name"].strip(),
+                    device_model_version=form.cleaned_data["device_model_version"].strip(),
+                )
+                if err:
+                    error_message = err
+                else:
+                    success_message = f"Device {device.device_id} registered successfully."
+                    device_id = device.device_id
         else:
             error_message = "Please correct the errors below."
 

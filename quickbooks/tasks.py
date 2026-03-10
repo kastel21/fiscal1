@@ -38,10 +38,22 @@ def process_qb_invoice_webhook(self, realm_id: str, invoice_id: str):
         ).order_by("created_at")
     )
 
-    # Idempotency: already have a fiscal record for this invoice?
+    # Resolve tenant from QuickBooks connection (tenant-isolated)
+    from fiscal.models import QuickBooksConnection
+    conn = QuickBooksConnection.objects.filter(realm_id=realm_id, is_active=True).select_related("tenant").first()
+    if not conn or not conn.tenant_id:
+        logger.warning(
+            "process_qb_invoice_webhook skipped: no tenant for realm_id=%s",
+            realm_id,
+            extra={"realm_id": realm_id, "invoice_id": invoice_id},
+        )
+        return
+    tenant = conn.tenant
+
+    # Idempotency: already have a fiscal record for this invoice (tenant-scoped)?
     try:
         from fiscal.models import QuickBooksInvoice
-        existing = QuickBooksInvoice.objects.filter(qb_invoice_id=invoice_id).first()
+        existing = QuickBooksInvoice.objects.filter(tenant=tenant, qb_invoice_id=invoice_id).first()
         if existing and existing.fiscalised and existing.fiscal_receipt_id:
             logger.info(
                 "QuickBooks invoice already fiscalised; skipping",
@@ -89,10 +101,10 @@ def process_qb_invoice_webhook(self, realm_id: str, invoice_id: str):
         ).update(processed=True)
         return
 
-    # Fiscalise via existing FDMS flow (do not duplicate logic)
+    # Fiscalise via existing FDMS flow (do not duplicate logic; tenant-scoped)
     try:
         from fiscal.services.qb_fiscalisation import fiscalise_qb_invoice
-        qb_inv, err = fiscalise_qb_invoice(invoice_id, payload)
+        qb_inv, err = fiscalise_qb_invoice(invoice_id, payload, tenant=tenant)
     except Exception as e:
         logger.exception(
             "Fiscalise QB invoice failed: %s",

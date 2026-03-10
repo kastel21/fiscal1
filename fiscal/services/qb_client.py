@@ -11,8 +11,8 @@ from fiscal.services.qb_oauth import get_qb_credentials, refresh_tokens
 logger = logging.getLogger("fiscal")
 
 
-def get_quickbooks_client(conn=None):
-    """Return python-quickbooks QuickBooks client or None."""
+def get_quickbooks_client(conn=None, tenant=None):
+    """Return python-quickbooks QuickBooks client or None. Requires conn or tenant (tenant-scoped)."""
     try:
         from quickbooks import QuickBooks
     except ImportError:
@@ -23,7 +23,8 @@ def get_quickbooks_client(conn=None):
     if not client_id or not client_secret:
         return None
 
-    conn = conn or QuickBooksConnection.objects.filter(is_active=True).first()
+    if conn is None and tenant is not None:
+        conn = QuickBooksConnection.objects.filter(tenant=tenant, is_active=True).first()
     if not conn or not conn.access_token_encrypted:
         return None
 

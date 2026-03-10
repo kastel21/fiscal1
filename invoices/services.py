@@ -125,12 +125,13 @@ def create_invoice(validated: dict) -> tuple[Receipt | None, str | None]:
     """
     Create and submit invoice to FDMS.
     No product linkage. Tax from dropdown only (0% or 15.5%). Never GetConfig.
+    When validated contains tenant_id, device is resolved within that tenant only.
     Returns (Receipt, None) on success, (None, error_message) on failure.
     """
-    device = FiscalDevice.objects.filter(
-        device_id=validated["device_id"],
-        is_registered=True,
-    ).first()
+    qs = FiscalDevice.objects.filter(device_id=validated["device_id"], is_registered=True)
+    if validated.get("tenant_id"):
+        qs = qs.filter(tenant_id=validated["tenant_id"])
+    device = qs.first()
     if not device:
         return None, "Device not found or not registered"
     if not device.is_vat_registered:

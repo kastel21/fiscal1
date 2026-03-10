@@ -5,8 +5,10 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 
+from tenants.models_base import TenantAwareModel
 
-class Company(models.Model):
+
+class Company(TenantAwareModel):
     """Legal entity for device registration and tax compliance."""
 
     tenant = models.ForeignKey(
@@ -35,16 +37,14 @@ class Company(models.Model):
         return self.name
 
 
-class FiscalDevice(models.Model):
-    """Fiscal device registered with ZIMRA FDMS."""
+class FiscalDevice(TenantAwareModel):
+    """Fiscal device registered with ZIMRA FDMS. Every device belongs to exactly one tenant."""
 
     tenant = models.ForeignKey(
         "tenants.Tenant",
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
         db_index=True,
-        related_name="fiscaldevice_records",
+        related_name="devices",
     )
     company = models.ForeignKey(
         Company,
@@ -88,7 +88,7 @@ class FiscalDevice(models.Model):
         return decrypt_private_key(self.private_key_pem)
 
 
-class InvoiceSequence(models.Model):
+class InvoiceSequence(TenantAwareModel):
     """Per-year invoice number sequence for INV-yyyy-N format."""
 
     tenant = models.ForeignKey(
@@ -111,7 +111,7 @@ class InvoiceSequence(models.Model):
         return f"INV-{self.year}-{self.last_number}"
 
 
-class DocumentSequence(models.Model):
+class DocumentSequence(TenantAwareModel):
     """Per-year, per-document-type sequence for CN-yyyy-N and DB-yyyy-N. Invoice uses InvoiceSequence."""
 
     tenant = models.ForeignKey(
@@ -135,7 +135,7 @@ class DocumentSequence(models.Model):
         return f"{self.document_type}-{self.year}-{self.last_number}"
 
 
-class DocumentSequenceAdjustment(models.Model):
+class DocumentSequenceAdjustment(TenantAwareModel):
     """Audit trail for manual sequence adjustments."""
 
     MODES = (
@@ -184,7 +184,7 @@ class DocumentSequenceAdjustment(models.Model):
         )
 
 
-class FiscalDay(models.Model):
+class FiscalDay(TenantAwareModel):
     """Fiscal day record for a device."""
 
     tenant = models.ForeignKey(
@@ -216,7 +216,7 @@ class FiscalDay(models.Model):
         return f"Day #{self.fiscal_day_no} ({self.status})"
 
 
-class Receipt(models.Model):
+class Receipt(TenantAwareModel):
     """Receipt captured during a fiscal day (invoice, credit note, or debit note)."""
 
     DOCUMENT_TYPES = (
@@ -519,7 +519,7 @@ class InvoiceImport(models.Model):
         ordering = ["-created_at"]
 
 
-class Customer(models.Model):
+class Customer(TenantAwareModel):
     """Customer for invoice creation. Name, TIN, address, contact details."""
 
     tenant = models.ForeignKey(
@@ -554,7 +554,7 @@ class Customer(models.Model):
         return self.name
 
 
-class Product(models.Model):
+class Product(TenantAwareModel):
     """Product with HS code for FDMS-compliant invoice creation."""
 
     tenant = models.ForeignKey(
@@ -590,7 +590,7 @@ class Product(models.Model):
         return self.name
 
 
-class FDMSConfigs(models.Model):
+class FDMSConfigs(TenantAwareModel):
     """Persisted GetConfig response. Source of truth for tax IDs, currencies, constraints."""
 
     tenant = models.ForeignKey(
@@ -616,7 +616,7 @@ class FDMSConfigs(models.Model):
         return f"FDMSConfigs device={self.device_id} fetched={self.fetched_at}"
 
 
-class TaxMapping(models.Model):
+class TaxMapping(TenantAwareModel):
     """Maps local tax codes (used in products) to FDMS taxID from GetConfig."""
 
     tenant = models.ForeignKey(
@@ -667,9 +667,14 @@ class FiscalEditAttempt(models.Model):
 
 
 class QuickBooksConnection(models.Model):
-    """OAuth 2.0 connection to QuickBooks Online. One active connection per realm."""
+    """OAuth 2.0 connection to QuickBooks Online. One connection per tenant (tenant-isolated)."""
 
-    realm_id = models.CharField(max_length=50, unique=True, db_index=True)
+    tenant = models.OneToOneField(
+        "tenants.Tenant",
+        on_delete=models.CASCADE,
+        related_name="quickbooks_connection",
+    )
+    realm_id = models.CharField(max_length=50, db_index=True)
     access_token_encrypted = models.TextField(blank=True)
     refresh_token_encrypted = models.TextField(blank=True)
     token_expires_at = models.DateTimeField(null=True, blank=True)
@@ -682,6 +687,16 @@ class QuickBooksConnection(models.Model):
         verbose_name = "QuickBooks Connection"
         verbose_name_plural = "QuickBooks Connections"
         ordering = ["-updated_at"]
+
+    def save(self, *args, **kwargs):
+        if self.access_token_encrypted and not self.access_token_encrypted.startswith("ENC:"):
+            raise ValueError("QuickBooks access token must be encrypted (FDMS_ENCRYPTION_KEY)")
+        if self.refresh_token_encrypted and not self.refresh_token_encrypted.startswith("ENC:"):
+            raise ValueError("QuickBooks refresh token must be encrypted (FDMS_ENCRYPTION_KEY)")
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"QB connection {self.realm_id or '—'} (tenant={self.tenant_id})"
 
 
 class QuickBooksEvent(models.Model):
@@ -698,9 +713,16 @@ class QuickBooksEvent(models.Model):
 
 
 class QuickBooksInvoice(models.Model):
-    """QB invoice snapshot. Stored before fiscalisation. Idempotency key = qb_invoice_id."""
+    """QB invoice snapshot. Stored before fiscalisation. Idempotency key = (tenant, qb_invoice_id)."""
 
-    qb_invoice_id = models.CharField(max_length=100, unique=True, db_index=True)
+    tenant = models.ForeignKey(
+        "tenants.Tenant",
+        on_delete=models.CASCADE,
+        related_name="qb_invoices",
+        null=True,
+        blank=True,
+    )
+    qb_invoice_id = models.CharField(max_length=100, db_index=True)
     qb_customer_id = models.CharField(max_length=100, blank=True)
     currency = models.CharField(max_length=10, default="USD")
     total_amount = models.DecimalField(max_digits=14, decimal_places=2, null=True, blank=True)
@@ -721,9 +743,12 @@ class QuickBooksInvoice(models.Model):
         verbose_name = "QuickBooks Invoice"
         verbose_name_plural = "QuickBooks Invoices"
         ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(fields=["tenant", "qb_invoice_id"], name="fiscal_qbinvoice_tenant_qb_id_uniq"),
+        ]
 
 
-class ActivityEvent(models.Model):
+class ActivityEvent(TenantAwareModel):
     """Activity feed for device operations. Broadcast to WebSocket."""
 
     tenant = models.ForeignKey(
@@ -752,7 +777,7 @@ class ActivityEvent(models.Model):
         ordering = ["-created_at"]
 
 
-class AuditEvent(models.Model):
+class AuditEvent(TenantAwareModel):
     """Audit timeline for fiscal lifecycle. Immutable."""
 
     tenant = models.ForeignKey(
@@ -780,7 +805,7 @@ class AuditEvent(models.Model):
         ordering = ["-created_at"]
 
 
-class FDMSApiLog(models.Model):
+class FDMSApiLog(TenantAwareModel):
     """Audit log for FDMS API calls (Ping, OpenDay, CloseDay, SubmitReceipt, etc.)."""
 
     tenant = models.ForeignKey(
@@ -812,7 +837,7 @@ class FDMSApiLog(models.Model):
         return f"{self.method} {self.endpoint} - {self.status_code or 'error'}"
 
 
-class ReceiptSubmissionResponse(models.Model):
+class ReceiptSubmissionResponse(TenantAwareModel):
     """
     Stores FDMS SubmitReceipt response per attempt. Links to receipt when successful.
     Used to show validation errors for an invoice/credit/debit note after submission.
@@ -847,7 +872,7 @@ class ReceiptSubmissionResponse(models.Model):
         return f"SubmitReceipt device={self.device_id} global_no={self.receipt_global_no} status={self.status_code}"
 
 
-class DebitNote(models.Model):
+class DebitNote(TenantAwareModel):
     tenant = models.ForeignKey(
         "tenants.Tenant",
         on_delete=models.CASCADE,
@@ -884,7 +909,7 @@ class DebitNote(models.Model):
         unique_together = [["tenant", "receipt_global_no"]]
 
 
-class CreditNote(models.Model):
+class CreditNote(TenantAwareModel):
     tenant = models.ForeignKey(
         "tenants.Tenant",
         on_delete=models.CASCADE,

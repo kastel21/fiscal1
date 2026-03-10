@@ -40,11 +40,6 @@ def verify_qb_webhook_signature(body: bytes, signature_header: str) -> bool:
     return hmac.compare_digest(signature_header.strip(), expected)
 
 
-def get_qb_access_token() -> str:
-    """Return QB access token from settings. Used for API calls (legacy path)."""
-    return getattr(settings, "QB_ACCESS_TOKEN", "") or ""
-
-
 def _log_qb_api_call(realm_id: str, endpoint: str, method: str, status_code: int, intuit_tid: str | None, request_body=None, response_body=None, qb_invoice_id: str | None = None):
     """Create QuickBooksAPILog entry (fiscal app has no QuickBooksToken; use quickbooks app log model)."""
     try:
@@ -66,25 +61,31 @@ def _log_qb_api_call(realm_id: str, endpoint: str, method: str, status_code: int
 def fetch_invoice_from_qb(invoice_id: str, realm_id: str, entity_name: str = "Invoice") -> dict | None:
     """
     Fetch full invoice or creditmemo from QuickBooks API.
-    Uses quickbooks.client when QuickBooksToken exists for realm_id; otherwise legacy QB_ACCESS_TOKEN.
-    Captures intuit_tid and logs to QuickBooksAPILog. Returns parsed payload or None on failure.
+    Tenant-scoped: uses QuickBooksConnection for realm_id (no global QB_ACCESS_TOKEN).
+    Returns parsed payload or None on failure.
     """
     if not realm_id or not invoice_id:
         return None
 
-    # Prefer quickbooks app client (OAuth2 token) when available
-    try:
-        from quickbooks.services import fetch_invoice
-        payload, _ = fetch_invoice(realm_id, invoice_id, entity_name=entity_name, user=None)
-        return payload
-    except Exception as e:
-        # No QuickBooksToken or quickbooks not configured; fall back to legacy token
-        if "No active QuickBooks connection" not in str(e) and "not configured" not in str(e).lower():
-            logger.warning("QuickBooks fetch via quickbooks app failed: %s; trying legacy token", e)
+    from fiscal.models import QuickBooksConnection
+    from fiscal.services.key_storage import decrypt_string
+    from fiscal.services.qb_oauth import refresh_tokens
+    from django.utils import timezone
 
-    token = get_qb_access_token()
-    if not token:
-        logger.warning("QB_ACCESS_TOKEN not set; cannot fetch from QB API")
+    conn = QuickBooksConnection.objects.filter(realm_id=realm_id, is_active=True).first()
+    if not conn or not conn.access_token_encrypted:
+        logger.warning("No QuickBooks connection for realm_id=%s", realm_id)
+        return None
+    if conn.token_expires_at and conn.token_expires_at <= timezone.now():
+        ok, err = refresh_tokens(conn)
+        if not ok:
+            logger.warning("QB token refresh failed for realm %s: %s", realm_id, err)
+            return None
+        conn.refresh_from_db()
+    try:
+        token = decrypt_string(conn.access_token_encrypted)
+    except Exception as e:
+        logger.warning("QB token decrypt failed: %s", e)
         return None
 
     resource = "creditmemo" if entity_name == "CreditMemo" else "invoice"
@@ -131,6 +132,7 @@ def fetch_invoice_from_qb(invoice_id: str, realm_id: str, entity_name: str = "In
 def handle_qb_event(entity_name: str, entity_id: str, realm_id: str) -> None:
     """
     Handle a single QB webhook event (Invoice or CreditMemo Create).
+    Resolves tenant from QuickBooksConnection(realm_id); uses that tenant's device.
     - Idempotent by qb_id: if Receipt with qb_id=entity_id exists, return.
     - Fetch full invoice/creditmemo from QB API.
     - Create local Receipt: qb_id, receipt_type, currency, receipt_total, status=PENDING.
@@ -141,6 +143,14 @@ def handle_qb_event(entity_name: str, entity_id: str, realm_id: str) -> None:
         return
     if not entity_id or not realm_id:
         return
+
+    from fiscal.models import QuickBooksConnection
+
+    conn = QuickBooksConnection.objects.filter(realm_id=realm_id, is_active=True).select_related("tenant").first()
+    if not conn or not conn.tenant_id:
+        logger.warning("No tenant for QuickBooks realm_id=%s; skipping webhook", realm_id)
+        return
+    tenant = conn.tenant
 
     if Receipt.objects.filter(qb_id=entity_id).exists():
         return  # idempotency
@@ -166,9 +176,9 @@ def handle_qb_event(entity_name: str, entity_id: str, realm_id: str) -> None:
 
     receipt_type = "CREDITNOTE" if entity_name == "CreditMemo" else "FISCALINVOICE"
 
-    device = FiscalDevice.objects.filter(is_registered=True).first()
+    device = FiscalDevice.objects.filter(tenant=tenant, is_registered=True).first()
     if not device:
-        logger.warning("No registered fiscal device; cannot create Receipt for qb_id=%s", entity_id)
+        logger.warning("No registered fiscal device for tenant %s; cannot create Receipt for qb_id=%s", tenant.slug, entity_id)
         return
 
     receipt = Receipt.objects.create(

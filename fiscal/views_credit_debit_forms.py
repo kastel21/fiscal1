@@ -5,7 +5,7 @@ Views for Credit Note and Debit Note form-based creation.
 import json
 
 from django.contrib import messages
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
@@ -54,7 +54,7 @@ def _serialize_invoices(invoices: list) -> str:
     return json.dumps(out)
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["GET", "POST"])
 def credit_note_form_view(request):
     """Credit Note form: select invoice, reason, items, refund method."""
@@ -137,7 +137,7 @@ def credit_note_form_view(request):
     })
 
 
-@staff_member_required
+@login_required
 def api_credit_note_form_invoices(request):
     """GET /api/credit-note-form/invoices/ - Enriched invoices for credit note form dropdown."""
     device = get_device_for_request(request)
@@ -168,7 +168,7 @@ def api_credit_note_form_invoices(request):
     return JsonResponse({"invoices": out})
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["GET", "POST"])
 def debit_note_form_view(request):
     """Debit Note form: select invoice, reason, add lines or charge amount."""

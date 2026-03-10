@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default:"Tenant Onboarding" }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .form-input { border: 1px solid #cbd5e1; border-radius: 0.375rem; padding: 0.5rem 0.75rem; }
+        .form-input:focus { outline: none; ring: 2px; border-color: #3b82f6; }
+        .errorlist { color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem; list-style: none; padding-left: 0; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen p-4 sm:p-6">
+    <div class="max-w-2xl mx-auto">
+        <div class="bg-white rounded-xl shadow border border-slate-200 overflow-hidden">
+            <div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+                <div>
+                    <h1 class="text-xl font-semibold">{{ title|default:"Tenant Onboarding" }}</h1>
+                    <p class="text-slate-300 text-sm mt-0.5">Create tenant, assign users, add device</p>
+                </div>
+                <a href="{% url 'admin:index' %}" class="text-sm px-3 py-1.5 rounded-lg bg-slate-600 hover:bg-slate-500 text-slate-200 transition">Admin</a>
+            </div>
+            <div class="p-6">
+                {% if form.non_field_errors %}
+                    <ul class="errorlist mb-4 p-3 bg-red-50 border border-red-200 rounded">
+                        {% for err in form.non_field_errors %}<li>{{ err }}</li>{% endfor %}
+                    </ul>
+                {% endif %}
+                <form method="post" action="{% url 'tenant_onboarding' %}" class="space-y-8">
+                    {% csrf_token %}
+
+                    <section>
+                        <h2 class="text-lg font-semibold text-slate-800 border-b border-slate-200 pb-2 mb-4">Company Information</h2>
+                        <div class="grid gap-4 sm:grid-cols-1">
+                            <div>
+                                <label for="id_company_name" class="block text-sm font-medium text-slate-700 mb-1">{{ form.company_name.label }}</label>
+                                {{ form.company_name }}
+                                {% if form.company_name.errors %}<ul class="errorlist">{{ form.company_name.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_slug" class="block text-sm font-medium text-slate-700 mb-1">{{ form.slug.label }}</label>
+                                {{ form.slug }}
+                                {% if form.slug.help_text %}<p class="text-xs text-slate-500 mt-1">{{ form.slug.help_text }}</p>{% endif %}
+                                {% if form.slug.errors %}<ul class="errorlist">{{ form.slug.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_tin" class="block text-sm font-medium text-slate-700 mb-1">{{ form.tin.label }}</label>
+                                {{ form.tin }}
+                                {% if form.tin.errors %}<ul class="errorlist">{{ form.tin.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_vat_number" class="block text-sm font-medium text-slate-700 mb-1">{{ form.vat_number.label }}</label>
+                                {{ form.vat_number }}
+                                {% if form.vat_number.errors %}<ul class="errorlist">{{ form.vat_number.errors }}</ul>{% endif %}
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label for="id_address" class="block text-sm font-medium text-slate-700 mb-1">{{ form.address.label }}</label>
+                                {{ form.address }}
+                                {% if form.address.errors %}<ul class="errorlist">{{ form.address.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_phone" class="block text-sm font-medium text-slate-700 mb-1">{{ form.phone.label }}</label>
+                                {{ form.phone }}
+                                {% if form.phone.errors %}<ul class="errorlist">{{ form.phone.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_email" class="block text-sm font-medium text-slate-700 mb-1">{{ form.email.label }}</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}<ul class="errorlist">{{ form.email.errors }}</ul>{% endif %}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-lg font-semibold text-slate-800 border-b border-slate-200 pb-2 mb-4">User Setup</h2>
+                        <div class="grid gap-4 sm:grid-cols-1">
+                            <div>
+                                <label for="id_username" class="block text-sm font-medium text-slate-700 mb-1">{{ form.username.label }}</label>
+                                {{ form.username }}
+                                {% if form.username.errors %}<ul class="errorlist">{{ form.username.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_email_user" class="block text-sm font-medium text-slate-700 mb-1">{{ form.email_user.label }}</label>
+                                {{ form.email_user }}
+                                {% if form.email_user.errors %}<ul class="errorlist">{{ form.email_user.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_password" class="block text-sm font-medium text-slate-700 mb-1">{{ form.password.label }}</label>
+                                {{ form.password }}
+                                {% if form.password.help_text %}<p class="text-xs text-slate-500 mt-1">{{ form.password.help_text }}</p>{% endif %}
+                                {% if form.password.errors %}<ul class="errorlist">{{ form.password.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_role" class="block text-sm font-medium text-slate-700 mb-1">{{ form.role.label }}</label>
+                                {{ form.role }}
+                                {% if form.role.errors %}<ul class="errorlist">{{ form.role.errors }}</ul>{% endif %}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-lg font-semibold text-slate-800 border-b border-slate-200 pb-2 mb-4">Device Setup</h2>
+                        <div class="grid gap-4 sm:grid-cols-1">
+                            <div>
+                                <label for="id_device_id" class="block text-sm font-medium text-slate-700 mb-1">{{ form.device_id.label }}</label>
+                                {{ form.device_id }}
+                                {% if form.device_id.errors %}<ul class="errorlist">{{ form.device_id.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_device_serial_no" class="block text-sm font-medium text-slate-700 mb-1">{{ form.device_serial_no.label }}</label>
+                                {{ form.device_serial_no }}
+                                {% if form.device_serial_no.errors %}<ul class="errorlist">{{ form.device_serial_no.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_device_model" class="block text-sm font-medium text-slate-700 mb-1">{{ form.device_model.label }}</label>
+                                {{ form.device_model }}
+                                {% if form.device_model.errors %}<ul class="errorlist">{{ form.device_model.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_certificate_pem" class="block text-sm font-medium text-slate-700 mb-1">{{ form.certificate_pem.label }}</label>
+                                {{ form.certificate_pem }}
+                                {% if form.certificate_pem.help_text %}<p class="text-xs text-slate-500 mt-1">{{ form.certificate_pem.help_text }}</p>{% endif %}
+                                {% if form.certificate_pem.errors %}<ul class="errorlist">{{ form.certificate_pem.errors }}</ul>{% endif %}
+                            </div>
+                            <div>
+                                <label for="id_private_key_pem" class="block text-sm font-medium text-slate-700 mb-1">{{ form.private_key_pem.label }}</label>
+                                {{ form.private_key_pem }}
+                                {% if form.private_key_pem.help_text %}<p class="text-xs text-slate-500 mt-1">{{ form.private_key_pem.help_text }}</p>{% endif %}
+                                {% if form.private_key_pem.errors %}<ul class="errorlist">{{ form.private_key_pem.errors }}</ul>{% endif %}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h2 class="text-lg font-semibold text-slate-800 border-b border-slate-200 pb-2 mb-4">Registration</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2">
+                                {{ form.register_device_now }}
+                                <label for="id_register_device_now" class="text-sm font-medium text-slate-700">{{ form.register_device_now.label }}</label>
+                            </div>
+                            {% if form.register_device_now.errors %}<ul class="errorlist">{{ form.register_device_now.errors }}</ul>{% endif %}
+                            <div>
+                                <label for="id_activation_key" class="block text-sm font-medium text-slate-700 mb-1">{{ form.activation_key.label }}</label>
+                                {{ form.activation_key }}
+                                {% if form.activation_key.errors %}<ul class="errorlist">{{ form.activation_key.errors }}</ul>{% endif %}
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-slate-200">
+                        <a href="{% url 'admin:tenants_tenant_changelist' %}" class="text-slate-600 hover:text-slate-800">Cancel</a>
+                        <button type="submit" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg font-medium transition">Create Tenant</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

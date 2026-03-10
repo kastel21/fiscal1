@@ -147,9 +147,17 @@ class InvoiceImportAdmin(admin.ModelAdmin):
 
 @admin.register(QuickBooksConnection)
 class QuickBooksConnectionAdmin(admin.ModelAdmin):
-    list_display = ("realm_id", "company_name", "is_active", "token_expires_at", "updated_at")
+    list_display = ("tenant", "realm_id", "company_name", "is_active", "token_expires_at", "updated_at")
     list_filter = ("is_active",)
-    readonly_fields = ("realm_id", "token_expires_at", "created_at", "updated_at")
+    readonly_fields = (
+        "tenant",
+        "realm_id",
+        "access_token_encrypted",
+        "refresh_token_encrypted",
+        "token_expires_at",
+        "created_at",
+        "updated_at",
+    )
 
 
 @admin.register(QuickBooksEvent)

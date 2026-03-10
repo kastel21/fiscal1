@@ -30,6 +30,7 @@ urlpatterns = [
     path("api/token/", views_auth.CustomTokenObtainPairView.as_view()),
     path("api/token/refresh/", TokenRefreshView.as_view()),
     path("api/company/", views_management.api_company),
+    path("api/config/env/", views_management.api_config_env),
     path("api/config/taxes/", views_management.api_config_taxes),
     path("api/tax-mappings/", views_management.api_tax_mappings_list),
     path("api/tax-mappings/<int:pk>/", views_management.api_tax_mapping_detail),

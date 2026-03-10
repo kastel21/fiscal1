@@ -82,7 +82,7 @@ def store_receipt_submission_response(
         fallback_text=fallback,
     )
 
-    obj = ReceiptSubmissionResponse.objects.create(
+    create_kw = dict(
         device=device,
         receipt_global_no=receipt_global_no,
         receipt=receipt,
@@ -91,6 +91,9 @@ def store_receipt_submission_response(
         response_payload=response_payload,
         validation_errors=validation_errors,
     )
+    if getattr(device, "tenant_id", None) is not None:
+        create_kw["tenant_id"] = device.tenant_id
+    obj = ReceiptSubmissionResponse.objects.create(**create_kw)
     return obj
 
 

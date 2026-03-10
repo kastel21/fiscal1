@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "./Sidebar";
 import Topbar from "./Topbar";
+import TestEnvBanner from "./TestEnvBanner";
 import { DeviceProvider, useDevice } from "../context/DeviceContext";
 
 function LayoutInner({ children, onViewChange }) {
@@ -13,11 +14,11 @@ function LayoutInner({ children, onViewChange }) {
       <div className="flex-1 flex flex-col min-w-0">
         <Topbar
           onViewChange={onViewChange}
-          currentView={currentView}
           devices={devices}
           selectedDevice={selectedDevice}
           onDeviceChange={setSelectedDevice}
         />
+        <TestEnvBanner />
         <main className="flex-1 p-6 overflow-auto">
           {children}
         </main>

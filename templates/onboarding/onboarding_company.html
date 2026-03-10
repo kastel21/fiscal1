@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Onboarding — Step 1: Company</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="max-w-2xl mx-auto py-10 px-6">
+        <div class="mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">Set up your company</h1>
+            <p class="text-gray-500 mt-0.5">Step 1 of 3 — Create your company</p>
+        </div>
+
+        <!-- Step indicator: Company → Device → Register -->
+        <nav class="flex items-center justify-between mb-8 text-sm" aria-label="Onboarding steps">
+            <span class="flex items-center">
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white font-semibold">1</span>
+                <span class="ml-2 font-medium text-gray-800">Company</span>
+            </span>
+            <span class="flex-1 h-0.5 mx-2 bg-gray-300" aria-hidden="true"></span>
+            <span class="flex items-center text-gray-400">
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 font-medium">2</span>
+                <span class="ml-2">Device</span>
+            </span>
+            <span class="flex-1 h-0.5 mx-2 bg-gray-300" aria-hidden="true"></span>
+            <span class="flex items-center text-gray-400">
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 font-medium">3</span>
+                <span class="ml-2">Register</span>
+            </span>
+        </nav>
+
+        {% if form.errors %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <p class="font-semibold">Please correct the errors below.</p>
+            {% if form.non_field_errors %}
+                <ul class="mt-1 list-disc list-inside">{{ form.non_field_errors }}</ul>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'onboarding_company' %}" class="bg-white shadow rounded-lg p-6">
+            {% csrf_token %}
+
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Company Information</h2>
+
+            <label class="block text-sm font-medium text-gray-700">Company Name</label>
+            <input type="text" name="company_name" value="{{ form.company_name.value|default:'' }}" maxlength="255"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+            {% if form.company_name.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.company_name.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">Slug</label>
+            <input type="text" name="slug" value="{{ form.slug.value|default:'' }}" maxlength="64"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2" placeholder="acme-ltd">
+            {% if form.slug.help_text %}<p class="text-xs text-gray-500 mt-1">{{ form.slug.help_text }}</p>{% endif %}
+            {% if form.slug.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.slug.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">Device ID</label>
+            <input type="number" name="device_id" value="{{ form.device_id.value|default:'' }}" min="1"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">
+            {% if form.device_id.help_text %}<p class="text-xs text-gray-500 mt-1">{{ form.device_id.help_text }}</p>{% endif %}
+            {% if form.device_id.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.device_id.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">TIN</label>
+            <input type="text" name="tin" value="{{ form.tin.value|default:'' }}" maxlength="50"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">
+            {% if form.tin.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.tin.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">VAT Number</label>
+            <input type="text" name="vat_number" value="{{ form.vat_number.value|default:'' }}" maxlength="50"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">
+            {% if form.vat_number.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.vat_number.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">Address</label>
+            <textarea name="address" rows="2" class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">{{ form.address.value|default:'' }}</textarea>
+            {% if form.address.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.address.errors }}</ul>{% endif %}
+
+            <div class="mt-8 flex justify-end">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg">
+                    Continue to Device
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

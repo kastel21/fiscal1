@@ -8,6 +8,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from django.db import transaction
+from django.utils import timezone
 
 from fiscal.models import FiscalDevice, QuickBooksInvoice, Receipt
 from fiscal.services.config_service import get_latest_configs, validate_against_configs
@@ -137,14 +138,18 @@ def map_qb_invoice_to_fdms(qb_payload: dict, device: FiscalDevice) -> tuple[dict
     }, None
 
 
-def fiscalise_qb_invoice(qb_invoice_id: str, qb_payload: dict) -> tuple[QuickBooksInvoice | None, str | None]:
+def fiscalise_qb_invoice(
+    qb_invoice_id: str, qb_payload: dict, tenant=None
+) -> tuple[QuickBooksInvoice | None, str | None]:
     """
-    Store QB invoice, map to FDMS, submit, store receipt. Idempotent.
-    Returns (QuickBooksInvoice, None) or (None, error_message).
+    Store QB invoice, map to FDMS, submit, store receipt. Idempotent per (tenant, qb_invoice_id).
+    Requires tenant for tenant-scoped device and invoice. Returns (QuickBooksInvoice, None) or (None, error_message).
     """
-    device = FiscalDevice.objects.filter(is_registered=True).first()
+    if not tenant:
+        return None, "Tenant required for QuickBooks fiscalisation"
+    device = FiscalDevice.objects.filter(tenant=tenant, is_registered=True).first()
     if not device:
-        return None, "No registered fiscal device"
+        return None, "No registered fiscal device for this tenant"
 
     cust_ref = qb_payload.get("CustomerRef")
     qb_customer_id = ""
@@ -160,6 +165,7 @@ def fiscalise_qb_invoice(qb_invoice_id: str, qb_payload: dict) -> tuple[QuickBoo
 
     with transaction.atomic():
         qb_inv, created = QuickBooksInvoice.objects.get_or_create(
+            tenant=tenant,
             qb_invoice_id=qb_invoice_id,
             defaults={
                 "qb_customer_id": qb_customer_id,
@@ -207,7 +213,7 @@ def fiscalise_qb_invoice(qb_invoice_id: str, qb_payload: dict) -> tuple[QuickBoo
         receipt_payments=payload["receipt_payments"],
         receipt_total=payload["receipt_total"],
         receipt_lines_tax_inclusive=True,
-        receipt_date=datetime.now(),
+        receipt_date=timezone.now(),
     )
 
     if receipt:

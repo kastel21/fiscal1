@@ -2,21 +2,32 @@
 
 import json
 
-from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from .models import Company, Customer, FiscalDevice, Product, TaxMapping
+from .utils import validate_device_for_tenant
 from .services.config_service import (
     TAX_CODE_MAX_LENGTH,
     get_latest_configs,
     get_tax_id_to_percent,
     get_tax_table_from_configs,
 )
+from django.conf import settings
 from .services.device_api import DeviceApiService
 
 
-@staff_member_required
+@login_required
+@require_http_methods(["GET"])
+def api_config_env(request):
+    """GET /api/config/env/ - Returns FDMS environment (TEST, STAGING, PROD) for frontend banner."""
+    fdms_env = getattr(settings, "FDMS_ENV", "TEST")
+    return JsonResponse({"fdms_env": fdms_env})
+
+
+@login_required
 def api_config_taxes(request):
     """GET /api/config/taxes/ - Tax options. Use source=getconfig for FDMS tax dropdown on tax mapping form.
     Default: TaxMapping (invoice dropdown). source=getconfig: saved GetConfig applicableTaxes only."""
@@ -25,7 +36,7 @@ def api_config_taxes(request):
     source_getconfig = request.GET.get("source", "").lower() == "getconfig"
     source_invoice = request.GET.get("source", "").lower() == "invoice"
     configs = get_latest_configs(did)
-    device = FiscalDevice.objects.filter(device_id=did, is_registered=True).first() if did else None
+    device = FiscalDevice.all_objects.filter(device_id=did, is_registered=True).first() if did else None
     is_vat_registered = bool(device and device.is_vat_registered)
 
     # Invoice dropdown: FDMS applicableTaxes (Exempt, Zero rated, 514, 517)
@@ -159,7 +170,7 @@ def _require_operator(request):
     return _require_admin(request) or request.user.groups.filter(name="operator").exists()
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["GET", "PUT"])
 def api_company(request):
     """GET/PUT /api/company/ - Single company (first). Admin only."""
@@ -200,11 +211,11 @@ def api_company(request):
     return JsonResponse({"success": True, "company": {"id": company.id}})
 
 
-@staff_member_required
+@login_required
 def api_devices_list(request):
     """GET /api/devices/ - List devices."""
     if request.method == "GET":
-        devices = FiscalDevice.objects.select_related("company").filter(is_registered=True).order_by("device_id")
+        devices = FiscalDevice.all_objects.select_related("company").filter(is_registered=True).order_by("device_id")
         data = [
             {
                 "id": d.pk,
@@ -221,13 +232,19 @@ def api_devices_list(request):
     return JsonResponse({"error": "Use device registration page to add devices"}, status=405)
 
 
-@staff_member_required
+@login_required
 def api_device_certificate_status(request, pk):
     """GET /api/devices/{id}/certificate-status/ - For CertificateExpiry widget."""
     try:
-        device = FiscalDevice.objects.get(pk=pk, is_registered=True)
+        device = FiscalDevice.all_objects.get(pk=pk, is_registered=True)
     except FiscalDevice.DoesNotExist:
         return JsonResponse({"error": "Device not found"}, status=404)
+    tenant = getattr(request, "tenant", None)
+    if tenant:
+        try:
+            validate_device_for_tenant(device, tenant)
+        except PermissionDenied as e:
+            return JsonResponse({"error": str(e)}, status=403)
     valid_till = device.certificate_valid_till
     if not valid_till:
         return JsonResponse({"expiresOn": None, "daysRemaining": None})
@@ -241,13 +258,19 @@ def api_device_certificate_status(request, pk):
     })
 
 
-@staff_member_required
+@login_required
 def api_device_detail(request, pk):
     """GET /api/devices/{id}/ - Device detail."""
     try:
-        device = FiscalDevice.objects.get(pk=pk, is_registered=True)
+        device = FiscalDevice.all_objects.get(pk=pk, is_registered=True)
     except FiscalDevice.DoesNotExist:
         return JsonResponse({"error": "Device not found"}, status=404)
+    tenant = getattr(request, "tenant", None)
+    if tenant:
+        try:
+            validate_device_for_tenant(device, tenant)
+        except PermissionDenied as e:
+            return JsonResponse({"error": str(e)}, status=403)
     if request.method == "GET":
         return JsonResponse({
             "device": {
@@ -262,13 +285,19 @@ def api_device_detail(request, pk):
     return JsonResponse({"error": "Method not allowed"}, status=405)
 
 
-@staff_member_required
+@login_required
 def api_device_open_day(request, pk):
     """POST /api/devices/{id}/open-day/"""
     try:
-        device = FiscalDevice.objects.get(pk=pk, is_registered=True)
+        device = FiscalDevice.all_objects.get(pk=pk, is_registered=True)
     except FiscalDevice.DoesNotExist:
         return JsonResponse({"error": "Device not found"}, status=404)
+    tenant = getattr(request, "tenant", None)
+    if tenant:
+        try:
+            validate_device_for_tenant(device, tenant)
+        except PermissionDenied as e:
+            return JsonResponse({"error": str(e)}, status=403)
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
     service = DeviceApiService()
@@ -280,13 +309,19 @@ def api_device_open_day(request, pk):
     return JsonResponse({"success": True, "fiscal_day_no": fiscal_day.fiscal_day_no})
 
 
-@staff_member_required
+@login_required
 def api_device_close_day(request, pk):
     """POST /api/devices/{id}/close-day/"""
     try:
-        device = FiscalDevice.objects.get(pk=pk, is_registered=True)
+        device = FiscalDevice.all_objects.get(pk=pk, is_registered=True)
     except FiscalDevice.DoesNotExist:
         return JsonResponse({"error": "Device not found"}, status=404)
+    tenant = getattr(request, "tenant", None)
+    if tenant:
+        try:
+            validate_device_for_tenant(device, tenant)
+        except PermissionDenied as e:
+            return JsonResponse({"error": str(e)}, status=403)
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
     service = DeviceApiService()
@@ -298,13 +333,19 @@ def api_device_close_day(request, pk):
     return JsonResponse({"success": True, "operation_id": data.get("operationID")})
 
 
-@staff_member_required
+@login_required
 def api_device_ping(request, pk):
     """POST /api/devices/{id}/ping/ - Report device is online to FDMS (section 4.13)."""
     try:
-        device = FiscalDevice.objects.get(pk=pk, is_registered=True)
+        device = FiscalDevice.all_objects.get(pk=pk, is_registered=True)
     except FiscalDevice.DoesNotExist:
         return JsonResponse({"error": "Device not found"}, status=404)
+    tenant = getattr(request, "tenant", None)
+    if tenant:
+        try:
+            validate_device_for_tenant(device, tenant)
+        except PermissionDenied as e:
+            return JsonResponse({"error": str(e)}, status=403)
     if request.method != "POST":
         return JsonResponse({"error": "Method not allowed"}, status=405)
     service = DeviceApiService()
@@ -318,7 +359,7 @@ def api_device_ping(request, pk):
     })
 
 
-@staff_member_required
+@login_required
 def api_products_list(request):
     """GET /api/products/ - List. POST - create. Admin only."""
     if not _require_admin(request):
@@ -356,7 +397,7 @@ def api_products_list(request):
     return JsonResponse({"success": True})
 
 
-@staff_member_required
+@login_required
 def api_product_detail(request, pk):
     """GET/PUT/DELETE /api/products/{id}/. Admin only."""
     if not _require_admin(request):
@@ -393,7 +434,7 @@ def api_product_detail(request, pk):
     return JsonResponse({"error": "Method not allowed"}, status=405)
 
 
-@staff_member_required
+@login_required
 def api_customers_list(request):
     """GET /api/customers/ - List. POST - create. Admin only."""
     if not _require_admin(request):
@@ -429,7 +470,7 @@ def api_customers_list(request):
     return JsonResponse({"success": True})
 
 
-@staff_member_required
+@login_required
 def api_customer_detail(request, pk):
     """GET/PUT/DELETE /api/customers/{id}/. Admin only."""
     if not _require_admin(request):
@@ -468,7 +509,7 @@ def api_customer_detail(request, pk):
 # --- Tax Mappings ---
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["GET", "POST"])
 def api_tax_mappings_list(request):
     """GET /api/tax-mappings/ - List. POST - Create."""
@@ -519,7 +560,7 @@ def api_tax_mappings_list(request):
     return JsonResponse({"success": True, "tax_mapping": {"id": m.id}})
 
 
-@staff_member_required
+@login_required
 @require_http_methods(["GET", "PUT", "DELETE"])
 def api_tax_mapping_detail(request, pk):
     """GET/PUT/DELETE /api/tax-mappings/<id>/"""

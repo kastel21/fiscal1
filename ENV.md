@@ -61,8 +61,8 @@ Set these in your environment or in a `.env` file in the project root (loaded au
 | `QB_CLIENT_SECRET` | If using legacy QB | Intuit app client secret. | From developer.intuit.com |
 | `QB_REDIRECT_URI` | If using legacy QB | OAuth redirect URI. | `https://takatel.tech/...` |
 | `QB_WEBHOOK_VERIFIER` | **Webhooks** | Webhook verifier token (HMAC). Required for `/qb/webhook/` and `/api/qb/webhook/`. | From Intuit app webhook config |
-| `QB_REALM_ID` | If using legacy QB | QuickBooks company ID. | From Intuit |
-| `QB_ACCESS_TOKEN` | If using legacy QB | Static access token (legacy path when no OAuth token). | From Intuit |
+
+**Note:** The app uses per-tenant OAuth tokens only. Do not use global `QB_REALM_ID` / `QB_ACCESS_TOKEN`; they have been removed from settings.
 
 ---
 

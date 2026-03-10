@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Company</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="max-w-2xl mx-auto py-10 px-6">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Create Company</h1>
+                <p class="text-gray-500 mt-0.5">Add your company to get started.</p>
+            </div>
+            <a href="{% url 'select_tenant' %}" class="text-sm font-medium text-gray-600 hover:text-gray-800">← Back</a>
+        </div>
+
+        {% if form.errors %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <p class="font-semibold">Please correct the errors below.</p>
+            {% if form.non_field_errors %}
+                <ul class="mt-1 list-disc list-inside">{{ form.non_field_errors }}</ul>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'create_company' %}" class="bg-white shadow rounded-lg p-6">
+            {% csrf_token %}
+
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Company Information</h2>
+
+            <label class="block text-sm font-medium text-gray-700">Company Name</label>
+            <input type="text" name="company_name" value="{{ form.company_name.value|default:'' }}" maxlength="255"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+            {% if form.company_name.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.company_name.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">Slug <span class="text-gray-400 font-normal">(optional – leave blank to generate from company name)</span></label>
+            <input type="text" name="slug" value="{{ form.slug.value|default:'' }}" maxlength="64"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2" placeholder="Leave blank to auto-generate">
+            {% if form.slug.help_text %}<p class="text-xs text-gray-500 mt-1">{{ form.slug.help_text }}</p>{% endif %}
+            {% if form.slug.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.slug.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">Device ID</label>
+            <input type="number" name="device_id" value="{{ form.device_id.value|default:'' }}" min="1"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">
+            {% if form.device_id.help_text %}<p class="text-xs text-gray-500 mt-1">{{ form.device_id.help_text }}</p>{% endif %}
+            {% if form.device_id.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.device_id.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">TIN</label>
+            <input type="text" name="tin" value="{{ form.tin.value|default:'' }}" maxlength="50"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">
+            {% if form.tin.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.tin.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">VAT Number</label>
+            <input type="text" name="vat_number" value="{{ form.vat_number.value|default:'' }}" maxlength="50"
+                class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">
+            {% if form.vat_number.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.vat_number.errors }}</ul>{% endif %}
+
+            <label class="block mt-4 text-sm font-medium text-gray-700">Address</label>
+            <textarea name="address" rows="2" class="mt-1 w-full border border-gray-300 rounded-md px-3 py-2">{{ form.address.value|default:'' }}</textarea>
+            {% if form.address.errors %}<ul class="text-red-600 text-sm mt-1">{{ form.address.errors }}</ul>{% endif %}
+
+            <div class="mt-8 flex justify-end">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg">
+                    Create Company
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -78,7 +78,15 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "fdms_project.urls"
-LOGIN_URL = "/admin/login/"
+
+# FiscalFlow branding (exposed to templates via context processor)
+SYSTEM_NAME = "FiscalFlow"
+SYSTEM_TAGLINE = "Seamless ZIMRA Fiscal Integration"
+
+# Custom login: use /login/ instead of admin; redirect to dashboard after login
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/dashboard/"
+LOGOUT_REDIRECT_URL = "/login/"
 
 TEMPLATES = [
     {
@@ -90,6 +98,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "fdms_project.context_processors.branding",
                 "dashboard.context_processors.dashboard_nav",
                 "fiscal.context_processors.fdms_device",
                 "legal.context_processors.eula_banner",
@@ -234,8 +243,6 @@ QB_CLIENT_SECRET = os.environ.get("QB_CLIENT_SECRET", "")
 QB_REDIRECT_URI = os.environ.get("QB_REDIRECT_URI", "")
 # Webhook signature verification (HMAC SHA256). Required for /qb/webhook/ and /api/qb/webhook/
 QB_WEBHOOK_VERIFIER = os.environ.get("QB_WEBHOOK_VERIFIER", "")
-QB_REALM_ID = os.environ.get("QB_REALM_ID", "")
-QB_ACCESS_TOKEN = os.environ.get("QB_ACCESS_TOKEN", "")
 
 # QuickBooks OAuth2 (quickbooks app) - use env only.
 QUICKBOOKS_CLIENT_ID = os.environ.get("QUICKBOOKS_CLIENT_ID", "")
@@ -324,3 +331,6 @@ CSRF_COOKIE_SECURE = SECURE_SSL_REDIRECT
 # Tenant key paths: store outside project directory (e.g. /var/secrets/tenants/<slug>/private.pem)
 # Set TENANT_KEYS_BASE_PATH in production; Tenant.private_key_path is relative or absolute.
 TENANT_KEYS_BASE_PATH = os.environ.get("TENANT_KEYS_BASE_PATH", "")
+# If True, honor X-Tenant-Slug header when X-Internal-Client is present (for internal API clients).
+# Normal web users always use session only; superusers always honor the header.
+TENANT_HEADER_FOR_INTERNAL_API = os.environ.get("TENANT_HEADER_FOR_INTERNAL_API", "false").lower() in ("1", "true", "yes")

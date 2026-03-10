@@ -51,14 +51,19 @@ def get_authorize_url(state: str = "", request=None) -> str | None:
     return f"{INTUIT_AUTH_URL}?{qs}"
 
 
-def exchange_code_for_tokens(code: str, redirect_uri: str, realm_id: str) -> tuple[dict | None, str | None]:
+def exchange_code_for_tokens(
+    code: str, redirect_uri: str, realm_id: str, tenant=None
+) -> tuple[dict | None, str | None]:
     """
     Exchange authorization code for access and refresh tokens.
+    Stores connection for the given tenant (tenant-isolated).
     Returns (token_dict, None) or (None, error_message).
     """
     client_id, client_secret = get_qb_credentials()
     if not client_id or not client_secret:
         return None, "QB_CLIENT_ID and QB_CLIENT_SECRET required"
+    if not tenant:
+        return None, "Tenant required for QuickBooks connection"
 
     resp = requests.post(
         INTUIT_TOKEN_URL,
@@ -90,15 +95,19 @@ def exchange_code_for_tokens(code: str, redirect_uri: str, realm_id: str) -> tup
     expires_at = timezone.now() + timedelta(seconds=expires_in)
 
     conn, _ = QuickBooksConnection.objects.update_or_create(
-        realm_id=realm_id,
+        tenant=tenant,
         defaults={
+            "realm_id": realm_id,
             "access_token_encrypted": encrypt_string(access),
             "refresh_token_encrypted": encrypt_string(refresh),
             "token_expires_at": expires_at,
             "is_active": True,
         },
     )
-    logger.info("QB OAuth: tokens stored for realm %s", realm_id)
+    logger.info(
+        "QuickBooks connection updated",
+        extra={"tenant": tenant.slug, "realm_id": realm_id, "event": "tokens_stored"},
+    )
     return {"realm_id": realm_id}, None
 
 
@@ -141,5 +150,8 @@ def refresh_tokens(conn: QuickBooksConnection) -> tuple[bool, str | None]:
     conn.refresh_token_encrypted = encrypt_string(refresh)
     conn.token_expires_at = timezone.now() + timedelta(seconds=expires_in)
     conn.save(update_fields=["access_token_encrypted", "refresh_token_encrypted", "token_expires_at", "updated_at"])
-    logger.info("QB OAuth: tokens refreshed for realm %s", conn.realm_id)
+    logger.info(
+        "QuickBooks connection updated",
+        extra={"tenant_id": conn.tenant_id, "realm_id": conn.realm_id, "event": "tokens_refreshed"},
+    )
     return True, None

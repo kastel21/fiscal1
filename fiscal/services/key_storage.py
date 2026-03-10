@@ -63,10 +63,14 @@ def is_encryption_available() -> bool:
 
 
 def encrypt_string(plain: str) -> str:
-    """Encrypt string for storage."""
+    """Encrypt string for storage (e.g. OAuth tokens). Requires FDMS_ENCRYPTION_KEY."""
     f = _get_fernet()
     if not f:
-        return plain
+        key = os.environ.get("FDMS_ENCRYPTION_KEY")
+        raise RuntimeError(
+            "FDMS_ENCRYPTION_KEY must be set for token encryption. "
+            "Generate with: python -c \"from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())\""
+        )
     data = plain.encode("utf-8")
     enc = f.encrypt(data)
     return "ENC:" + base64.b64encode(enc).decode()

@@ -11,6 +11,7 @@ from pathlib import Path
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 
 
 class Command(BaseCommand):
@@ -58,7 +59,7 @@ class Command(BaseCommand):
 
         db = settings.DATABASES["default"]
         engine = db.get("ENGINE", "")
-        now = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+        now = timezone.now().strftime("%Y%m%d_%H%M%S")
 
         if "sqlite" in engine:
             src = db.get("NAME")

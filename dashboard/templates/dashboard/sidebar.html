@@ -1,31 +1,31 @@
 <nav class="flex-1 p-4 space-y-1">
     <a href="{% url 'dashboard_home' %}"
-       class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">
+       class="block px-3 py-2 rounded text-white hover:bg-white/10">
         Home
     </a>
     <a href="{% url 'device_identity_register' %}"
-       class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">
+       class="block px-3 py-2 rounded text-white hover:bg-white/10">
         Device Registration
     </a>
     {% if nav.has_device %}
     <a href="{% url 'fdms_device' %}"
-       class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">
+       class="block px-3 py-2 rounded text-white hover:bg-white/10">
         Device Status
     </a>
     <a href="{% url 'fdms_fiscal' %}"
-       class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">
+       class="block px-3 py-2 rounded text-white hover:bg-white/10">
         Fiscal Day
     </a>
     {% if nav.fiscal_day_open %}
     <a href="{% url 'fdms_receipts' %}"
-       class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">
+       class="block px-3 py-2 rounded text-white hover:bg-white/10">
         Receipts
     </a>
     {% else %}
     <span class="block px-3 py-2 rounded nav-locked" title="Open fiscal day first">Receipts</span>
     {% endif %}
     <a href="{% url 'fdms_invoice_import_step1' %}"
-       class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">
+       class="block px-3 py-2 rounded text-white hover:bg-white/10">
         Imports
     </a>
     {% else %}
@@ -36,19 +36,19 @@
     {% endif %}
     {% if nav.has_activity %}
     <a href="{% url 'fdms_audit' %}"
-       class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200">
+       class="block px-3 py-2 rounded text-white hover:bg-white/10">
         Audit
     </a>
     {% else %}
     <span class="block px-3 py-2 rounded nav-locked" title="Activity required">Audit</span>
     {% endif %}
-    <div class="pt-4 mt-4 border-t border-slate-700 space-y-1">
+    <div class="pt-4 mt-4 border-t border-white/20 space-y-1">
         <a href="{% url 'eula' %}"
-           class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">
+           class="block px-3 py-2 rounded text-white hover:bg-white/10 text-sm">
             Legal (EULA)
         </a>
         <a href="{% url 'privacy' %}"
-           class="block px-3 py-2 rounded hover:bg-slate-700 text-slate-200 text-sm">
+           class="block px-3 py-2 rounded text-white hover:bg-white/10 text-sm">
             Privacy
         </a>
     </div>

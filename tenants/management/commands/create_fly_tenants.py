@@ -7,6 +7,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 
 from tenants.models import Tenant
+from tenants.signals import set_skip_auto_tenant
 
 User = get_user_model()
 
@@ -34,22 +35,33 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(f"Tenant already exists: {tenant.slug}")
 
-            user, user_created = User.objects.get_or_create(
-                username=slug,
-                defaults={
-                    "email": email,
-                    "is_staff": True,
-                    "is_active": True,
-                },
-            )
-            if user_created:
-                user.set_password(password)
-                user.save()
-                self.stdout.write(self.style.SUCCESS(f"Created user: {user.username} (email={email})"))
+            set_skip_auto_tenant(True)  # We assign tenant ourselves; avoid signal creating a second one
+            try:
+                user, user_created = User.objects.get_or_create(
+                    username=slug,
+                    defaults={
+                        "email": email,
+                        "is_staff": True,
+                        "is_active": True,
+                    },
+                )
+                if user_created:
+                    user.set_password(password)
+                    user.save()
+                    self.stdout.write(self.style.SUCCESS(f"Created user: {user.username} (email={email})"))
+                else:
+                    user.set_password(password)
+                    user.email = email
+                    user.save()
+                    self.stdout.write(f"Updated user: {user.username} (password and email set)")
+            finally:
+                set_skip_auto_tenant(False)
+
+            # Link user to tenant for access control (UserTenant through model)
+            if tenant.users.filter(pk=user.pk).exists():
+                self.stdout.write(f"User {user.username} already in tenant {tenant.slug}")
             else:
-                user.set_password(password)
-                user.email = email
-                user.save()
-                self.stdout.write(f"Updated user: {user.username} (password and email set)")
+                tenant.users.add(user, through_defaults={"role": "user"})
+                self.stdout.write(self.style.SUCCESS(f"Assigned user {user.username} to tenant {tenant.slug}"))
 
         self.stdout.write(self.style.SUCCESS("Done. Tenants: fly1, fly2. Users: fly1, fly2 (password=netmannature, email=takaengwa@gmail.com)."))

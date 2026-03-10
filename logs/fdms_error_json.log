@@ -304,3 +304,7 @@
 {"timestamp": "2026-03-03T07:30:42.250Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
 {"timestamp": "2026-03-05T09:39:03.232Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
 {"timestamp": "2026-03-05T09:39:30.082Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
+{"timestamp": "2026-03-09T15:49:59.401Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
+{"timestamp": "2026-03-09T15:50:18.668Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
+{"timestamp": "2026-03-09T15:50:20.157Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
+{"timestamp": "2026-03-10T09:29:28.011Z", "level": "ERROR", "logger": "fiscal", "message": "GetStatus failed for device 31285: Unauthorized"}
