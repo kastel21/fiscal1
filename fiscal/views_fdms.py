@@ -131,6 +131,12 @@ def fdms_dashboard(request):
     ctx = _fdms_context(device)
     ctx["device"] = ctx["device"] if device else None  # Pass None so "No registered device" shows
     ctx["device_obj"] = device  # Full device for taxpayer/VAT in templates
+    # Tenant info for debugging / visibility: selected tenant and whether it's active
+    tenant = getattr(request, "tenant", None)
+    ctx["tenant"] = tenant
+    ctx["tenant_slug_in_session"] = request.session.get("tenant_slug") or ""
+    ctx["tenant_selected"] = tenant is not None
+    ctx["tenant_active"] = getattr(tenant, "is_active", False) if tenant else False
     status_json, err = _fetch_status_for_dashboard(device) if device else (None, None)
     ctx["status_error"] = err
     ctx["getstatus_response"] = safe_json_dumps(status_json, indent=2) if status_json else ""

@@ -13,6 +13,27 @@
     </div>
 </div>
 
+<div class="bg-white p-4 shadow rounded-lg border border-slate-200 mb-6">
+    <h2 class="text-sm font-semibold text-slate-700 uppercase tracking-wide mb-2">Tenant (Company)</h2>
+    {% if tenant_selected and tenant %}
+    <p class="mb-1"><span class="font-medium">Name:</span> {{ tenant.name|default:"—" }}</p>
+    <p class="mb-1"><span class="font-medium">Slug:</span> <code class="text-sm bg-slate-100 px-1 rounded">{{ tenant.slug|default:"—" }}</code></p>
+    <p class="mb-1"><span class="font-medium">In session:</span> <code class="text-sm bg-slate-100 px-1 rounded">{{ tenant_slug_in_session|default:"(none)" }}</code></p>
+    <p class="mb-0">
+        <span class="font-medium">Status:</span>
+        {% if tenant_active %}
+        <span class="px-2 py-0.5 rounded text-white text-sm bg-green-500">Active</span>
+        {% else %}
+        <span class="px-2 py-0.5 rounded text-white text-sm bg-red-500">Inactive</span>
+        {% endif %}
+    </p>
+    {% else %}
+    <p class="font-semibold text-amber-800 mb-1">No tenant selected</p>
+    <p class="text-slate-600 text-sm mb-2">Session tenant_slug: <code class="bg-slate-100 px-1 rounded">{{ tenant_slug_in_session|default:"(empty)" }}</code>. Select a company to use device and fiscal features.</p>
+    <a href="{% url 'select_tenant' %}" class="inline-block px-3 py-1.5 rounded text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700">Select company</a>
+    {% endif %}
+</div>
+
 {% if device %}
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
     <div class="bg-white p-4 shadow rounded-lg border-l-4 border-indigo-500">
