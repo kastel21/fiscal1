@@ -8,6 +8,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.shortcuts import redirect, render
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_http_methods
 
 from tenants.forms import CompanyCreateForm
@@ -44,6 +45,13 @@ def select_tenant(request):
         return redirect("select_tenant")
 
     tenants = list(_get_tenants_for_user(request.user))
+    if len(tenants) == 1:
+        request.session["tenant_slug"] = tenants[0].slug
+        next_url = request.GET.get("next", "").strip()
+        if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts=[request.get_host()]):
+            return redirect(next_url)
+        return redirect("fdms_dashboard")
+
     current_tenant_slug = request.session.get("tenant_slug") or ""
     return render(
         request,

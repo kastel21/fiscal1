@@ -134,6 +134,21 @@ class TenantResolutionMiddleware:
             else:
                 logger.warning("Tenant not found or inactive: slug=%s", slug)
 
+        # Auto-select single tenant: if user has exactly one allowed tenant, set session and retry same URL
+        if user and getattr(user, "is_authenticated", False) and hasattr(request, "session"):
+            if getattr(user, "is_superuser", False):
+                tenants_qs = Tenant.objects.filter(is_active=True)
+            else:
+                tenants_qs = getattr(user, "tenants", None)
+                if tenants_qs is not None:
+                    tenants_qs = tenants_qs.filter(is_active=True)
+                else:
+                    tenants_qs = Tenant.objects.none()
+            if tenants_qs.count() == 1:
+                only_tenant = tenants_qs.first()
+                if user_has_tenant_access(user, only_tenant):
+                    request.session["tenant_slug"] = only_tenant.slug
+                    return HttpResponseRedirect(request.get_full_path())
         if settings.DEBUG:
             return HttpResponseRedirect(reverse("select_tenant"))
         raise Http404("Tenant required: select a tenant or provide X-Tenant-Slug if authorized.")

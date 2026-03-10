@@ -2,7 +2,7 @@
 Tenant-aware login: after authentication, set session tenant and redirect to dashboard or tenant selection.
 """
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect, render
 
@@ -38,3 +38,14 @@ def login_view(request):
         form = AuthenticationForm(request)
 
     return render(request, "auth/login.html", {"form": form, "next": request.GET.get("next")})
+
+
+def logout_view(request):
+    """
+    Log out the user (GET or POST), clear tenant from session, redirect to login.
+    GET is allowed so that <a href="{% url 'logout' %}"> works; Django's LogoutView requires POST only.
+    """
+    if request.session.get("tenant_slug"):
+        request.session.pop("tenant_slug", None)
+    logout(request)
+    return redirect("login")

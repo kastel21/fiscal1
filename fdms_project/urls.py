@@ -16,7 +16,6 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.contrib.auth import views as auth_views
 from django.shortcuts import redirect
 from django.urls import include, path, reverse
 
@@ -28,7 +27,7 @@ from device_identity.views import onboarding_register_device
 from fiscal.views_devices import onboarding_device, register_device_page
 from fiscal.views_health import fdms_health
 from tenants.views import create_company, select_tenant
-from tenants.views_auth import login_view
+from tenants.views_auth import login_view, logout_view
 from tenants.views_admin import create_company_with_user, create_tenant_onboarding, tenant_onboarding_wizard
 from tenants.views_onboarding import onboarding_company
 
@@ -46,7 +45,7 @@ urlpatterns = [
     path("select-tenant/", select_tenant, name="select_tenant"),
     path("health/fdms/", fdms_health),
     path("login/", login_view, name="login"),
-    path("logout/", auth_views.LogoutView.as_view(next_page="login"), name="logout"),
+    path("logout/", logout_view, name="logout"),
     path("", lambda r: redirect("login")),
     path("dashboard/", lambda r: redirect("fdms_dashboard")),
     path("device/", include("device_identity.urls")),
