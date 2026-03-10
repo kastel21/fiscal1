@@ -269,9 +269,10 @@ ZIMRA_QR_URL = os.environ.get("ZIMRA_QR_URL", "https://fdms.zimra.co.zw")
 # True => keep legacy behavior and save generated PDF file to media/fiscal_invoices/.
 FDMS_PERSIST_PDF = os.environ.get("FDMS_PERSIST_PDF", "false").lower() in ("1", "true", "yes")
 
-# Logging Configuration
-LOGS_DIR = BASE_DIR / "logs"
-LOGS_DIR.mkdir(exist_ok=True)
+# Logging Configuration (LOGS_DIR from env: relative path under BASE_DIR, or absolute)
+_logs_dir = os.environ.get("LOGS_DIR", "logs")
+LOGS_DIR = Path(_logs_dir) if Path(_logs_dir).is_absolute() else BASE_DIR / _logs_dir
+LOGS_DIR.mkdir(parents=True, exist_ok=True)
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -323,6 +324,22 @@ LOGGING = {
         },
     },
 }
+
+# Admin error emails (when DEBUG=False): set DJANGO_ADMIN_EMAIL and SMTP vars in .env
+_admin_email = os.environ.get("DJANGO_ADMIN_EMAIL", "").strip()
+ADMINS = [("FDMS Admin", _admin_email)] if _admin_email else []
+SERVER_EMAIL = os.environ.get("DJANGO_SERVER_EMAIL", _admin_email or "noreply@localhost")
+
+_email_host = os.environ.get("EMAIL_HOST", "").strip()
+if _email_host:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_HOST = _email_host
+    EMAIL_PORT = int(os.environ.get("EMAIL_PORT", "587"))
+    EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", "true").lower() in ("1", "true", "yes")
+    EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # Production / DigitalOcean
 SECURE_SSL_REDIRECT = os.environ.get("DJANGO_SECURE_SSL_REDIRECT", "false").lower() in ("1", "true", "yes")

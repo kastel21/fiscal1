@@ -65,8 +65,9 @@ FDMS_DEVICE_ID = int(os.environ.get("FDMS_DEVICE_ID", "0") or "0")
 FDMS_DEVICE_SERIAL_NO = os.environ.get("FDMS_DEVICE_SERIAL_NO", "")
 FDMS_ACTIVATION_KEY = os.environ.get("FDMS_ACTIVATION_KEY", "")
 
-# Log retention
-LOGS_DIR = Path(os.environ.get("LOGS_DIR", str(BASE_DIR / "logs")))
+# Log retention (LOGS_DIR from env: relative to BASE_DIR or absolute; base settings already set it)
+_logs_dir = os.environ.get("LOGS_DIR", "logs")
+LOGS_DIR = Path(_logs_dir) if Path(_logs_dir).is_absolute() else BASE_DIR / _logs_dir
 LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
 LOGGING["handlers"]["fdms_file"] = {
