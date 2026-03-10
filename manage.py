@@ -2,11 +2,29 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from pathlib import Path
+
+
+def _load_env_file():
+    """Load simple KEY=VALUE pairs from project .env before Django boots."""
+    env_file = Path(__file__).resolve().parent / ".env"
+    if not env_file.exists():
+        return
+    with env_file.open(encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, _, value = line.partition("=")
+                os.environ.setdefault(key.strip(), value.strip())
 
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fdms_project.settings")
+    _load_env_file()
+    os.environ.setdefault(
+        "DJANGO_SETTINGS_MODULE",
+        os.environ.get("DJANGO_SETTINGS_MODULE", "fdms_project.settings"),
+    )
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

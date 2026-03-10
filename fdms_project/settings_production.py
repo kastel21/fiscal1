@@ -18,12 +18,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Production: never debug
 DEBUG = False
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = (os.environ.get("SECRET_KEY") or os.environ.get("DJANGO_SECRET_KEY") or "").strip()
 if not SECRET_KEY:
-    raise ValueError("SECRET_KEY environment variable must be set in production")
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "").split(",")
+    raise ValueError("SECRET_KEY (or DJANGO_SECRET_KEY) environment variable must be set in production")
+_allowed_hosts_raw = (os.environ.get("ALLOWED_HOSTS") or os.environ.get("DJANGO_ALLOWED_HOSTS") or "").strip()
+ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_raw.split(",") if h.strip()]
 if not ALLOWED_HOSTS or ALLOWED_HOSTS == [""]:
-    raise ValueError("ALLOWED_HOSTS environment variable must be set in production")
+    raise ValueError("ALLOWED_HOSTS (or DJANGO_ALLOWED_HOSTS) environment variable must be set in production")
 
 # HTTPS / HSTS (production behind TLS)
 SECURE_SSL_REDIRECT = True
