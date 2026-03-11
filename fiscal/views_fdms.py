@@ -174,13 +174,13 @@ def api_verify_taxpayer(request):
         return JsonResponse({"error": "activation_key must be exactly 8 characters"}, status=400)
 
     service = DeviceRegistrationService()
-    data, err = service.verify_taxpayer_information(
+    data, err, debug = service.verify_taxpayer_information(
         device_id=device_id,
         activation_key=activation_key,
         device_serial_no=device_serial_no,
     )
     if err:
-        return JsonResponse({"error": err}, status=400)
+        return JsonResponse({"error": err, "debug": debug}, status=400)
     return JsonResponse({"success": True, "taxpayer": data})
 
 

@@ -49,7 +49,19 @@
                 <div><span class="font-medium text-slate-600">VAT number:</span> <span id="tpl-vat"></span></div>
             </div>
         </div>
-        <div id="verify-error" class="hidden bg-red-50 border border-red-200 rounded p-3 text-red-800 text-sm"></div>
+        <div id="verify-error" class="hidden bg-red-50 border border-red-200 rounded p-3 text-red-800 text-sm">
+            <p id="verify-error-msg" class="font-semibold"></p>
+            <div id="verify-debug" class="hidden mt-3 pt-3 border-t border-red-200 space-y-2">
+                <p class="font-medium text-slate-700">Request URL</p>
+                <pre id="debug-url" class="text-xs bg-slate-100 p-2 rounded overflow-x-auto"></pre>
+                <p class="font-medium text-slate-700">Request payload</p>
+                <pre id="debug-payload" class="text-xs bg-slate-100 p-2 rounded overflow-x-auto"></pre>
+                <p class="font-medium text-slate-700">Response status</p>
+                <p id="debug-status" class="text-sm"></p>
+                <p class="font-medium text-slate-700">Response body</p>
+                <pre id="debug-response" class="text-xs bg-slate-100 p-2 rounded overflow-x-auto max-h-48 overflow-y-auto"></pre>
+            </div>
+        </div>
 
         <div class="space-y-3 pt-2">
             <p class="text-sm font-medium text-slate-600">Step 2: Device model</p>
@@ -88,8 +100,9 @@
         const activationKey = document.getElementById('id_activation_key')?.value?.trim();
         const serialNo = document.getElementById('id_device_serial_no')?.value?.trim();
 
-        if (!deviceId || !activationKey || !serialNo) {
-            verifyError.textContent = 'Please fill in Device ID, Activation Key, and Device Serial Number.';
+            if (!deviceId || !activationKey || !serialNo) {
+            document.getElementById('verify-error-msg').textContent = 'Please fill in Device ID, Activation Key, and Device Serial Number.';
+            document.getElementById('verify-debug').classList.add('hidden');
             verifyError.classList.remove('hidden');
             taxpayerInfo.classList.add('hidden');
             return;
@@ -126,14 +139,29 @@
                 taxpayerInfo.classList.remove('hidden');
                 verifyError.classList.add('hidden');
             } else {
-                verifyError.textContent = data.error || 'Verification failed.';
+                document.getElementById('verify-error-msg').textContent = data.error || 'Verification failed.';
+                var debugEl = document.getElementById('verify-debug');
+                if (data.debug) {
+                    debugEl.classList.remove('hidden');
+                    document.getElementById('debug-url').textContent = data.debug.request_url || '—';
+                    document.getElementById('debug-payload').textContent = typeof data.debug.request_payload === 'object'
+                        ? JSON.stringify(data.debug.request_payload, null, 2) : (data.debug.request_payload || '—');
+                    document.getElementById('debug-status').textContent = data.debug.response_status != null
+                        ? String(data.debug.response_status) : '—';
+                    var rb = data.debug.response_body;
+                    document.getElementById('debug-response').textContent = typeof rb === 'object'
+                        ? JSON.stringify(rb, null, 2) : (rb != null ? String(rb) : '—');
+                } else {
+                    debugEl.classList.add('hidden');
+                }
                 verifyError.classList.remove('hidden');
             }
         })
         .catch(function(err) {
             btn.disabled = false;
             btn.textContent = 'Verify Taxpayer';
-            verifyError.textContent = 'Network error: ' + (err.message || 'Request failed');
+            document.getElementById('verify-error-msg').textContent = 'Network error: ' + (err.message || 'Request failed');
+            document.getElementById('verify-debug').classList.add('hidden');
             verifyError.classList.remove('hidden');
         });
     });

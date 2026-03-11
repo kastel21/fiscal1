@@ -226,7 +226,7 @@ _FDMS_BASE_URL = os.environ.get("FDMS_BASE_URL")
 if _FDMS_BASE_URL:
     FDMS_BASE_URL = _FDMS_BASE_URL
 else:
-    FDMS_BASE_URL = "https://fdmsapitest.zimra.co.zw"  # Test default
+    FDMS_BASE_URL = "https://fdmsapi.zimra.co.zw"  # Test default
 
 if DEBUG and FDMS_ENV == "PROD":
     import warnings

@@ -38,20 +38,14 @@ class DeviceRegistrationService(FDMSBaseService):
         device_id: int,
         activation_key: str,
         device_serial_no: str,
-    ) -> tuple[dict | None, str | None]:
+    ) -> tuple[dict | None, str | None, dict | None]:
         """
         Call VerifyTaxpayerInformation (Public API) before device registration.
         Returns taxpayer info so user can confirm correct taxpayer.
-
-        Args:
-            device_id: Sold or active device ID.
-            activation_key: 8-symbol activation key (case insensitive).
-            device_serial_no: Device serial number from manufacturer.
+        On failure, returns debug info (request_url, request_payload, response_status, response_body) for UI.
 
         Returns:
-            tuple: (data dict with taxPayerName, taxPayerTIN, deviceBranchName,
-                   deviceBranchAddress, vatNumber, operationID; or None) and
-                   (error_message or None).
+            tuple: (data dict or None), (error_message or None), (debug_info dict or None).
         """
         base_url = getattr(settings, "FDMS_BASE_URL", "").rstrip("/")
         endpoint = f"/Public/v1/{device_id}/VerifyTaxpayerInformation"
@@ -62,6 +56,13 @@ class DeviceRegistrationService(FDMSBaseService):
             "activationKey": activation_key.strip()[:8],
             "deviceSerialNo": device_serial_no.strip(),
         }
+
+        def make_debug(resp=None, resp_body=None):
+            info = {"request_url": url, "request_payload": payload}
+            if resp is not None:
+                info["response_status"] = resp.status_code
+                info["response_body"] = resp_body
+            return info
 
         try:
             response = requests.post(
@@ -78,13 +79,18 @@ class DeviceRegistrationService(FDMSBaseService):
                 response=response,
             )
 
+            try:
+                response_body = response.json()
+            except Exception:
+                response_body = response.text or "(empty)"
+
             if response.status_code != 200:
                 try:
-                    err_body = response.json()
+                    err_body = response.json() if isinstance(response_body, dict) else {}
                     detail = err_body.get("detail", err_body.get("title", response.text))
                 except Exception:
                     detail = response.text or f"HTTP {response.status_code}"
-                return None, detail
+                return None, detail, make_debug(response, response_body)
 
             data = response.json()
             addr = data.get("deviceBranchAddress") or {}
@@ -97,7 +103,7 @@ class DeviceRegistrationService(FDMSBaseService):
                 "deviceBranchAddressRaw": addr if isinstance(addr, dict) else {},
                 "vatNumber": data.get("vatNumber") or "",
                 "operationID": data.get("operationID") or "",
-            }, None
+            }, None, None
 
         except requests.RequestException as e:
             log_fdms_call(
@@ -106,11 +112,11 @@ class DeviceRegistrationService(FDMSBaseService):
                 request_payload={"deviceId": device_id},
                 error=str(e),
             )
-            return None, str(e)
+            return None, str(e), make_debug()
         except Exception as e:
             logger.exception("VerifyTaxpayerInformation failed")
             log_fdms_call(endpoint=endpoint, method="POST", request_payload={}, error=str(e))
-            return None, str(e)
+            return None, str(e), make_debug()
 
     def register_device(
         self,
@@ -134,7 +140,7 @@ class DeviceRegistrationService(FDMSBaseService):
         Returns:
             tuple: (FiscalDevice on success, None) or (None, error_message).
         """
-        verification, verify_err = self.verify_taxpayer_information(
+        verification, verify_err, _ = self.verify_taxpayer_information(
             device_id=device_id,
             activation_key=activation_key,
             device_serial_no=device_serial_no,
