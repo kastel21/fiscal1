@@ -75,6 +75,7 @@ MIDDLEWARE = [
     "tenants.middleware.TenantResolutionMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "tenants.middleware.TenantResolutionMiddleware",
 ]
 
 ROOT_URLCONF = "fdms_project.urls"
