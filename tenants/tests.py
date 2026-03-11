@@ -766,10 +766,10 @@ class CreateCompanyOnboardingTests(TestCase):
         self.assertEqual(r.status_code, 302)
         self.assertEqual(self.client.session.get("tenant_slug"), "my-company")
 
-    def test_redirect_to_register_device_page(self):
-        """After creating company, user is redirected to register_device_page."""
+    def test_redirect_to_dashboard_after_company_creation(self):
+        """After creating company, user is redirected to dashboard."""
         r = self._post_form()
-        self.assertRedirects(r, reverse("register_device_page"))
+        self.assertRedirects(r, reverse("fdms_dashboard"))
 
     def test_onboarding_duplicate_slug_fails(self):
         """Duplicate slug returns form error."""

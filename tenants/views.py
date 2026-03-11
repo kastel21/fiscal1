@@ -69,7 +69,7 @@ def select_tenant(request):
 @require_http_methods(["GET", "POST"])
 def create_company(request):
     """
-    User onboarding: create a company (Tenant), link user as owner, redirect to device registration.
+    User onboarding: create a company (Tenant), link user as owner, then go to dashboard.
     """
     if request.method == "POST":
         form = CompanyCreateForm(request.POST)
@@ -109,7 +109,7 @@ def create_company(request):
                     "Tenant created by user",
                     extra={"tenant": tenant.slug, "user": request.user.username},
                 )
-                return redirect("register_device_page")
+                return redirect("fdms_dashboard")
             except Exception as e:
                 logger.exception("Create company failed")
                 form.add_error(None, str(e))
