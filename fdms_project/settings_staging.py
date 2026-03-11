@@ -27,9 +27,9 @@ DATABASES = {
     }
 }
 
-# FDMS: staging/test API only
+# FDMS: staging uses same production API (set FDMS_BASE_URL in env to override)
 FDMS_ENV = "STAGING"
-FDMS_BASE_URL = os.environ.get("FDMS_BASE_URL", "https://fdmsapitest.zimra.co.zw")
+FDMS_BASE_URL = (os.environ.get("FDMS_BASE_URL") or "https://fdmsapi.zimra.co.zw").strip().rstrip("/")
 
 # Staging device (register separately; never use prod certs)
 FDMS_DEVICE_ID = int(os.environ.get("FDMS_DEVICE_ID", "0") or "0")

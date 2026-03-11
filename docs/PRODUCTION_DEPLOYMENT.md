@@ -11,7 +11,7 @@ set DJANGO_SETTINGS_MODULE=fdms_project.settings_staging
 ```
 
 - **Database:** `db_staging.sqlite3` (separate from dev/prod)
-- **FDMS API:** Test/sandbox URL (`https://fdmsapitest.zimra.co.zw` by default)
+- **FDMS API:** `https://fdmsapi.zimra.co.zw` (set `FDMS_BASE_URL` in env to override)
 - **Log rotation:** 10 MB per file, 30 backups (INFO), 90 backups (ERROR)
 
 Configure via environment:

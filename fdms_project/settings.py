@@ -219,14 +219,10 @@ SIMPLE_JWT = {
 }
 
 # FDMS Integration Settings (use env in production)
-# Production API base: https://fdmsapi.zimra.co.zw (Swagger: https://fdmsapi.zimra.co.zw/swagger/index.html)
-# Test API base: https://fdmsapitest.zimra.co.zw
-FDMS_ENV = os.environ.get("FDMS_ENV", "TEST")
-_FDMS_BASE_URL = os.environ.get("FDMS_BASE_URL")
-if _FDMS_BASE_URL:
-    FDMS_BASE_URL = _FDMS_BASE_URL
-else:
-    FDMS_BASE_URL = "https://fdmsapi.zimra.co.zw"  # Test default
+# API base: https://fdmsapi.zimra.co.zw (Swagger: https://fdmsapi.zimra.co.zw/swagger/index.html)
+FDMS_ENV = os.environ.get("FDMS_ENV", "PROD")
+_FDMS_BASE_URL = (os.environ.get("FDMS_BASE_URL") or "").strip().rstrip("/")
+FDMS_BASE_URL = _FDMS_BASE_URL or "https://fdmsapi.zimra.co.zw"
 
 if DEBUG and FDMS_ENV == "PROD":
     import warnings

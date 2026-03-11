@@ -14,7 +14,7 @@ This allows customers and auditors to verify fiscalization.
 
 Format:
 ```
-https://fdmstest.zimra.co.zw/Receipt/Result
+https://fdms.zimra.co.zw/Receipt/Result
  ?deviceID={deviceID}
  &receiptDate={receiptDate}
  &receiptGlobalNo={receiptGlobalNo}

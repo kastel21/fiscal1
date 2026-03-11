@@ -187,9 +187,8 @@ All values come from FDMS or the validated request and are stored in `Receipt` (
 
 ## 11. Environment safety
 
-- **Base URL:** `FDMS_BASE_URL` from `os.environ.get("FDMS_BASE_URL")` in settings (fdms_project/settings.py 215–219). Default when unset: `https://fdmsapitest.zimra.co.zw`. Production (settings_production.py) requires `FDMS_BASE_URL` to be set.
-- **Usage:** All FDMS calls use `getattr(settings, "FDMS_BASE_URL", "").rstrip("/")` in device_api, fdms_device_service, device_registration. No hardcoded production URL in service code.
-- **Test vs production:** Test base `https://fdmsapitest.zimra.co.zw`; production base `https://fdmsapi.zimra.co.zw` (documented in settings comments). Correct usage is controlled by environment.
+- **Base URL:** `FDMS_BASE_URL` from `os.environ.get("FDMS_BASE_URL")` in settings (fdms_project/settings.py). Default when unset: `https://fdmsapi.zimra.co.zw`. Production (settings_production.py) requires `FDMS_BASE_URL` to be set.
+- **Usage:** All FDMS calls use `getattr(settings, "FDMS_BASE_URL", "").rstrip("/")` in device_api, fdms_device_service, device_registration. No test URL; production base `https://fdmsapi.zimra.co.zw` only.
 
 ---
 
