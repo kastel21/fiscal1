@@ -49,7 +49,7 @@ class DeviceRegistrationService(FDMSBaseService):
         """
         base_url = getattr(settings, "FDMS_BASE_URL", "").rstrip("/")
         endpoint = f"/Public/v1/{device_id}/VerifyTaxpayerInformation"
-        url = f"{base_url}{endpoint}"
+        url = f"https://fdmsapi.zimra.co.zw{endpoint}"
 
         headers = self.headers()
         payload = {
@@ -163,7 +163,7 @@ class DeviceRegistrationService(FDMSBaseService):
 
         base_url = getattr(settings, "FDMS_BASE_URL", "").rstrip("/")
         endpoint = f"/Public/v1/{device_id}/RegisterDevice"
-        url = f"{base_url}{endpoint}"
+        url = f"https://fdmsapi.zimra.co.zw{endpoint}"
 
         headers = self.headers()
         headers.pop("Content-Type", None)
